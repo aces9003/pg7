@@ -1,0 +1,42 @@
+Overview
+Objective:
+Two merchants compete head-to-head in a friendly best of three challenge to become the Maharaja’s personal trader. The challenge consists of a trading competition where two merchants must collect goods and exchange them for tokens to accumulate points. Bonus tokens are awarded to merchants who make good deals by selling three or more cards at a time. Additionally, the camel token is awarded to the merchant with the most camels in his herd by the end of the round. The merchant with the most points at the end of each round wins a seal of excellence, and the first merchant to win two seals of excellence wins the game. 
+
+Materials:
+Cards: 10 leather, 8 spice, 6 cloth, 6 silver, 6 gold, 6 diamonds, 11 camels
+Tokens: 9 leather, 7 spice, 7 cloth, 5 silver, 5 gold, 5 jewels
+Bonus tokens: bonus (6 of each kind), 3 seals of excellence, 1 camel token
+
+
+Gameplay
+Start: 
+-Tokens in ordered piles based on numbers on tokens, shuffle bonus tokens and make three piles based on cards traded in (3, 4, or 5)
+-Market place in middle, put 3 camels and top 2 cards from deck. 
+-Each player draws 5 cards, camels are revealed, other cards are hidden in hand
+-Deck on side in draw pile
+
+Turns:
+Take:
+-Take all camels in marketplace (need to take all) and refill market with drawpile cards, must be 5 cards in marketplace at end of each turn
+-Take one resource card and replace with either 1) card from draw pile
+-Take multiple cards and replace with card in hand and/or camel
+Sell:
+-Only sell 1 kind of good per turn, have to sell at least 2 cards if of type gold, diamond, or silver.
+-Sell cards you want to sell in discard pile, rake as many resource tokens as cards sold, take a take bonus tokens equal to cards sold if applicable: take bonus token according to cards sold (3,4, or 5)
+
+
+Rounds:
+-End if any 3 resource token piles are exhausted
+-End if deck is empty and cannot refill market at end of player turn
+
+Camels - Player with most camels at end gets bonus camel token
+
+Winner gets seal of excellence, first with 2 tokens of excellence wins, 3 rounds possible
+
+
+UI Sketch:
+The screen will be split in two major components: the user interface and player hand will occupy the lower half of the screen while the the top half of the screen will belong to the game board. 
+
+The game board will consist of a tokens display, marketplace, herd counter, point counter, and seal of excellence counter. The names of the tokens and the number of tokens still available will be displayed in the token display box on the left side of the gameboard. Next to the token display box in the center will be the marketplace where 5 cards will be displayed, and above these will be a deck counter to indicate to players how many cards remain in the deck. To the right of the marketplace, the screen will be split in two to display each player’s collection of camel cards, the number of points they have accumulated in the round, and the number of seals of excellence they have obtained. The tokens, marketplace, and counters of each player will be updated as players make their moves throughout the game. 
+
+The user interface will house the current player’s cards and a command line prompt. The first prompt will ask the player to either 1)Sell or 2)Take. The player chooses which option he would like by inputting the number which appears in front of each option, and will do this for every action he makes. If a player chooses to Take, then the next prompt will ask which card the player would like to take, giving the player the option to either take all camels if there are any present or take any one card from the marketplace. If the player chooses camels, then the cards he takes will be replaced by those of the deck and the player’s turn is over. If the player chooses a resource card, then he is prompted if he would like to take another card or not (y/n input). If no, then the card the player took is replaced by a card from the deck and the player’s turn is over. If yes, then the player must choose a card to replace the card he took with a card from his hand. Once the player replaces the card he took, he is prompted again which card he would like to take and which card he would like to exchange until he answers no to the second prompt after choosing a card. Because every turn must be productive, a player cannot exchange a card with the market and then exchange it back to spend his turn having a net zero effect on the game. To apply this rule, every time a player exchanges a card, both the taken card and the replacement card will be unavailable for exchange during the remainder of the player’s turn, so the prompts will become less until the player can no longer exchange cards and his turn will automatically end. 
