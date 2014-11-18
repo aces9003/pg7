@@ -1,7 +1,7 @@
 /*
  Player Class
  has cards
- has tokens
+ has hand
  
  create player, record points, seals, cards
  has all of players actions
@@ -23,21 +23,23 @@ private:
     bool hasCamelToken;
     
 public:
-    take();
-//functions to take specific items
-    take1(const Card &c);
-    takeMult(int cards);
-    takeCamel();
-    replace1(const Card &c);
-    replaceMult(int cards);
+    Player()
     
-    sell();
+    void take();
+    //functions to take specific items
+    void take1(const Card &c);
+    void takeMult(int cards);
+    void takeCamel();
+    void replace1(const Card &c);
+    void replaceMult(int cards);
+    
+    void sell();
     //functions to sell specific cards
-    sell1(const Card &c);
-    sellMult(int cards);
+    void sell1(const Card &c);
+    void sellMult(int cards);
     
-    addPoint();
-    awardCamel();
+    void addPoint();
+    void awardCamel();
     
     ~Player();      //need to deallocate hand
 };

@@ -17,7 +17,7 @@ private:
     int point;
     
 public:
-    Tokens(){
+    Token(){
         type="Uninitialized Token";
         point=0;
     }
@@ -31,7 +31,7 @@ public:
     
     void print();
     
-    ~Tokens();
+    ~Token();
 };
 
 #endif
