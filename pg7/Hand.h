@@ -10,7 +10,7 @@
 #include "Container.h"
 
 class Hand : public Container{
-
+    
 protected:
     vector<Card> hand;
 public:

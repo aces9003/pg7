@@ -20,11 +20,11 @@ public:
         type="Uninitialized Card";
     }
     
-    setType(string s){
+    void setType(string s){
         type=s;
     }
     
-    ~Card;
+    ~Card();
 };
 
 #endif

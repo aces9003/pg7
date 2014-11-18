@@ -3,8 +3,9 @@
  has players
  has cards
  has tokens
+ has marketplace
  
- to create game, record players, deal game, 
+ to create game, record players, deal game,
  change rounds, determine points and if game is over
  
  */
@@ -43,14 +44,15 @@ private:
     
 public:
     
-    countSE();  //count Seal of Excellence-->determine game over
-    giveSE();   //give SoE at end of round
-    addPlayer();
-    removePlayer();
-    endGame();      //if game over =1
-    dealMarket();   //set up tokens and cards
-    setupTokens();  //determines order of tokens
-    dealHand();     //gives players 5 cards
+    Game();
+    void countSE();  //count Seal of Excellence-->determine game over
+    void giveSE();   //give SoE at end of round
+    void addPlayer();
+    void removePlayer();
+    void endGame();      //if game over =1
+    void dealMarket();   //set up tokens and cards
+    void setupTokens();  //determines order of tokens
+    void dealHand();     //gives players 5 cards
     
     ~Game();
     

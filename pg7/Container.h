@@ -1,7 +1,7 @@
 /*
  ABSTRACT Container Class
  has Cards
-  vector for cards
+ vector for cards
  */
 
 #ifndef pg7_Container_h
