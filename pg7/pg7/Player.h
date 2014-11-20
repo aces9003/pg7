@@ -1,5 +1,5 @@
 /*
- Player Class
+ ABSTRACT Player Class
  has cards
  has hand
  
@@ -25,22 +25,22 @@ private:
 public:
     Player()
     
-    void take()=0;
+    virtual take()=0;
     //functions to take specific items
-    void trade(int cards)=0;
-    void take1(const Card &c);
-    void takeMult(int cards);
-    void takeCamel();
-    void replace1(const Card &c);
-    void replaceMult(int cards);
+    virtual trade(int cards)=0;
+    virtual take1(const Card &c);
+    virtual takeMult(int cards);
+    virtual takeCamel();
+    virtual replace1(const Card &c);
+    virtual replaceMult(int cards);
     
-    void sell()=0;
+    virtual sell()=0;
     //functions to sell specific cards
-    void sell1(const Card &c);
-    void sellMult(int cards);
+    virtual sell1(const Card &c);
+    virtual sellMult(int cards);
     
-    void addPoint();
-    void awardCamel();
+    virtual addPoint();
+    virtual awardCamel();
     
     ~Player();      //need to deallocate hand
 };

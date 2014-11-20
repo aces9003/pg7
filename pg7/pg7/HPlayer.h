@@ -1,10 +1,7 @@
-//
-//  HPlayer.h
-//  pg7
-//
-//  Created by Emily Johnson on 11/20/14.
-//  Copyright (c) 2014 Emily Johnson. All rights reserved.
-//
+/*
+ Human Player class
+ inheritted from Player class
+ */
 
 #include "Player.h"
 
@@ -23,22 +20,22 @@ private:
 public:
     Player()
     
-    void take()=0;
+    virtual take();
     //functions to take specific items
-    void trade(int cards)=0;
-    void take1(const Card &c);
-    void takeMult(int cards);
-    void takeCamel();
-    void replace1(const Card &c);
-    void replaceMult(int cards);
+    virtual trade(int cards);
+    virtual take1(const Card &c);
+    virtual takeMult(int cards);
+    virtual takeCamel();
+    virtual replace1(const Card &c);
+    virtual replaceMult(int cards);
     
-    void sell()=0;
+    virtual sell();
     //functions to sell specific cards
-    void sell1(const Card &c);
-    void sellMult(int cards);
+    virtual sell1(const Card &c);
+    virtual sellMult(int cards);
     
-    void addPoint();
-    void awardCamel();
+    virtual addPoint();
+    virtual awardCamel();
     
     ~Player();      //need to deallocate hand
 };
