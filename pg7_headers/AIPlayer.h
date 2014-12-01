@@ -18,25 +18,30 @@ private:
     bool hasCamelToken;
     
 public:
-    Player()
+    Player();
     
-    virtual take();
+    void getName(){return this->name;}const;
+    void getPoints(){return this->points;}const;
+    void getSeals(){return this->seals;} const;
+    void getCamel(){return this->hasCamelToken;}const;
+    
+    void take();
     //functions to take specific items
-    virtual trade(int cards);
-    virtual take1(const Card &c);
-    virtual takeMult(int cards);
-    virtual takeCamel();
-    virtual replace1(const Card &c);
-    virtual replaceMult(int cards);
+    void trade(int cards);
+    void take1(const Card &c);
+    void takeMult(int cards);
+    void takeCamel();
+    void replace1(const Card &c);
+    void replaceMult(int cards);
     
-    virtual sell();
+    void sell();
     //functions to sell specific cards
-    virtual sell1(const Card &c);
-    virtual sellMult(int cards);
+    void sell1(const Card &c);
+    void sellMult(int cards);
     
-    virtual addPoint();
-    virtual awardCamel();
+    void addPoint();
+    void awardCamel();
     
-    ~Player();      //need to deallocate hand
+    virtual ~Player();      //need to deallocate hand
 };
 #endif

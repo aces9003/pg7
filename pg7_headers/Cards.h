@@ -19,6 +19,7 @@ public:
     Card(){
         type="Uninitialized Card";
     }
+    void getType(){return this->type;}
     
     void setType(string s){
         type=s;
