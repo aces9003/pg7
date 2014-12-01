@@ -13,13 +13,14 @@
 
 class Marketplace: public Container{
 protected:
-    vector<Card> hand;
+    vector<Card> market;
     
 public:
     Marketplace();
-    virtual print();
-    
-    ~Marketplace();
+    virtual ~Marketplace(){market.clear};
+    Card getCard(int place)const{return market.at(place);} ;  //place is spot in vector. first place ==0
+    std::string* getMarket();
+    void addCard(Card c)const {market.push_back(c);};
 };
 
 #endif

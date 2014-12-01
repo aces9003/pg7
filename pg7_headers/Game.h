@@ -28,7 +28,6 @@ private:
     Marketplace market = new Marketplace;
     
     vector<Card> deck;    //vector deck
-    vector<Card> discard;   //discarded cards
     
     vector<Token> bonus3;   //bonus tokens traded for 3 cards
     vector<Token> bonus4;
@@ -45,11 +44,12 @@ private:
 public:
     
     Game();
+    void playerTurn(Player p);
     void countSE();  //count Seal of Excellence-->determine game over
     void giveSE();   //give SoE at end of round
     void addPlayer();
     void removePlayer();
-    void endGame();      //if game over =1
+    bool endGame();      //if game over =1
     void dealMarket();   //set up tokens and cards
     void setupTokens();  //determines order of tokens
     void dealHand();     //gives players 5 cards

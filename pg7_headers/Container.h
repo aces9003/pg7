@@ -11,10 +11,11 @@
 
 class Container{
 protected:
-    vector<Card> hand;
+    vector<Card> container;
 public:
     virtual ~Container();
-    virtual print()=0;
+    virtual void addCard(Card c)const=0;
+    virtual Card getCard(int place)const=0;
 };
 
 #endif

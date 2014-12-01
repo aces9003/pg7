@@ -22,12 +22,11 @@ public:
         point=0;
     }
     
-    void setType(string s){     //sets type of token
-        type=s;
-    }
-    void setPt(int x){     //sets point value
-        point=x;
-    }
+    void getType(){return this->type;};
+    void getPt(){return this->point;};
+    
+    void setType(string s){type=s;}
+    void setPt(int x){point=x;}
     
     void print();
     
