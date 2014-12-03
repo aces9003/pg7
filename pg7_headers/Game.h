@@ -53,6 +53,7 @@ public:
     void dealMarket();   //set up tokens and cards
     void setupTokens();  //determines order of tokens
     void dealHand();     //gives players 5 cards
+    void createDeck();   //create deck of 55 cards
     
     ~Game();
     
