@@ -11,6 +11,8 @@
 
 #include <string>
 
+using std::string;
+
 class Card{
 private:
     string type;
@@ -19,11 +21,9 @@ public:
     Card(){
         type="Uninitialized Card";
     }
-    void getType(){return this->type;}
+    string getType(){return this->type;}
     
-    void setType(string s){
-        type=s;
-    }
+    void setType(string s){type=s;}
     
     ~Card();
 };

@@ -15,6 +15,8 @@
 
 #include "Marketplace.h"
 #include "Player.h"
+#include "HPlayer.h"
+#include "AIPlayer.h"
 #include <vector>
 #define DECKSIZE 55;
 
@@ -23,7 +25,9 @@ using std::vector;
 class Game{
 private:
     bool GameOver;   //1 if a player has 2 SoE
-    Player[2];       //array of players
+    HPlayer p1;
+    AIPlayer p2;
+    HPlayer p3;         //cant use p2 and p3 at same time;
     int rounds;
     Marketplace market = new Marketplace;
     
@@ -53,9 +57,9 @@ public:
     void dealMarket();   //set up tokens and cards
     void setupTokens();  //determines order of tokens
     void dealHand();     //gives players 5 cards
-    void createDeck();   //create deck of 55 cards
     
     ~Game();
+    friend class Hand;
     
 };
 

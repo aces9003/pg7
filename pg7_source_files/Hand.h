@@ -9,6 +9,7 @@
 #define pg7_Hand_h
 
 #include <vector>
+#include "Game.h"
 #include "Container.h"
 #include <iostream>
 #include <string>
@@ -22,11 +23,14 @@ private:
     int camels;
     vector<Card> hand;
 public:
-    Hand();
+    
+    Hand(Game a);
+    bool isValid(){if(hand.size()<=7 && hand.size()>=0) return true; else return false;};
     virtual ~Hand(){hand.clear();};
     Card getCard(int place)const{return hand.at(place);} ;  //place is spot in vector. first place ==0
     std::string* getHand();
-    void addCard(Card c)const {hand.push_back(c);};
+    void addCard(Card c) {hand.push_back(c);};
+    
 };
 
 #endif
