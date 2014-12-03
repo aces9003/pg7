@@ -28,7 +28,7 @@ public:
     Card getCard(int place)const{return market.at(place);} ;  //place is spot in vector. first place ==0
     //std::string* getMarket();
     void addCard(Card c) {market.push_back(c);};
-    void replaceCard(int Ind, Card c){ market.at(Ind)=c;};
+    void deleteCard(int Ind, Card c){ market.at(Ind)=c;};
 };
 
 #endif
