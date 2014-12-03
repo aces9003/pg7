@@ -10,6 +10,7 @@
 #define pg7_Cards_h
 
 #include <string>
+using std::string;
 
 class Card{
 private:
@@ -19,7 +20,7 @@ public:
     Card(){
         type="Uninitialized Card";
     }
-    void getType(){return this->type;}
+    const string & getType(){return this->type;}
     
     void setType(string s){
         type=s;

@@ -7,7 +7,10 @@
 #ifndef pg7_Container_h
 #define pg7_Container_h
 
-#include <Cards.h>
+#include "Cards.h"
+#include <vector>
+
+ using std::vector;
 
 class Container{
 protected:
