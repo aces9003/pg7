@@ -8,13 +8,14 @@
 #define pg7_Container_h
 
 #include "Cards.h"
+<<<<<<< HEAD
 #include <vector>
 
  using std::vector;
 
 class Container{
 protected:
-    vector<Card> container;
+    std::vector<Card> container;
 public:
     virtual ~Container();
     virtual void addCard(Card c)const=0;
