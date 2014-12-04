@@ -57,7 +57,7 @@ bool Player::takeCamels(Game g)
     }
     
     if (camelsInMarket > 0) {
-        return true
+        return true;
     } else return false;
 }
 
