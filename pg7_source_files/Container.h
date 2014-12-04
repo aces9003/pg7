@@ -8,7 +8,6 @@
 #define pg7_Container_h
 
 #include "Cards.h"
-<<<<<<< HEAD
 #include <vector>
 
  using std::vector;

@@ -12,22 +12,18 @@
 
 #ifndef pg7_Game_h
 #define pg7_Game_h
+#define DECKSIZE 55;
 
 #include "Marketplace.h"
 #include "Player.h"
-#include "HPlayer.h"
-#include "AIPlayer.h"
 #include <vector>
-#define DECKSIZE 55;
 
 using std::vector;
 
 class Game{
 private:
     bool GameOver;   //1 if a player has 2 SoE
-    HPlayer p1;
-    AIPlayer p2;
-    HPlayer p3;         //cant use p2 and p3 at same time;
+    Player[2];       //array of players
     int rounds;
     Marketplace market = new Marketplace;
     
@@ -44,6 +40,15 @@ private:
     vector<Token> goldT;
     vector<Token> diamondT;
     
+    // User input storage variables
+    int currentUserInput;
+    
+    // Trading vectors -- to be used respectively by current player
+    vector<int> marketIndicesForTrading;
+    vector<int> handIndicesForTrading;
+    
+    // Selling vectors -- to be used respectively by current player as well
+    vector<int> handIndicesForSelling;
     
 public:
     
@@ -59,7 +64,6 @@ public:
     void dealHand();     //gives players 5 cards
     
     ~Game();
-    friend class Hand;
     
 };
 
