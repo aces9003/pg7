@@ -13,7 +13,6 @@ Game::Game(std:: string name1, std:;string name2) {
 
 void Game::setupTokens(){
 	//create and populate vectors
-	//leather 4,3,2,1,1,1,1,1,1
 	//leather 1,1,1,1,1,1,2,3,4
 	string leather = "Leather";
 	for (int i=0;i<6;i++){
@@ -191,6 +190,7 @@ bool Game::initPlayers(std::string name1, std::string name2) {
         return false;
     } else return false;
 }
+
 
 
 

@@ -44,8 +44,7 @@ public:
     
     virtual bool sellOne(int handInd);
     virtual void sellMult(class Game g);
-    virtual void sellCamels(class Game g);
-	
+    
     virtual void addPoint(class Game g);
     virtual void awardCamelToken();
     
@@ -62,7 +61,7 @@ protected:
     virtual bool isValidSaleOfOne(int handInd) { return ((this->myHand.at(handInd).getType() != "Diamonds") && (this->myHand.at(handInd).getType() != "Gold") && (this->myHand.at(handInd).getType() != "Silver"); }; 
     
     // Validates sellMult()
-    virtual bool isValidSaleOfMult();
+    virtual bool isValidSaleOfMult(class Game g);
     
     friend class Hand;
 };

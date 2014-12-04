@@ -10,6 +10,7 @@
 #include "Token.h"
 #include "Cards.h"
 #include <stdio.h>
+#include <vector>
 
 // CONSTRUCTORS
 // Default constructor - if called, creates 'generic' player
@@ -74,12 +75,14 @@ bool Player::trade(Game g)
 // Player has access to Game (they are friends :-) )
 
     //functions to take specific items    
-bool Player::sellOne(int handInd){
+bool Player::sellOne(int handInd)
+{
 		// run isValidSaleOfOne to make sure player can sell this card
     	if (isValidSaleOfOne(handInd)) {
-			Card * c= &this.myHand.at(handInd);
+			//Card * c= &this.myHand.at(handInd);
 			Token myToken;
-			std::string type= c.getType();
+			//std::string type= c.getType();
+			std::string type = myHand.at(handInd).getType();
 			if(type=="Cloth"){
 				myToken=g.clothT.back();
 				g.clothT.pop_back();
@@ -93,16 +96,23 @@ bool Player::sellOne(int handInd){
 				g.spiceT.pop_back();
 			}
 			//ERASE CARD FROM HAND
-			//this.myHand.erase
+			this.myHand.erase(myHand.begin()+handInd);
+			
+			//adds points to painter
 			points=points+myToken.getPt();
 			else {std::Cout<<"Error selling card"<<endl;}
+			//free(c);
 		}
 		
-	}
+}
 
+bool Player::isValidSaleOfMult(Game g) 
+{
+	
+	
+	
+}
 void Player::sellMult(class Game g);	//need isValidSaleOfMult();
-
-void Player::sellCamels(class Game g);	//SELL CAMELS
     
 void Player::addPoint(class Game g);
 void Player::awardCamelToken();
