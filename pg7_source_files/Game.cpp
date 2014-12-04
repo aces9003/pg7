@@ -1,15 +1,177 @@
 //Game.cpp
 
+#include <stdio.h>
+#include <cstdlib>
 #include "Game.h"
 #include <string>
+#include <iostream>
+
+using std::cin;		using std::cout;	using std::endl;	using std::istream;
+using std::ostream;
 
 // Constructor
-Game::Game(std:: string name1, std:;string name2) {
+Game::Game(std:: string name1, std::string name2) {
 	initPlayers(name1, name2);
 	setupTokens();
 	createDeck();
 	this->rounds = 1;
 }
+
+//"Driver" method governing player turns, called every turn
+//prompt for either trade, sell, or take, cin choice
+//call appropriate method (sell, take, trade) depending on choice
+void Game::playerTurn(const Player& p) {
+	cout<< "It is your turn " << p.getName << ", what would you like to do?" << endl;
+	cout<< "[1] Sell cards from your hand" << endl << "[2] Take a card from the market"
+		<< endl << "[3] Trade cards from your hand and herd with market cards" << endl;
+	char input;
+	cin>>input;
+	cout << endl;
+	while (input > '3' || input < '1'){       //check user input
+		cout << "Invalid input entered, please try again: ";
+		cin>>input;
+		cout<<endl;
+	}
+	//////////////////////////////////////////////////////////////////
+	//***** SELL ***** decide if sell one or multiple ***** SELL *****
+	//////////////////////////////////////////////////////////////////
+	if (input=='1'){
+		cout<<"Would you like to sell one resource card or multiple resource cards?"
+			<<endl << "[1] I would like to sell one card" << "[2] I would like to sell"
+			<< " multiple cards" <<endl;
+		char sellInput;
+		cin>>sellInput;
+		cout<<endl;
+		while (takeInput > '2' || takeInput < '1'){       //check user input
+		cout << "Invalid input entered, please try again: ";
+		cin>>input;
+		cout<<endl;
+		}
+		//SINGLE SELL
+		if (sellInput=='1'){
+			cout<< "Select a card from your hand by entering its index: ";
+			char sellIndex;
+			cin>>sellIndex;
+			cout<<endl;
+			p.sellOne(this,sellIndex);
+		}
+		
+		//MULTIPLE SELL
+		if (sellInput=='2'){
+			bool done=false;
+			while (done==false){
+				cout<<"Select a card from your hand by entering its index: ";
+				char sellIndex;
+				cin>>sellIndex;
+				cout<<endl;
+				
+			}
+		}
+		
+	/////////////////////////////////////////////////////////////////////////
+	//***** TAKE ***** decide if take resource or all camels ***** TAKE *****
+	/////////////////////////////////////////////////////////////////////////
+	else if (input=='2'){
+		cout<< "Select a card from the marketplace by entering its index. Note: if you select"
+			<< " a camel and there are other camels present, you will take all camels."
+			<<endl;
+		char takeInput;
+		cin>>takeInput;
+		cout>>endl;
+		while (takeInput > '5' || takeInput < '1'){       //check user input
+		cout << "Invalid input entered, please try again: ";
+		cin>>input;
+		cout<<endl;
+		}
+		//CAMEL TAKE
+		if (market.getCard(takeInput).getType == "Camels")
+			p.takeCamels(this); //IS THIS HOW TO PASS IN GAME?
+		//SINGLE TAKE
+		else
+			p.take(this,takeInput);
+	}
+	/////////////////////////////////////////////////
+	//***** TRADE ***** trade cards ***** TRADE *****
+		/////////////////////////////////////////////
+	else {
+		p.trade();
+	}
+	//NEED TO CLEAR TRADING AND SELLING VECTORS
+	//DO WE NEED ANYTHING ELSE AT THE END OF PLAYER TURN? LIKE PASSING TURN TO NEXT PLAYER?	
+}
+
+//count SoE, access player and count
+int Game::countSE(const Player& p) {
+	return p.seals;
+} 
+
+void giveSE(const Player& p) {
+	p.seals++;
+}
+
+bool endGame() {
+	if (this->isAi){
+		if (countSE(p1)>1 || countSE(p2)>1){
+			return true;
+		}
+	}
+	else{
+		if (if countSE(p1)>1 || countSE(p3)>1){
+			return true;
+		}
+	}
+	return false;
+}
+
+//Draw five cards from deck. Deck is random except first 3 cards, which are camel
+//so that the market will have at least 3 camel as required DO AFTER CREATE DECK
+void Game::dealMarket() {
+	for(int i=0; i<5; i++){
+        Card adder=deck.back();
+        market.push_back(adder);
+        deck.pop_back();
+    }
+}
+
+//access back of deck and pop_back five times per player to deal hands, fill
+//player.myhand and player.myherd if camels are drawn, dealHand AFTER MARKET SET UP
+void Game::dealHand() {
+	//p1 deal hand
+	for(int i=0; i<5; i++){
+        Card adder=deck.back();
+		deck.pop_back();
+		if (adder.getType == "Camels"){
+			p1.myherd.addCard(adder);
+		}
+		else{
+			p1.myhand.addCard(adder);
+		}
+    }
+	
+	//p2/p3 deal hand
+	for(int i=0; i<5; i++){
+        Card adder=deck.back();
+		deck.pop_back();
+		if (adder.getType == "Camels"){
+			if (isAi)
+				p3.myherd.addCard(adder);
+			else
+				p3.myherd.addCard(adder);
+		}
+		else{
+			if (isAi)
+				p3.myhand.addCard(adder);
+			else
+				p3.myhand.addCard(adder);
+		}
+    }
+}
+
+//award 5 points to player with largest herd, if herds are equal, no camel token 
+void Game::awardCammelToken(){
+	
+}
+
 
 void Game::setupTokens(){
 	//create and populate vectors
@@ -165,7 +327,7 @@ void Game::createDeck(){ //include all 55 cards in deck container
 		deck.push_back(card);
 	}
 	//create 11 camels cards
-	for (int i=0;i<11;i++){
+	for (int i=0;i<8;i++){
 		string camel = "Camels";
 		Card card(camel);
 		deck.push_back(card);
@@ -173,6 +335,13 @@ void Game::createDeck(){ //include all 55 cards in deck container
 	
 	// Shuffle deck
 	std::random_shuffle ( deck.begin(), deck.end() );
+	
+	// Add three camel to back of deck for marketplace setup
+	for (int i=0;i<3;i++){
+		string camel = "Camels";
+		Card card(camel);
+		deck.push_back(card);
+	}
 }
 
 // Asks users if they want to play 2-Player of Human vs. AI
@@ -183,10 +352,13 @@ bool Game::initPlayers(std::string name1, std::string name2) {
     if (getCurrentUserInput() == 1) {
         this->p1 = Player(name1);
         this->p2 = Player(name2);
+		this->isAi = false;
         return true;
     } else if (getCurrentUserInput() == 2) {
         this->p1 = Player(name1);
         this->p3 = AIPlayer();	// Default constructor for AIPlayer
+		this->isAi = true;
+
         return false;
     } else return false;
 }

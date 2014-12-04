@@ -22,7 +22,8 @@ protected:
     vector<Card> market;
     
 public:
-    Marketplace(class Game a);
+	Marketplace(){market= new vector<Card>};
+    //Marketplace(vector<Card> &deck);
     bool isValid(){ return (market.size()==5);};
     virtual ~Marketplace(){market.clear();};
     Card getCard(int place)const{return market.at(place);} ;  //place is spot in vector. first place ==0

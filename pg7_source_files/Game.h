@@ -28,8 +28,9 @@ private:
     Player p1;
     Player p2;
     //AIPlayer p3;         //cant use p2 and p3 at same time;
-    int rounds;
-    Marketplace market = new Marketplace;
+    bool isAi;
+	int rounds;
+    Marketplace market();
     
     vector<Card> deck;    //vector deck
     
@@ -64,15 +65,16 @@ public:
     // Mutators
     bool setCurrentUserInput(int n) { currentUserInput = n; return true; };
     
-    void playerTurn(Player p);
-    void countSE();  //count Seal of Excellence-->determine game over
-    void giveSE();   //give SoE at end of round
+    void playerTurn(const Player & p);
+    void countSE(const Player & p);  //count Seal of Excellence-->determine game over
+    void giveSE(const Player & p);   //give SoE at end of round to given player
     bool initPlayers(std::string name1, std::string name2);     // Desctruct players in Game destructor using Player's destructor
     bool endGame();      //if game over =1
     void dealMarket();   //set up tokens and cards
     void setupTokens();  //determines order of tokens
     void dealHand();     //gives players 5 cards
     void createDeck();   //initialize deck
+	void awardCammelToken(); //make has camel token bool true and check each player's herd size
     
     ~Game();
     

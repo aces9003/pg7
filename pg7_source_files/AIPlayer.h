@@ -5,8 +5,16 @@
 
 #include "Player.h"
 
+#include "Card.h"
+#include "Hand.h"
+#include <string>
+#include <vector>
+
 #ifndef pg7_HPlayer_h
 #define pg7_HPlayer_h
+
+using std::string;
+using std:: vector;
 
 class AIPlayer: public Player{
     

@@ -27,7 +27,7 @@ public:
     
     Hand(class Game a, class Player p);
     bool isValid(){if(hand.size()<=7) return true; else return false;};
-    virtual ~Hand(){hand.clear();};
+    virtual ~Hand(){hand.clear();std::cout<<"Deleting Hand"<<std::endl;};
     Card getCard(int place)const{return hand.at(place);} ;  //place is spot in vector. first place ==0
     //std::string* getHand();
     void addCard(Card c) {hand.push_back(c);};

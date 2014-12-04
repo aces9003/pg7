@@ -1,15 +1,20 @@
 /*
- Human Player class
- inheritted from Player class
+ 	Player class
+	NOT abstract
  */
 
-#include "Cards.h"
+#include "Card.h"
 #include "Hand.h"
+#include "Token.h"
 #include <string>
 #include <vector>
 
+
 #ifndef pg7_Player_h
 #define pg7_Player_h
+
+using std::string;
+using std:: vector;
 
 class Player {
 	
@@ -42,14 +47,15 @@ public:
     virtual bool trade(class Game g);
     virtual bool takeCamels(class Game g);
     
-    virtual bool sellOne(int handInd);
-    virtual void sellMult(class Game g);
+    virtual bool sellOne(class Game g, int handInd);
+    virtual void sellMult(class Game g);///ask card type when player tries to sell mult
     
-    virtual void addPoint(class Game g);
-    virtual void awardCamelToken();
+	
+    virtual void addPoint(Token t); //add points to player depending on token achieved
+
     
     // Destructor
-    virtual ~Player();      //need to deallocate hand
+    virtual ~Player();      //should deallocate hand automatically
     
 protected:
     // isValid methods with inline definitions
@@ -61,7 +67,7 @@ protected:
     virtual bool isValidSaleOfOne(int handInd) { return ((this->myHand.at(handInd).getType() != "Diamonds") && (this->myHand.at(handInd).getType() != "Gold") && (this->myHand.at(handInd).getType() != "Silver"); }; 
     
     // Validates sellMult()
-    virtual bool isValidSaleOfMult(class Game g);
+    virtual bool isValidSaleOfMult(class Game g, string tp);
     
     friend class Hand;
 };

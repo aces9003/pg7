@@ -29,7 +29,7 @@ public:
     
     void print();
     
-    ~Token() {delete this;}
+    ~Token() {std::cout<<"Deleting Token "<<this.getType()<<std::endl; delete this;}
 };
 
 #endif

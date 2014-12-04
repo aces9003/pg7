@@ -6,13 +6,23 @@
 //emily
 
 #include "Player.h"
+#include "Card.h"
+#include "Token.h"
 #include <stdio.h>
 
 // CONSTRUCTORS
 // Default constructor - if called, creates 'generic' player
-AIPlayer:: AIPlayer(std::string name) : name("AIPlayer"), points(0), seals(0), hasCamelToken(false) {}
+AIPlayer:: AIPlayer() : name("AIPlayer"), points(0), seals(0), hasCamelToken(false) {}
 
-void makeTurn(Game g){
+
+AIPlayer:: AIPlayer(std::string name){
+    this.name=name;
+	this.points=0;
+	this.points=0;
+	this.hasCamelToken=false;
+}
+
+void AIPlayer::makeTurn(Game g){
 	int randPick = rand() % 4;
 	if(randPick==0 && this.myHand<7){
 		//take
@@ -32,6 +42,10 @@ void makeTurn(Game g){
 	else{
 		std::cout<<"Error in picking a move"<<endl;
 	}
+}
+			
+void ~AIPlayer(){
+	std::cout<<"Deleting AIPlayer "<<this.getName()<<std::endl;
 }
 
 /*
@@ -81,3 +95,4 @@ bool Player::takeCamels(Game g)
 }
 
 */
+			
