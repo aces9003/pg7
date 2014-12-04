@@ -6,10 +6,12 @@
  
  */
 
-#ifndef pg7_Tokens_h
-#define pg7_Tokens_h
+#ifndef pg7_Token_h
+#define pg7_Token_h
 
 #include <string>
+
+ using std::string;
 
 class Token{
 private:
@@ -17,20 +19,17 @@ private:
     int point;
     
 public:
-    Token(){
-        type="Uninitialized Token";
-        point=0;
-    }
+    Token(int points, string s) {setType(s); setPt(points);}
     
-    void getType(){return this->type;};
-    void getPt(){return this->point;};
+    string getType(){return this->type;};
+    int getPt(){return this->point;};
     
     void setType(string s){type=s;}
     void setPt(int x){point=x;}
     
     void print();
     
-    ~Token();
+    ~Token() {delete this;}
 };
 
 #endif

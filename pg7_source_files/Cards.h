@@ -25,7 +25,7 @@ public:
         type=s;
     }
     
-    ~Card(){delete this;}; //destructor 
+    ~Card(){delete this;}; //destructor  ********* check if correct delete
 };
 
 #endif

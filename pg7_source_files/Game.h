@@ -16,6 +16,8 @@
 
 #include "Marketplace.h"
 #include "Player.h"
+#include "Token.h"
+#include "Cards.h"
 #include <vector>
 
 using std::vector;
@@ -68,6 +70,7 @@ public:
     void dealMarket();   //set up tokens and cards
     void setupTokens();  //determines order of tokens
     void dealHand();     //gives players 5 cards
+    void createDeck();   //initialize deck
     
     ~Game();
     

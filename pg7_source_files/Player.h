@@ -3,6 +3,7 @@
  inheritted from Player class
  */
 
+#include "Cards.h"
 #include "Hand.h"
 #include <string>
 #include <vector>
@@ -23,6 +24,9 @@ class Player {
 public:
     // Constructor
     Player();
+    
+    // Alternate constructor
+    Player(std::string name);
     
     // Accessors with inline definitions
     std::string getName() const { return this->name; };
@@ -60,6 +64,7 @@ private:
     bool isValidSaleOfOne();
     
     // Validates sellMult()
+    bool isValidSaleOfMult();
     
     friend class Hand;
 };
