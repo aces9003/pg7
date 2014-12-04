@@ -7,3 +7,13 @@
 //
 
 #include "Marketplace.h"
+
+
+Marketplace::Marketplace(Game a){
+    for(int i=0; i<5; i++){
+        int r= rand() % a.deck.size();
+        Card adder=a.deck.at(r);
+        market.push_back(a.deck.at(r));
+        a.deck.erase(a.deck.begin()+r);
+    }
+}

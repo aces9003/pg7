@@ -24,13 +24,12 @@ private:
     vector<Card> hand;
 public:
     
-    Hand(Game a);
-    bool isValid(){if(hand.size()<=7 && hand.size()>=0) return true; else return false;};
+    Hand(class Game a, class Player p);
+    bool isValid(){if(hand.size()<=7) return true; else return false;};
     virtual ~Hand(){hand.clear();};
     Card getCard(int place)const{return hand.at(place);} ;  //place is spot in vector. first place ==0
-    std::string* getHand();
+    //std::string* getHand();
     void addCard(Card c) {hand.push_back(c);};
-    
-};
+    };
 
 #endif
