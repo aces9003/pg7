@@ -14,19 +14,22 @@ using std::string;
 
 using std::string;
 
+using std::string;
+
 class Card{
 private:
     string type;
     
 public:
-    Card(){
-        type="Uninitialized Card";
-    }
+    Card(string s) {setType(s);} //parameter constructor
+
     string getType(){return this->type;}
-        
-    void setType(string s){type=s;}
     
-    ~Card();
+    void setType(string s){
+        type=s;
+    }
+    
+    ~Card(){delete this;}; //destructor 
 };
 
 #endif

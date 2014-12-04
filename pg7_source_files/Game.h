@@ -16,6 +16,8 @@
 
 #include "Marketplace.h"
 #include "Player.h"
+#include "Tokens.h"
+#include "Cards.h"
 #include <vector>
 
 using std::vector;
@@ -26,6 +28,7 @@ private:
     Player[2];       //array of players
     int rounds;
     Marketplace market = new Marketplace;
+    
     
     vector<Card> deck;    //vector deck
     
@@ -49,6 +52,7 @@ private:
     
     // Selling vectors -- to be used respectively by current player as well
     vector<int> handIndicesForSelling;
+    
     
 public:
     
