@@ -65,6 +65,10 @@ public:
     
     ~Game();
     
+    friend class Hand;
+    friend class Marketplace;
+    friend class Player;
+    
 };
 
 
