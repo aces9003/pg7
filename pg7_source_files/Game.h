@@ -15,6 +15,8 @@
 
 #include "Marketplace.h"
 #include "Player.h"
+#include "Tokens.h"
+#include "Cards.h"
 #include <vector>
 #define DECKSIZE 55;
 
@@ -26,6 +28,7 @@ private:
     Player[2];       //array of players
     int rounds;
     Marketplace market = new Marketplace;
+    
     
     vector<Card> deck;    //vector deck
     
@@ -39,6 +42,7 @@ private:
     vector<Token> silverT;
     vector<Token> goldT;
     vector<Token> diamondT;
+    
     
     
 public:

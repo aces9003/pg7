@@ -11,21 +11,23 @@
 
 #include <string>
 
+using std::string;
+
 class Card{
 private:
     string type;
     
 public:
-    Card(){
-        type="Uninitialized Card";
-    }
-    void getType(){return this->type;}
+    //Card() {type="Uninitialized Card";} //default constructor
+    Card(string s) {setType(s);} //parameter constructor
+
+    string getType(){return this->type;}
     
     void setType(string s){
         type=s;
     }
     
-    ~Card();
+    ~Card(){delete this;}; //destructor 
 };
 
 #endif
