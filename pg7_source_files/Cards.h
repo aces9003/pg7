@@ -12,10 +12,6 @@
 #include <string>
 using std::string;
 
-using std::string;
-
-using std::string;
-
 class Card{
 private:
     string type;
@@ -29,7 +25,7 @@ public:
         type=s;
     }
     
-    ~Card(){delete this;}; //destructor 
+    ~Card(){delete this;}; //destructor  ********* check if correct delete
 };
 
 #endif
