@@ -7,7 +7,6 @@
  
  to create game, record players, deal game,
  change rounds, determine points and if game is over
- 
  */
 
 #ifndef pg7_Game_h
@@ -16,6 +15,7 @@
 
 #include "Marketplace.h"
 #include "Player.h"
+#include "AIPlayer.h"
 #include "Token.h"
 #include "Cards.h"
 #include <vector>
@@ -25,7 +25,9 @@ using std::vector;
 class Game{
 private:
     bool GameOver;   //1 if a player has 2 SoE
-    Player[2];       //array of players
+    Player p1;
+    Player p2;
+    //AIPlayer p3;         //cant use p2 and p3 at same time;
     int rounds;
     Marketplace market = new Marketplace;
     

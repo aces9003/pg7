@@ -1,5 +1,5 @@
 //Game.cpp
-//alex
+
 #include "Game.h"
 #include <string>
 
@@ -108,44 +108,44 @@ void Game::createDeck(){ //include all 55 cards in deck container
 
 	//create 10 leather cards
 	for (int i=0;i<10;i++){
-		Card card();
-		card.type= "Leather";
+		string leather = "Leather";
+		Card card(leather);
 		deck.push_back(card);
 	}
 	//create 8 spice cards
 	for (int i=0;i<8;i++){
-		Card card();
-		card.type= "Spice";
+		string spice = "Spice";
+		Card card(spice);
 		deck.push_back(card);
 	}
 	//create 6 cloth cards
 	for (int i=0;i<6;i++){
-		Card card();
-		card.type= "Cloth";
+		string cloth = "Cloth";
+		Card card(cloth);
 		deck.push_back(card);
 	}
 	//create 6 silver cards
 	for (int i=0;i<6;i++){
-		Card card();
-		card.type= "Silver";
+		string silver = "Silver";
+		Card card(silver);
 		deck.push_back(card);
 	}
 	//create 6 gold cards
 	for (int i=0;i<6;i++){
-		Card card();
-		card.type= "Gold";
+		string gold = "Gold";
+		Card card(gold);
 		deck.push_back(card);
 	}
 	//create 6 diamonds cards
 	for (int i=0;i<6;i++){
-		Card card();
-		card.type= "Diamonds";
+		string diamond = "Diamonds";
+		Card card(diamond);
 		deck.push_back(card);
 	}
 	//create 11 camels cards
 	for (int i=0;i<11;i++){
-		Card card();
-		card.type= "Camels";
+		string camel = "Camels";
+		Card card(camel);
 		deck.push_back(card);
 	}
 }
@@ -156,12 +156,12 @@ bool Game::initPlayers(std::string name1, std::string name2) {
     // 2 == Human vs. AI
     // Then prompt for both player's names (MUST name AI Player as well)
     if (getCurrentUserInput() == 1) {
-        Player player1(name1);
-        Player player2(name2);
+        this->p1 = Player(name1);
+        this->p2 = Player(name2);
         return true;
     } else if (getCurrentUserInput() == 2) {
-        Player player1(name1);
-        AIPlayer player2(name2);
+        this->p1 = Player(name1);
+        //this->p3 = AIPlayer(name2);
         return false;
     } else return false;
 }
