@@ -12,10 +12,6 @@
 #include <string>
 using std::string;
 
-using std::string;
-
-using std::string;
-
 class Card{
 private:
     string type;
