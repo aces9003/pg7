@@ -64,7 +64,11 @@ void Game::playerTurn(const Player& p) {
 				char sellIndex;
 				cin>>sellIndex;
 				cout<<endl;
-				
+				while (takeInput > '5' || takeInput < '1'){       //check user input
+					cout << "Invalid input entered, please try again: ";
+					cin>>input;
+					cout<<endl;
+				}
 			}
 		}
 		
@@ -92,7 +96,7 @@ void Game::playerTurn(const Player& p) {
 	}
 	/////////////////////////////////////////////////
 	//***** TRADE ***** trade cards ***** TRADE *****
-		/////////////////////////////////////////////
+	/////////////////////////////////////////////////
 	else {
 		p.trade();
 	}
