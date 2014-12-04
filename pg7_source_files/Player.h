@@ -12,7 +12,7 @@
 #define pg7_Player_h
 
 class Player {
-
+	
     std::string name;    //player name
     int points;     //records points in round
     int seals;      //records #of seals of excellence
@@ -29,42 +29,40 @@ public:
     Player(std::string name);
     
     // Accessors with inline definitions
-    std::string getName() const { return this->name; };
-    int getPoints() const { return this->points; };
-    int getSeals{} const { return this->seals; };
-    bool getCamel() const { return this->hasCamelToken; };
+    virtual std::string getName() const { return this->name; };
+    virtual int getPoints() const { return this->points; };
+    virtual int getSeals{} const { return this->seals; };
+    virtual bool getCamel() const { return this->hasCamelToken; };
     
     // Mutators
     
     // Player has access to Game (they are friends :-) )
-    bool take(Game g, int marketInd);
+    virtual bool take(class Game g, int marketInd);
     //functions to take specific items
-    bool trade(Game g);
-    bool takeCamels(Game g);
+    virtual bool trade(class Game g);
+    virtual bool takeCamels(class Game g);
     
-    void sell();
-    //functions to sell specific cards
-    //void sellOne(const Card &c);
-    bool sellOne(int handInd);
-    void sellMult(int cards);
-    
-    void addPoint();
-    void awardCamel();
+    virtual bool sellOne(int handInd);
+    virtual void sellMult(class Game g);
+    virtual void sellCamels(class Game g);
+	
+    virtual void addPoint(class Game g);
+    virtual void awardCamelToken();
     
     // Destructor
     virtual ~Player();      //need to deallocate hand
     
-private:
+protected:
     // isValid methods with inline definitions
     
     // Validates hand size
-    bool isValidHand() { if (this->myHand.size <= 7) return true; else return false; };
+    virtual bool isValidHand() { return (this->myHand.size <= 7); };
     
     // Validates sellOne(int handInd)
-    bool isValidSaleOfOne();
+    virtual bool isValidSaleOfOne(int handInd) { return ((this->myHand.at(handInd).getType() != "Diamonds") && (this->myHand.at(handInd).getType() != "Gold") && (this->myHand.at(handInd).getType() != "Silver"); }; 
     
     // Validates sellMult()
-    bool isValidSaleOfMult();
+    virtual bool isValidSaleOfMult();
     
     friend class Hand;
 };

@@ -7,6 +7,8 @@
 //
 
 #include "Player.h"
+#include "Token.h"
+#include "Cards.h"
 #include <stdio.h>
 
 // CONSTRUCTORS
@@ -32,17 +34,15 @@ bool Player::take(Game g, int marketInd)
         
         // replaces card that was taken from Marketplace (calls "market's replace" AKA market.replaceCard())
         g.market.replaceCard(marketInd, g.deck.back());
-        
+		
+		// Delete card from deck
+		g.deck.pop_back();
+		
         return true;
     } else return false;
     // UI: Print "Your hand is full. Press any key to return to the previous menu..."
 }
 
-bool Player::trade(Game g)
-{
-    
-    
-}
 
 bool Player::takeCamels(Game g)
 {
@@ -53,6 +53,7 @@ bool Player::takeCamels(Game g)
             camelsInMarket++;
             myHerd.addCard(g.market.at(i));
             g.market.replaceCard(i, g.deck.back());
+			g.deck.pop_back();
         }
     }
     
@@ -61,3 +62,47 @@ bool Player::takeCamels(Game g)
     } else return false;
 }
 
+
+bool Player::trade(Game g)
+{
+    
+    
+}
+
+
+////DO THIS
+// Player has access to Game (they are friends :-) )
+
+    //functions to take specific items    
+bool Player::sellOne(int handInd){
+		// run isValidSaleOfOne to make sure player can sell this card
+    	if (isValidSaleOfOne(handInd)) {
+			Card * c= &this.myHand.at(handInd);
+			Token myToken;
+			std::string type= c.getType();
+			if(type=="Cloth"){
+				myToken=g.clothT.back();
+				g.clothT.pop_back();
+			}
+			else if(type=="Leather"){
+				myToken=g.leatherT.back();
+				g.leatherT.pop_back();
+			}
+			else if(type=="Spice"){
+				myToken=g.spiceT.back();
+				g.spiceT.pop_back();
+			}
+			//ERASE CARD FROM HAND
+			//this.myHand.erase
+			points=points+myToken.getPt();
+			else {std::Cout<<"Error selling card"<<endl;}
+		}
+		
+	}
+
+void Player::sellMult(class Game g);	//need isValidSaleOfMult();
+
+void Player::sellCamels(class Game g);	//SELL CAMELS
+    
+void Player::addPoint(class Game g);
+void Player::awardCamelToken();

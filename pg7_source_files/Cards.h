@@ -10,6 +10,7 @@
 #define pg7_Cards_h
 
 #include <string>
+
 using std::string;
 
 class Card{
@@ -18,14 +19,14 @@ private:
     
 public:
     Card(string s) {setType(s);} //parameter constructor
-
-    string getType(){return this->type;}
+	
+	// Accessors
+    string getType() const {return this->type;};
     
-    void setType(string s){
-        type=s;
-    }
-    
-    ~Card(){delete this;}; //destructor  ********* check if correct delete
+	// Mutators
+    bool setType(string s) {this->type=s;}
+	
+    ~Card(){delete this;} //destructor  ********* check if correct delete
 };
 
 #endif

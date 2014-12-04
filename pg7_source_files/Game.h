@@ -62,12 +62,12 @@ public:
     int getCurrentUserInput() const { return this->currentUserInput; };
     
     // Mutators
-    bool setCurrentUserInput(int n) { currentUserInput = n; };
+    bool setCurrentUserInput(int n) { currentUserInput = n; return true; };
     
     void playerTurn(Player p);
     void countSE();  //count Seal of Excellence-->determine game over
     void giveSE();   //give SoE at end of round
-    bool initPlayers();     // Desctruct players in Game destructor using Player's destructor
+    bool initPlayers(std::string name1, std::string name2);     // Desctruct players in Game destructor using Player's destructor
     bool endGame();      //if game over =1
     void dealMarket();   //set up tokens and cards
     void setupTokens();  //determines order of tokens
@@ -79,6 +79,7 @@ public:
     friend class Hand;
     friend class Marketplace;
     friend class Player;
+	friend class AIPlayer;
     
 };
 

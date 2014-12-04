@@ -23,7 +23,7 @@ protected:
     
 public:
     Marketplace(class Game a);
-    bool isValid(){if(market.size()==5) return true; else return false;};
+    bool isValid(){ return (market.size()==5);};
     virtual ~Marketplace(){market.clear();};
     Card getCard(int place)const{return market.at(place);} ;  //place is spot in vector. first place ==0
     //std::string* getMarket(); // returns array of 5 strings with current market cards (used for printing to UI)
