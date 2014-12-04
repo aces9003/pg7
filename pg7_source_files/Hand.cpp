@@ -8,6 +8,7 @@
 
 #include "Hand.h"
 #include "Game.h"
+#include "Player.h"
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -15,15 +16,16 @@
 #include <string>
 
 
-Hand::Hand(Game a){
+Hand::Hand(Game a, Player p){
     for(int i=0; i<5; i++){
-        int r= rand() % 55;
+        int r= rand() % a.deck.size();
         Card adder=a.deck.at(r);
         string b=adder.getType();
         string c= "Camel";
         if (b.compare(c)==0) {
-            i--;
             camels++;
+            p.myHerd.addCard(adder);
+            a.deck.erase(a.deck.begin()+r);
             break;
         }
         hand.push_back(a.deck.at(r));

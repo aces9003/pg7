@@ -3,7 +3,7 @@
  inheritted from Player class
  */
 
-#include "Player.h"
+#include "Hand.h"
 #include <string>
 #include <vector>
 
@@ -57,9 +57,11 @@ private:
     bool isValidHand() { if (this->myHand.size <= 7) return true; else return false; };
     
     // Validates sellOne(int handInd)
-    bool isValidSaleOfOne()
+    bool isValidSaleOfOne();
     
     // Validates sellMult()
+    
+    friend class Hand;
 };
 
 #endif
