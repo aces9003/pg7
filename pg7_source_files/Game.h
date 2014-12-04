@@ -16,8 +16,6 @@
 
 #include "Marketplace.h"
 #include "Player.h"
-#include "Tokens.h"
-#include "Cards.h"
 #include <vector>
 
 using std::vector;
@@ -28,7 +26,6 @@ private:
     Player[2];       //array of players
     int rounds;
     Marketplace market = new Marketplace;
-    
     
     vector<Card> deck;    //vector deck
     
@@ -53,15 +50,20 @@ private:
     // Selling vectors -- to be used respectively by current player as well
     vector<int> handIndicesForSelling;
     
-    
 public:
     
     Game();
+    
+    // Accessors
+    int getCurrentUserInput() const { return this->currentUserInput; };
+    
+    // Mutators
+    bool setCurrentUserInput(int n) { currentUserInput = n; };
+    
     void playerTurn(Player p);
     void countSE();  //count Seal of Excellence-->determine game over
     void giveSE();   //give SoE at end of round
-    void addPlayer();
-    void removePlayer();
+    bool initPlayers();     // Desctruct players in Game destructor using Player's destructor
     bool endGame();      //if game over =1
     void dealMarket();   //set up tokens and cards
     void setupTokens();  //determines order of tokens
