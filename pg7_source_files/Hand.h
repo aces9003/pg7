@@ -24,7 +24,7 @@ private:
     int camels;
     vector<Card> hand;
 public:
-    
+    Hand();
     Hand(class Game a, class Player p);
     bool isValid(){if(hand.size()<=7) return true; else return false;};
     virtual ~Hand(){hand.clear();std::cout<<"Deleting Hand"<<std::endl;};

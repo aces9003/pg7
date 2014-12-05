@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <string>
 
+//Hand:: Hand() : 
 
 Hand::Hand(Game a, Player p){
     for(int i=0; i<5; i++){

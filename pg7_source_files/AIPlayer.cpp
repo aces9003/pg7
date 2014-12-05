@@ -36,7 +36,7 @@ void AIPlayer::makeTurn(Game g){
 	else if(randPick==2){
 		//sell one 
 	}
-	else if(randPick==3 //&& check is valid to sell mult){
+	else if(randPick==3){ //&& check is valid to sell mult){
 		//sell multiple 
 	}
 	else{

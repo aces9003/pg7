@@ -11,9 +11,11 @@ using std::ostream;
 
 // Constructor
 Game::Game(std:: string name1, std::string name2) {
-	initPlayers(name1, name2);
-	setupTokens();
 	createDeck();
+	setupTokens();
+	initPlayers(name1, name2);
+	dealMarket();
+	dealHand();
 	this->rounds = 1;
 }
 
@@ -42,9 +44,9 @@ void Game::playerTurn(const Player& p) {
 		char sellInput;
 		cin>>sellInput;
 		cout<<endl;
-		while (takeInput > '2' || takeInput < '1'){       //check user input
+		while (sellInput > '2' || sellInput < '1'){       //check user input
 		cout << "Invalid input entered, please try again: ";
-		cin>>input;
+		cin>>sellInput;
 		cout<<endl;
 		}
 		//SINGLE SELL
@@ -64,14 +66,31 @@ void Game::playerTurn(const Player& p) {
 				char sellIndex;
 				cin>>sellIndex;
 				cout<<endl;
-				while (takeInput > '5' || takeInput < '1'){       //check user input
+				int hsize = p.myhand.size();
+				while (sellIndex > hsize || sellIndex < '1'){       //check user input
 					cout << "Invalid input entered, please try again: ";
-					cin>>input;
+					cin>>sellIndex;
 					cout<<endl;
 				}
+				handIndicesForSelling.push_back(sellIndex);
+				cout<<"Card at index " << handIndicesForSelling.back() << " has been selected for sale."
+					<<endl << "Would you like to add another? (y/n)";
+				char sdone;
+				cin>>sdone;
+				cout>>endl;
+				while (sdone!='y' || sdone!='n'){
+					cout<< "Invalid input entered, please try again: ";
+					cin>>sdone;
+					cout>>endl;
+				}
+				if (sdone=='n')
+					done=true;
+				else {}
 			}
+			p.sellMult(this);
 		}
-		
+		p.handIndicesForSelling.clear();
+	}
 	/////////////////////////////////////////////////////////////////////////
 	//***** TAKE ***** decide if take resource or all camels ***** TAKE *****
 	/////////////////////////////////////////////////////////////////////////
@@ -98,10 +117,73 @@ void Game::playerTurn(const Player& p) {
 	//***** TRADE ***** trade cards ***** TRADE *****
 	/////////////////////////////////////////////////
 	else {
-		p.trade();
+		
+		/////////////////////////////
+		//TRADE SELECTION FROM HAND//
+		/////////////////////////////
+		bool done=false;
+		while (done==false){
+			cout<<"Select a card from your hand by entering its index: ";
+			char tradeIndex;
+			cin>>tradeIndex;
+			cout<<endl;
+			int hsize = p.myhand.size();
+			while (tradeIndex > hsize || tradeIndex < '1'){       //check user input
+				cout << "Invalid input entered, please try again: ";
+				cin>>tradeIndex;
+				cout<<endl;
+			}
+			handIndicesForTrading.push_back(tradeIndex);
+			cout<<"Card at index " << handIndicesForTrading.back() << " has been selected for trade."
+				<<endl << "Would you like to add another? (y/n)";
+			char sdone;
+			cin>>sdone;
+			cout>>endl;
+			while (sdone!='y' || sdone!='n'){
+				cout<< "Invalid input entered, please try again: ";
+				cin>>sdone;
+				cout>>endl;
+			}
+			if (sdone=='n')
+				done=true;
+			else {}
+		}
+		
+		///////////////////////////////
+		//TRADE SELECTION FROM MARKET//
+		///////////////////////////////
+		bool done2=false;
+		while (done2==false){
+			cout<<"Select a card from the market by entering its index: ";
+			char trade2Index;
+			cin>>trade2Index;
+			cout<<endl;
+			int hsize = p.myhand.size();
+			while (trade2Index > hsize || trade2Index < '1'){       //check user input
+				cout << "Invalid input entered, please try again: ";
+				cin>>trade2Index;
+				cout<<endl;
+			}
+			marketIndicesForTrading.push_back(trade2Index);
+			cout<<"Card at index " << marketIndicesForTrading.back() << " has been selected for trade."
+				<<endl << "Would you like to add another? (y/n)";
+			char t2done;
+			cin>>t2done;
+			cout>>endl;
+			while (t2done!='y' || t2done!='n'){
+				cout<< "Invalid input entered, please try again: ";
+				cin>>t2done;
+				cout>>endl;
+			}
+			if (t2done=='n')
+				done2=true;
+			else {}
+		}
+		//use aquired trading vectors to make trades
+		p.trade(this);
+		p.marketIndicesForTrading.clear();
+		p.handIndicesForTrading.clear();
 	}
-	//NEED TO CLEAR TRADING AND SELLING VECTORS
-	//DO WE NEED ANYTHING ELSE AT THE END OF PLAYER TURN? LIKE PASSING TURN TO NEXT PLAYER?	
 }
 
 //count SoE, access player and count
@@ -173,7 +255,36 @@ void Game::dealHand() {
 
 //award 5 points to player with largest herd, if herds are equal, no camel token 
 void Game::awardCammelToken(){
-	
+	//variables for camel herd sizes
+	int p1size= p1.myherd.size();
+	if (isAi)
+		p3size=p3.myherd.size();
+	else
+		p2size=p2.myherd.size();
+	//if ai in game, use p3
+	if (isAi){
+		if (p1size>p3size){
+			p1.points+=5;
+			p1.hasCamelToken=true;
+		}
+		else if(p3size>p1size){
+			p3.points+=5;
+			p3.hasCamelToken=true;
+		}
+		else{}
+	}
+	//if two human players, use p2 and p1
+	else{
+		if (p1size>p2size){
+			p1.points+=5;
+			p1.hasCamelToken=true;
+		}
+		else if (p2size>p1size){
+			p2.points+=5;
+			p2.hasCamelToken=true;
+		}
+		else {}
+	}
 }
 
 
