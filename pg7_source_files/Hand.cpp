@@ -5,7 +5,7 @@
 //  Created by Emily Johnson on 12/3/14.
 //  Copyright (c) 2014 Emily Johnson. All rights reserved.
 //
-
+/*
 #include "Hand.h"
 #include "Game.h"
 #include "Player.h"
@@ -13,10 +13,9 @@
 #include <iostream>
 #include <vector>
 #include <stdio.h>
-#include <string>
+#include <string> 
 
-//Hand:: Hand() : 
-
+// Questionable
 Hand::Hand(Game a, Player p){
     for(int i=0; i<5; i++){
         int r= rand() % a.deck.size();
@@ -33,3 +32,4 @@ Hand::Hand(Game a, Player p){
         a.deck.erase(a.deck.begin()+r);
     }
 }
+*/

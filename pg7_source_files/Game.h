@@ -11,14 +11,14 @@
 
 #ifndef pg7_Game_h
 #define pg7_Game_h
-#define DECKSIZE 55;
 
 #include "Marketplace.h"
 #include "Player.h"
 #include "AIPlayer.h"
 #include "Token.h"
-#include "Cards.h"
+#include "Card.h"
 #include <vector>
+#include <string>
 
 using std::vector;
 
@@ -32,6 +32,10 @@ private:
 	int rounds;
     Marketplace market();
     
+	 // User input storage variables
+    int currentUserInput;
+	
+public:
     vector<Card> deck;    //vector deck
     
     vector<Token> bonus3;   //bonus tokens traded for 3 cards
@@ -45,20 +49,20 @@ private:
     vector<Token> goldT;
     vector<Token> diamondT;
     
-    // User input storage variables
-    int currentUserInput;
-    
     // Trading vectors -- to be used respectively by current player
     vector<int> marketIndicesForTrading;
     vector<int> handIndicesForTrading;
     
     // Selling vectors -- to be used respectively by current player as well
     vector<int> handIndicesForSelling;
+   
+	// Constructor
+    // Default Constructor
+	//Game();
     
-public:
-    
-    Game();
-    
+	// Alternate Constructor
+	Game(std::string name1, std::string name2);
+	
     // Accessors
     int getCurrentUserInput() const { return this->currentUserInput; };
     

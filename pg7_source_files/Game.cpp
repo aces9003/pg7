@@ -1,10 +1,11 @@
 //Game.cpp
 
+#include "Game.h"
 #include <stdio.h>
 #include <cstdlib>
-#include "Game.h"
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 using std::cin;		using std::cout;	using std::endl;	using std::istream;
 using std::ostream;
@@ -342,12 +343,12 @@ void Game::setupTokens(){
 	for (int i=0;i<3;i++){
 		string s = "Gold";
 		Token token(5,s);
-		silverT.push_back(token);
+		goldT.push_back(token);
 	}
 	for (int i=0;i<2;i++){
 		string s = "Gold";
 		Token token(6,s);
-		silverT.push_back(token);
+		goldT.push_back(token);
 	}
 
 	//diamond 5,5,5,7,7
@@ -372,7 +373,7 @@ void Game::setupTokens(){
 	bonus3.push_back(btoken1);
 	bonus3.push_back(btoken1);
 	// Shuffle bonus3 tokens
-	std::random_shuffle ( btoken3.begin(), btoken3.end() );
+	std::random_shuffle ( bonus3.begin(), bonus3.end() );
 	
 	//bonus4 6,6,5,5,4,4
 	string b4 = "4cardBonus";
@@ -386,7 +387,7 @@ void Game::setupTokens(){
 	bonus4.push_back(btoken6);
 	bonus4.push_back(btoken6);
 	// Shuffle bonus4 tokens
-	std::random_shuffle ( btoken4.begin(), btoken4.end() );
+	std::random_shuffle ( bonus4.begin(), bonus4.end() );
 	
 	//bonus5 10,10,9,9,8,8
 	string b5 = "5cardBonus";
@@ -400,13 +401,13 @@ void Game::setupTokens(){
 	bonus5.push_back(btoken10);
 	bonus5.push_back(btoken10);
 	// Shuffle bonus5 tokens
-	std::random_shuffle ( btoken5.begin(), btoken.end() );
+	std::random_shuffle ( bonus5.begin(), bonus5.end() );
 }
 
 void Game::createDeck(){ //include all 55 cards in deck container
 
-	//create 10 leather cards
-	for (int i=0;i<10;i++){
+	//create 9 leather cards
+	for (int i=0;i<9;i++){
 		string leather = "Leather";
 		Card card(leather);
 		deck.push_back(card);
@@ -442,7 +443,7 @@ void Game::createDeck(){ //include all 55 cards in deck container
 		deck.push_back(card);
 	}
 	//create 11 camels cards
-	for (int i=0;i<8;i++){
+	for (int i=0;i<11;i++){
 		string camel = "Camels";
 		Card card(camel);
 		deck.push_back(card);
@@ -473,7 +474,6 @@ bool Game::initPlayers(std::string name1, std::string name2) {
         this->p1 = Player(name1);
         this->p3 = AIPlayer();	// Default constructor for AIPlayer
 		this->isAi = true;
-
         return false;
     } else return false;
 }

@@ -16,10 +16,10 @@ AIPlayer:: AIPlayer() : name("AIPlayer"), points(0), seals(0), hasCamelToken(fal
 
 
 AIPlayer:: AIPlayer(std::string name){
-    this.name=name;
-	this.points=0;
-	this.points=0;
-	this.hasCamelToken=false;
+    this->name=name;
+	this->points=0;
+	this->points=0;
+	this->hasCamelToken=false;
 }
 
 void AIPlayer::makeTurn(Game g){

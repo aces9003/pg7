@@ -1,4 +1,8 @@
 /*
+/////////////////////////////////////////////////
+//RESTRUCTURE MARKETPLACE.H TO FIX CONSTRUCTORS//
+/////////////////////////////////////////////////
+
  Marketplace Class
  has cards
  
@@ -11,7 +15,7 @@
 
 #include "Container.h"
 #include "Game.h"
-#include "Card.h"
+#include "Cards.h"
 #include <vector>
 #include <iostream>
 
@@ -23,7 +27,7 @@ protected:
     
 public:
 	Marketplace(){market= new vector<Card>};
-    //Marketplace(vector<Card> &deck);
+    Marketplace(vector<Card> &deck);
     bool isValid(){ return (market.size()==5);};
     virtual ~Marketplace(){market.clear();};
     Card getCard(int place)const{return market.at(place);} ;  //place is spot in vector. first place ==0

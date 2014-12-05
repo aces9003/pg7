@@ -75,8 +75,8 @@ bool Player::trade(Game g)
 
 //add points to player depending on token achieved
 void Player::addPoint(Token * t){
-	int addPt=t.getPt();
-	this.points+=addPt;
+	int addPt=t.getPoint();
+	this->points+=addPt;
 }
 
 ////DO THIS

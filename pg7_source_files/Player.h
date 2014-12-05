@@ -5,10 +5,8 @@
 
 #include "Card.h"
 #include "Hand.h"
-#include "Token.h"
 #include <string>
 #include <vector>
-
 
 #ifndef pg7_Player_h
 #define pg7_Player_h
@@ -21,8 +19,7 @@ class Player {
     std::string name;    //player name
     int points;     //records points in round
     int seals;      //records #of seals of excellence
-    // Fix the Hand constructors for initializing Hand objects
-	Hand myHand = new Hand;      //creates vector from hand class;
+    Hand myHand = new Hand;      //creates vector from hand class;
     Hand myHerd = new Hand;
     bool hasCamelToken;
     //std::vector<int> handIndices; // Make this in game
@@ -48,15 +45,14 @@ public:
     virtual bool trade(class Game g);
     virtual bool takeCamels(class Game g);
     
-    virtual bool sellOne(class Game g, int handInd);
+    virtual bool sellOne(int handInd);
     virtual void sellMult(class Game g);///ask card type when player tries to sell mult
     
-	
-    virtual void addPoint(Token t); //add points to player depending on token achieved
-
+    virtual void addPoint(class Game g);
+    virtual void awardCamelToken();
     
     // Destructor
-    virtual ~Player();      //should deallocate hand automatically
+    virtual ~Player();      //need to deallocate hand
     
 protected:
     // isValid methods with inline definitions
