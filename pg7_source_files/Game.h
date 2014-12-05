@@ -27,7 +27,7 @@ private:
     bool GameOver;   //1 if a player has 2 SoE
     Player p1;
     Player p2;
-    //AIPlayer p3;         //cant use p2 and p3 at same time;
+    AIPlayer p3;         //cant use p2 and p3 at same time;
     bool isAi;
 	int rounds;
     Marketplace market();

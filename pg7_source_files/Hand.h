@@ -17,6 +17,9 @@
 using std::ostream;
 using std::string;
 using std::vector;
+// Added to try and elminate warnings
+// MAY OR MAY NOT NEED THIS -- IDK.. too many compile problems
+//using Container::addCard;
 
 class Hand : public Container{
 	
@@ -33,11 +36,12 @@ public:
     virtual ~Hand();
 	
 	// Accessors
-    Card getCard(int place) const { return hand.at(place); };  //place is spot in vector. first place ==0
-    //std::string* getHand(); //--> NEEDS TO BE USED IN UI LATER
+    Card getCard(int place)  { return hand.at(place); };  //place is spot in vector. first place ==0
+    int getSize(){return hand.size();}
+	//std::string* getHand(); //--> NEEDS TO BE USED IN UI LATER
 	
 	// Mutators (definitions should be in Hand.cpp)
-    void addCard(Card c);
+    void addCard(Card * c);
 
 private:
 	// Helper methods

@@ -34,7 +34,7 @@ public:
     AIPlayer(std::string name);
 	
 	//calls valid methods from player class
-	void makeTurn(class Game g);
+	void makeTurn(Game * g);
     
 	/*
     void getName(){return this->name;}const;

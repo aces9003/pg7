@@ -189,16 +189,16 @@ void Game::playerTurn(const Player& p) {
 
 //count SoE, access player and count
 int Game::countSE(const Player& p) {
-	return p.seals;
+	return p.getSeals;
 } 
 
 void giveSE(const Player& p) {
-	p.seals++;
+	p.seals++; ///////////////////////////might need to make this in player
 }
 
 bool endGame() {
 	if (this->isAi){
-		if (countSE(p1)>1 || countSE(p2)>1){
+		if (countSE(p1)>1 || countSE(p2)>1){ //////fix confusion of getter methods
 			return true;
 		}
 	}

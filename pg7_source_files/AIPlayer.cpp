@@ -22,7 +22,7 @@ AIPlayer:: AIPlayer(std::string name){
 	this->hasCamelToken=false;
 }
 
-void AIPlayer::makeTurn(Game g){
+void AIPlayer::makeTurn(Game * g){
 	int randPick = rand() % 4;
 	if(randPick==0 && this.myHand<7){
 		//take

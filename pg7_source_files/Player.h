@@ -3,13 +3,15 @@
 	NOT abstract
  */
 
-#include "Card.h"
-#include "Hand.h"
-#include <string>
-#include <vector>
 
 #ifndef pg7_Player_h
 #define pg7_Player_h
+
+#include "Hand.h"
+#include "Card.h"
+#include "Token.h"
+#include <string>
+#include <vector>
 
 using std::string;
 using std:: vector;
@@ -19,14 +21,8 @@ class Player {
     std::string name;    //player name
     int points;     //records points in round
     int seals;      //records #of seals of excellence
-    /*
-	Hand myHand = new Hand;      //creates vector from hand class;
-    Hand myHerd = new Hand;
-	*/
-	// Should fix the 'new' issue
-	Hand myHand;
-	Hand myHerd;
-	
+    Hand myHand;      //creates vector from hand class;
+    Hand myHerd;
     bool hasCamelToken;
     //std::vector<int> handIndices; // Make this in game
     
@@ -40,37 +36,38 @@ public:
     // Accessors with inline definitions
     virtual std::string getName() const { return this->name; };
     virtual int getPoints() const { return this->points; };
-    virtual int getSeals{} const { return this->seals; };
+    virtual int getSeals() const { return this->seals; };
     virtual bool getCamel() const { return this->hasCamelToken; };
     
     // Mutators
     
     // Player has access to Game (they are friends :-) )
-    virtual bool take(class Game g, int marketInd);
+    virtual bool take( Game * g, int marketInd);
     //functions to take specific items
-    virtual bool trade(class Game g);
-    virtual bool takeCamels(class Game g);
+    virtual bool trade( Game * g);
+    virtual bool takeCamels( Game * g);
     
-    virtual bool sellOne(int handInd);
-    virtual void sellMult(class Game g);///ask card type when player tries to sell mult
+    virtual bool sellOne( Game * g, int handInd);
+    virtual void sellMult(Game * g);///ask card type when player tries to sell mult
     
-    virtual void addPoint(class Game g);
-    virtual void awardCamelToken();
+	
+    virtual void addPoint(Token * t); //add points to player depending on token achieved
+
     
     // Destructor
-    virtual ~Player();      //need to deallocate hand
+    virtual ~Player(){std::cout<<"Deleting Player "<<this->getName()<<std::endl;};//should deallocate hand automatically
     
 protected:
     // isValid methods with inline definitions
     
     // Validates hand size
-    virtual bool isValidHand() { return (this->myHand.size <= 7); };
+    virtual bool isValidHand() { return (this->myHand().getSize() <= 7); };
     
     // Validates sellOne(int handInd)
-    virtual bool isValidSaleOfOne(int handInd) { return ((this->myHand.at(handInd).getType() != "Diamonds") && (this->myHand.at(handInd).getType() != "Gold") && (this->myHand.at(handInd).getType() != "Silver"); }; 
+    virtual bool isValidSaleOfOne(int handInd) { return ((this->myHand().getCard(handInd).getType() != "Diamonds") && (this->myHand().getCard(handInd).getType() != "Gold") && (this->myHand().getCard(handInd).getType() != "Silver")); }; 
     
     // Validates sellMult()
-    virtual bool isValidSaleOfMult(class Game g, string tp);
+    virtual bool isValidSaleOfMult( Game * g, string tp);
     
     friend class Hand;
 };

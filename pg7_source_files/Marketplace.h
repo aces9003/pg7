@@ -15,7 +15,7 @@
 
 #include "Container.h"
 #include "Game.h"
-#include "Cards.h"
+#include "Card.h"
 #include <vector>
 #include <iostream>
 
@@ -30,12 +30,12 @@ public:
     Marketplace(vector<Card> &deck);
     bool isValid(){ return (market.size()==5);};
     virtual ~Marketplace(){market.clear();};
-    Card getCard(int place)const{return market.at(place);} ;  //place is spot in vector. first place ==0
+    Card getCard(int place){return market.at(place);} ;  //place is spot in vector. first place ==0
     //std::string* getMarket(); // returns array of 5 strings with current market cards (used for printing to UI)
     // Only called 5 times when initializing market from deck at beginning of every round:
-    void addCard(Card c) {market.push_back(c);};
+    void addCard(Card * c) {market.push_back(c);};
     // Called every time there is a transaction with the market
-    void replaceCard(int Ind, Card c){ market.at(Ind)=c;};
+    void replaceCard(int Ind,  Card * c){ market.at(Ind)=c;};
 };
 
 #endif

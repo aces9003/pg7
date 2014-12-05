@@ -17,8 +17,8 @@ protected:
     std::vector<Card> container;
 public:
     virtual ~Container();
-    virtual void addCard(Card c)const=0;
-    virtual Card getCard(int place)const=0;
+    virtual void addCard(Card * c) =0;
+    virtual Card getCard(int place)=0;
 };
 
 #endif

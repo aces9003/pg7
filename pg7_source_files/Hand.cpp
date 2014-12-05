@@ -15,9 +15,8 @@
 #include <stdio.h>
 #include <string> 
 
-// Questionable
-/*
-Hand::Hand(Game a, Player p){
+
+Hand::Hand(Game * a, Player * p){
     for(int i=0; i<5; i++){
         int r= rand() % a.deck.size();
         Card adder=a.deck.at(r);
@@ -33,7 +32,6 @@ Hand::Hand(Game a, Player p){
         a.deck.erase(a.deck.begin()+r);
     }
 }
-*/
 
 Hand::~Hand()
 {
@@ -41,4 +39,4 @@ Hand::~Hand()
 	std::cout << "Deleting Hand" << std::endl;
 }
 
-void Hand::addCard(Card c) { this->hand.push_back(c); }
+void Hand::addCard(Card c()) { this->hand.push_back(c); }
