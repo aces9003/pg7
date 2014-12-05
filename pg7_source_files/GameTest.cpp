@@ -1,4 +1,4 @@
-//GameTest.cpp
+// GameTest.cpp
 // compile with g++ -std=c++11 -pedantic -Wall -Wextra -O GameTest.cpp Game.cpp Card.cpp Token.cpp
 // Append *.cpp files as you see necessary for testing purposes
 

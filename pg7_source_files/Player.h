@@ -19,8 +19,14 @@ class Player {
     std::string name;    //player name
     int points;     //records points in round
     int seals;      //records #of seals of excellence
-    Hand myHand = new Hand;      //creates vector from hand class;
+    /*
+	Hand myHand = new Hand;      //creates vector from hand class;
     Hand myHerd = new Hand;
+	*/
+	// Should fix the 'new' issue
+	Hand myHand;
+	Hand myHerd;
+	
     bool hasCamelToken;
     //std::vector<int> handIndices; // Make this in game
     
