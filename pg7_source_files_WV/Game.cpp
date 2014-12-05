@@ -67,7 +67,7 @@ void Game::playerTurn(const Player& p) {
 				char sellIndex;
 				cin>>sellIndex;
 				cout<<endl;
-				int hsize = p.myhand.size();
+				int hsize = p.myHand.size();
 				while (sellIndex > hsize || sellIndex < '1'){       //check user input
 					cout << "Invalid input entered, please try again: ";
 					cin>>sellIndex;
@@ -108,7 +108,8 @@ void Game::playerTurn(const Player& p) {
 		cout<<endl;
 		}
 		//CAMEL TAKE
-		if (market.getCard(takeInput).getType == "Camels")
+		//if (market.getCard(takeInput).getType() == "Camels")
+		if (market.at(takeInput).getType() == "Camels")
 			p.takeCamels(this); //IS THIS HOW TO PASS IN GAME?
 		//SINGLE TAKE
 		else
@@ -128,7 +129,7 @@ void Game::playerTurn(const Player& p) {
 			char tradeIndex;
 			cin>>tradeIndex;
 			cout<<endl;
-			int hsize = p.myhand.size();
+			int hsize = p.myHand.size();
 			while (tradeIndex > hsize || tradeIndex < '1'){       //check user input
 				cout << "Invalid input entered, please try again: ";
 				cin>>tradeIndex;
@@ -159,7 +160,7 @@ void Game::playerTurn(const Player& p) {
 			char trade2Index;
 			cin>>trade2Index;
 			cout<<endl;
-			int hsize = p.myhand.size();
+			int hsize = p.myHand.size();
 			while (trade2Index > hsize || trade2Index < '1'){       //check user input
 				cout << "Invalid input entered, please try again: ";
 				cin>>trade2Index;
@@ -221,17 +222,17 @@ void Game::dealMarket() {
 }
 
 //access back of deck and pop_back five times per player to deal hands, fill
-//player.myhand and player.myherd if camels are drawn, dealHand AFTER MARKET SET UP
+//player.myHand and player.myHerd if camels are drawn, dealHand AFTER MARKET SET UP
 void Game::dealHand() {
 	//p1 deal hand
 	for(int i=0; i<5; i++){
         Card adder=deck.back();
 		deck.pop_back();
 		if (adder.getType == "Camels"){
-			p1.myherd.addCard(adder);
+			p1.myHerd.push_back(adder);
 		}
 		else{
-			p1.myhand.addCard(adder);
+			p1.myHand.push_back(adder);
 		}
     }
 	
@@ -241,15 +242,15 @@ void Game::dealHand() {
 		deck.pop_back();
 		if (adder.getType == "Camels"){
 			if (isAi)
-				p3.myherd.addCard(adder);
+				p3.myHerd.push_back(adder);
 			else
-				p3.myherd.addCard(adder);
+				p2.myHerd.push_back(adder);
 		}
 		else{
 			if (isAi)
-				p3.myhand.addCard(adder);
+				p3.myHand.push_back(adder);
 			else
-				p3.myhand.addCard(adder);
+				p2.myHand.push_back(adder);
 		}
     }
 }
@@ -257,11 +258,11 @@ void Game::dealHand() {
 //award 5 points to player with largest herd, if herds are equal, no camel token 
 void Game::awardCammelToken(){
 	//variables for camel herd sizes
-	int p1size= p1.myherd.size();
+	int p1size= p1.myHerd.size();
 	if (isAi)
-		p3size=p3.myherd.size();
+		p3size=p3.myHerd.size();
 	else
-		p2size=p2.myherd.size();
+		p2size=p2.myHerd.size();
 	//if ai in game, use p3
 	if (isAi){
 		if (p1size>p3size){
