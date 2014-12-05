@@ -7,6 +7,7 @@
 #ifndef pg7_Player_h
 #define pg7_Player_h
 
+#include "Game.h"
 #include "Hand.h"
 #include "Card.h"
 #include "Token.h"
@@ -61,10 +62,10 @@ protected:
     // isValid methods with inline definitions
     
     // Validates hand size
-    virtual bool isValidHand() { return (this->myHand().getSize() <= 7); };
+    virtual bool isValidHand() { return (this->myHand.getSize() <= 7); };
     
     // Validates sellOne(int handInd)
-    virtual bool isValidSaleOfOne(int handInd) { return ((this->myHand().getCard(handInd).getType() != "Diamonds") && (this->myHand().getCard(handInd).getType() != "Gold") && (this->myHand().getCard(handInd).getType() != "Silver")); }; 
+    virtual bool isValidSaleOfOne(int handInd) { return ((this->myHand.getCard(handInd).getType() != "Diamonds") && (this->myHand.getCard(handInd).getType() != "Gold") && (this->myHand.getCard(handInd).getType() != "Silver")); };
     
     // Validates sellMult()
     virtual bool isValidSaleOfMult( Game * g, string tp);

@@ -18,7 +18,7 @@ protected:
 public:
     virtual ~Container();
     virtual void addCard(Card * c) =0;
-    virtual Card getCard(int place)=0;
+    virtual Card getCard(int place)const=0;
 };
 
 #endif

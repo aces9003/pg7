@@ -36,8 +36,8 @@ public:
     virtual ~Hand();
 	
 	// Accessors
-    Card getCard(int place)  { return hand.at(place); };  //place is spot in vector. first place ==0
-    int getSize(){return hand.size();}
+    Card getCard(int place) const { return hand.at(place); };  //place is spot in vector. first place ==0
+    long getSize(){return hand.size();}
 	//std::string* getHand(); //--> NEEDS TO BE USED IN UI LATER
 	
 	// Mutators (definitions should be in Hand.cpp)

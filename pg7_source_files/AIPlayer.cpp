@@ -5,6 +5,7 @@
 //
 //emily
 
+#include "AIPlayer.h"
 #include "Player.h"
 #include "Card.h"
 #include "Token.h"
@@ -24,9 +25,9 @@ AIPlayer:: AIPlayer(std::string name){
 
 void AIPlayer::makeTurn(Game * g){
 	int randPick = rand() % 4;
-	if(randPick==0 && this.myHand<7){
+	if(randPick==0 && this->myHand.getSize()<7){
 		//take
-		int r= rand() % g.market.size();
+		int r= rand() % g->market().getSize();
 		take(g, r);
 	}
 	else if(randPick==1){
@@ -40,12 +41,12 @@ void AIPlayer::makeTurn(Game * g){
 		//sell multiple 
 	}
 	else{
-		std::cout<<"Error in picking a move"<<endl;
+		std::cout<<"Error in picking a move"<<std::endl;
 	}
 }
 			
-void ~AIPlayer(){
-	std::cout<<"Deleting AIPlayer "<<this.getName()<<std::endl;
+AIPlayer::~AIPlayer(){
+	std::cout<<"Deleting AIPlayer "<<std::endl;
 }
 
 /*

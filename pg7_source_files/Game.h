@@ -21,6 +21,8 @@
 #include <string>
 
 using std::vector;
+class Player;
+class AIPlayer;
 
 class Game{
 private:

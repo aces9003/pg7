@@ -26,7 +26,7 @@ protected:
     vector<Card> market;
     
 public:
-	Marketplace(){market= new vector<Card>};
+	Marketplace(){};
     Marketplace(vector<Card> &deck);
     bool isValid(){ return (market.size()==5);};
     virtual ~Marketplace(){market.clear();};

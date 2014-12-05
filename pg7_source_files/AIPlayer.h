@@ -22,8 +22,8 @@ private:
     string name;    //player name
     int points;     //records points in round
     int seals;      //records #of seals of excellence
-    Hand myHand = new Hand;      //creates vector from hand class;
-    Hand myHerd = new Hand;
+    Hand myHand;      //creates vector from hand class;
+    Hand myHerd;
 	bool hasCamelToken;
     
 public:
