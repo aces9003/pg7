@@ -16,7 +16,7 @@
 
 using std::string;
 using std:: vector;
-class Game;
+//using Game;
 
 class Player {
 	
@@ -45,13 +45,13 @@ public:
     // Mutators
     
     // Player has access to Game (they are friends :-) )
-    virtual bool take( Game * g, int marketInd);
+    virtual bool take( vector<Card> market, vector<Card> deck, int marketInd);
     //functions to take specific items
-    virtual bool trade( Game * g);
-    virtual bool takeCamels( Game * g);
+    virtual bool trade();
+    virtual bool takeCamels(vector<Card> market, vector<Card> deck);
     
-    virtual bool sellOne( Game * g, int handInd);
-    virtual void sellMult(Game * g);///ask card type when player tries to sell mult
+    virtual bool sellOne( vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, int handInd);
+    virtual void sellMult(vector<int> handIndicesForSelling, vector<Token> bonus3, vector<Token> bonus4, vector<Token> bonus5,vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, vector<Token> diamondT, vector<Token> goldT, vector<Token> silverT);///ask card type when player tries to sell mult
     
 	
     virtual void addPoint(Token t); //add points to player depending on token achieved
@@ -72,7 +72,7 @@ protected:
 	virtual bool isValidSaleOfOne(int handInd) { return ((this->myHand.at(handInd).getType() != "Diamonds") && (this->myHand.at(handInd).getType() != "Gold") && (this->myHand.at(handInd).getType() != "Silver")); };
     
     // Validates sellMult()
-    virtual bool isValidSaleOfMult( Game * g, string tp);
+    virtual bool isValidSaleOfMult(vector<int> handIndicesForSelling, string tp);
     
     friend class Hand;
 };
