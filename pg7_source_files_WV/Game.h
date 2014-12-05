@@ -35,7 +35,7 @@ private:
     bool isAi;
 	int rounds;
     //Marketplace market();
-    vector<Card> market(5);
+    vector<Card> market;
 	
 	 // User input storage variables
     int currentUserInput;
@@ -91,6 +91,12 @@ public:
     friend class Marketplace;
     friend class Player;
 	friend class AIPlayer;
+    
+private:
+    // Helper methods
+    
+    // isValidMarket
+    bool isValidMarket() { return (this->market.size() < 6); };
     
 };
 

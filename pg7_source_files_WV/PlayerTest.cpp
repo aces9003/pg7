@@ -16,6 +16,9 @@ using std::endl;
 int main() {
     
     Player first = Player();
+    Player second;
+    
+    Player withName("testplayer");
 	
     
     

@@ -16,7 +16,7 @@
 
 using std::string;
 using std:: vector;
-class Game;
+//using Game;
 
 class Player {
 	
