@@ -24,7 +24,7 @@ Game::Game(std:: string name1, std::string name2) {
 //prompt for either trade, sell, or take, cin choice
 //call appropriate method (sell, take, trade) depending on choice
 void Game::playerTurn(const Player& p) {
-	cout<< "It is your turn " << p.getName << ", what would you like to do?" << endl;
+	cout<< "It is your turn " << p.getName() << ", what would you like to do?" << endl;
 	cout<< "[1] Sell cards from your hand" << endl << "[2] Take a card from the market"
 		<< endl << "[3] Trade cards from your hand and herd with market cards" << endl;
 	char input;
@@ -56,7 +56,7 @@ void Game::playerTurn(const Player& p) {
 			char sellIndex;
 			cin>>sellIndex;
 			cout<<endl;
-			p.sellOne(this,sellIndex);
+			p.sellOne(clothT, leatherT, spiceT, sellIndex);
 		}
 		
 		//MULTIPLE SELL
@@ -67,7 +67,7 @@ void Game::playerTurn(const Player& p) {
 				char sellIndex;
 				cin>>sellIndex;
 				cout<<endl;
-				int hsize = p.myHand.size();
+				long hsize = p.myHand.size();
 				while (sellIndex > hsize || sellIndex < '1'){       //check user input
 					cout << "Invalid input entered, please try again: ";
 					cin>>sellIndex;
@@ -78,19 +78,19 @@ void Game::playerTurn(const Player& p) {
 					<<endl << "Would you like to add another? (y/n)";
 				char sdone;
 				cin>>sdone;
-				cout>>endl;
+				cout<<endl;
 				while (sdone!='y' || sdone!='n'){
 					cout<< "Invalid input entered, please try again: ";
 					cin>>sdone;
-					cout>>endl;
+					cout<<endl;
 				}
 				if (sdone=='n')
 					done=true;
 				else {}
 			}
-			p.sellMult(this);
+			p.sellMult(handIndicesForSelling, bonus3, bonus4, bonus5, clothT, leatherT, spiceT, diamondT, goldT, silverT);
 		}
-		p.handIndicesForSelling.clear();
+		handIndicesForSelling.clear();
 	}
 	/////////////////////////////////////////////////////////////////////////
 	//***** TAKE ***** decide if take resource or all camels ***** TAKE *****
@@ -101,7 +101,7 @@ void Game::playerTurn(const Player& p) {
 			<<endl;
 		char takeInput;
 		cin>>takeInput;
-		cout>>endl;
+		cout<<endl;
 		while (takeInput > '5' || takeInput < '1'){       //check user input
 		cout << "Invalid input entered, please try again: ";
 		cin>>input;
@@ -110,10 +110,10 @@ void Game::playerTurn(const Player& p) {
 		//CAMEL TAKE
 		//if (market.getCard(takeInput).getType() == "Camels")
 		if (market.at(takeInput).getType() == "Camels")
-			p.takeCamels(this); //IS THIS HOW TO PASS IN GAME?
+			p.takeCamels(market, deck); //IS THIS HOW TO PASS IN GAME?
 		//SINGLE TAKE
 		else
-			p.take(this,takeInput);
+			p.take(market, deck,takeInput);
 	}
 	/////////////////////////////////////////////////
 	//***** TRADE ***** trade cards ***** TRADE *****
@@ -129,7 +129,7 @@ void Game::playerTurn(const Player& p) {
 			char tradeIndex;
 			cin>>tradeIndex;
 			cout<<endl;
-			int hsize = p.myHand.size();
+			long hsize = p.myHand.size();
 			while (tradeIndex > hsize || tradeIndex < '1'){       //check user input
 				cout << "Invalid input entered, please try again: ";
 				cin>>tradeIndex;
@@ -140,11 +140,11 @@ void Game::playerTurn(const Player& p) {
 				<<endl << "Would you like to add another? (y/n)";
 			char sdone;
 			cin>>sdone;
-			cout>>endl;
+			cout<<endl;
 			while (sdone!='y' || sdone!='n'){
 				cout<< "Invalid input entered, please try again: ";
 				cin>>sdone;
-				cout>>endl;
+				cout<<endl;
 			}
 			if (sdone=='n')
 				done=true;
@@ -160,7 +160,7 @@ void Game::playerTurn(const Player& p) {
 			char trade2Index;
 			cin>>trade2Index;
 			cout<<endl;
-			int hsize = p.myHand.size();
+			long hsize = p.myHand.size();
 			while (trade2Index > hsize || trade2Index < '1'){       //check user input
 				cout << "Invalid input entered, please try again: ";
 				cin>>trade2Index;
@@ -171,40 +171,40 @@ void Game::playerTurn(const Player& p) {
 				<<endl << "Would you like to add another? (y/n)";
 			char t2done;
 			cin>>t2done;
-			cout>>endl;
+			cout<<endl;
 			while (t2done!='y' || t2done!='n'){
 				cout<< "Invalid input entered, please try again: ";
 				cin>>t2done;
-				cout>>endl;
+				cout<<endl;
 			}
 			if (t2done=='n')
 				done2=true;
 			else {}
 		}
 		//use aquired trading vectors to make trades
-		p.trade(this);
-		p.marketIndicesForTrading.clear();
-		p.handIndicesForTrading.clear();
+        p.trade();                          ////////////////////////TRADE
+		marketIndicesForTrading.clear();
+		handIndicesForTrading.clear();
 	}
 }
 
 //count SoE, access player and count
-int Game::countSE(const Player& p) {
-	return p.getSeals;
+ int Game::countSE(const Player& p) {
+	return p.getSeals();
 } 
 
-void giveSE(const Player& p) {
-	p.seals++; ///////////////////////////might need to make this in player
+void giveSE( Player& p) {
+	p.addSeal(); ///////////////////////////might need to make this in player
 }
 
-bool endGame() {
-	if (this->isAi){
-		if (countSE(p1)>1 || countSE(p2)>1){ //////fix confusion of getter methods
+bool Game::endGame() {
+	if (isAi){
+		if (countSE(*p1)>1 || countSE(*p2)>1){ //////fix confusion of getter methods
 			return true;
 		}
 	}
 	else{
-		if (if countSE(p1)>1 || countSE(p3)>1){
+		if (countSE(*p1)>1 || countSE(*p3)>1){
 			return true;
 		}
 	}
@@ -228,11 +228,11 @@ void Game::dealHand() {
 	for(int i=0; i<5; i++){
         Card adder=deck.back();
 		deck.pop_back();
-		if (adder.getType == "Camels"){
-			p1.myHerd.push_back(adder);
+		if (adder.getType() == "Camels"){
+			p1->myHerd.push_back(adder);
 		}
 		else{
-			p1.myHand.push_back(adder);
+			p1->myHand.push_back(adder);
 		}
     }
 	
@@ -240,17 +240,17 @@ void Game::dealHand() {
 	for(int i=0; i<5; i++){
         Card adder=deck.back();
 		deck.pop_back();
-		if (adder.getType == "Camels"){
+		if (adder.getType() == "Camels"){
 			if (isAi)
-				p3.myHerd.push_back(adder);
+				p3->myHerd.push_back(adder);
 			else
-				p2.myHerd.push_back(adder);
+				p2->myHerd.push_back(adder);
 		}
 		else{
 			if (isAi)
-				p3.myHand.push_back(adder);
+				p3->myHand.push_back(adder);
 			else
-				p2.myHand.push_back(adder);
+				p2->myHand.push_back(adder);
 		}
     }
 }
@@ -258,32 +258,35 @@ void Game::dealHand() {
 //award 5 points to player with largest herd, if herds are equal, no camel token 
 void Game::awardCammelToken(){
 	//variables for camel herd sizes
-	int p1size= p1.myHerd.size();
+	long p1size= p1->myHerd.size();
+    long p3size= p3->myHerd.size();
+    long p2size= p2->myHerd.size();
+    Token cToken(5, "Camel");
 	if (isAi)
-		p3size=p3.myHerd.size();
+		p3size=p3->myHerd.size();
 	else
-		p2size=p2.myHerd.size();
+		p2size=p2->myHerd.size();
 	//if ai in game, use p3
 	if (isAi){
 		if (p1size>p3size){
-			p1.points+=5;
-			p1.hasCamelToken=true;
+            p1->addPoint(cToken);
+			//p1->hasCamelToken=true;
 		}
 		else if(p3size>p1size){
-			p3.points+=5;
-			p3.hasCamelToken=true;
+			p3->addPoint(cToken);
+			//p3.hasCamelToken=true;
 		}
 		else{}
 	}
 	//if two human players, use p2 and p1
 	else{
 		if (p1size>p2size){
-			p1.points+=5;
-			p1.hasCamelToken=true;
+			p1->addPoint(cToken);
+			//p1->hasCamelToken=true;
 		}
 		else if (p2size>p1size){
-			p2.points+=5;
-			p2.hasCamelToken=true;
+			p2->addPoint(cToken);
+			//p2.hasCamelToken=true;
 		}
 		else {}
 	}
@@ -467,13 +470,13 @@ bool Game::initPlayers(std::string name1, std::string name2) {
     // 2 == Human vs. AI
     // Then prompt for both player's names (MUST name AI Player as well)
     if (getCurrentUserInput() == 1) {
-        this->p1 = Player(name1);
-        this->p2 = Player(name2);
-		this->isAi = false;
+        *p1 = Player(name1);
+        *p2 = Player(name2);
+		isAi = false;
         return true;
     } else if (getCurrentUserInput() == 2) {
-        this->p1 = Player(name1);
-        this->p3 = AIPlayer();	// Default constructor for AIPlayer
+        *p1 = Player(name1);
+        *p3 = AIPlayer();	// Default constructor for AIPlayer
 		this->isAi = true;
         return false;
     } else return false;

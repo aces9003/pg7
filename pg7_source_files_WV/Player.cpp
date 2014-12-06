@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <vector>
 #include <string>
+#include <stdexcept> // ********** EXCEPTION HANDLING **********
 
 using std::string;
 using std::vector;
@@ -28,22 +29,28 @@ Player:: Player(std::string name) {
     this->hasCamelToken = false;
 }
 
+//Destructor
+Player::~Player()
+{
+    //std::cout<<"Deleting Player "<<this->getName()<<std::endl;
+}
+
 // MUTATORS
 // Takes 1 card from Deck
 //NEED market and deck
-bool Player::take( vector<Card> market, vector<Card> deck, int marketInd)
+bool Player::take( vector<Card> *market, vector<Card> *deck, int marketInd)
 {
     // run isValidHand to make sure player's hand.size() <= 7
-    if (isValidHand()) {
+    if (isValidHand() && market->at(marketInd).getType() != "Camels") {
         // adds card to this->myHand from Marketplace (call's hand's addCard() method)
         //myHand.addCard(g.market().getCard(marketInd));
-		this->myHand.push_back(market.at(marketInd));
+        this->myHand.push_back(market->at(marketInd));
         // replaces card that was taken from Marketplace (calls "market's replace" AKA market().replaceCard())
         //g.market().replaceCard(marketInd, g.deck.back());
-		market.pop_back();
-		market.push_back(deck.back());
+        market->pop_back();
+        market->push_back(deck->back());
         // Delete card from deck
-        deck.pop_back();
+        deck->pop_back();
         
         return true;
     } else return false;
@@ -51,24 +58,24 @@ bool Player::take( vector<Card> market, vector<Card> deck, int marketInd)
 }
 
 //NEED market deck
-bool Player::takeCamels(vector<Card> market, vector<Card> deck)
+bool Player::takeCamels(vector<Card> *market, vector<Card> *deck)
 {
     int camelsInMarket = 0;
     // Iterature through g.market and find all camels
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < (int) market->size(); i++) {
         /*if (g.market().getCard(i).getType() == "Camels") {
+         camelsInMarket++;
+         myHerd().addCard(g.market()getCard(i));	///puts camel in herd
+         g.market().replaceCard(i, g.deck.back()); //replace card in market
+         g.deck.pop_back();	//delete new market card from deck
+         }*/
+        if (market->at(i).getType() == "Camels") {
             camelsInMarket++;
-            myHerd().addCard(g.market()getCard(i));	///puts camel in herd
-            g.market().replaceCard(i, g.deck.back()); //replace card in market
-            g.deck.pop_back();	//delete new market card from deck
-        }*/
-		if (market.at(i).getType() == "Camels") {
-			camelsInMarket++;
-			this->myHerd.push_back(market.at(i));
-			market.erase(market.begin()+i);
-			market.push_back(deck.back());
-			deck.pop_back();
-		}
+            this->myHerd.push_back(market->at(i));
+            market->erase(market->begin()+i);
+            market->push_back(deck->back());
+            deck->pop_back();
+        }
     }
     
     if (camelsInMarket > 0) {
@@ -77,12 +84,12 @@ bool Player::takeCamels(vector<Card> market, vector<Card> deck)
 }
 
 /*
-bool Player::trade(Game g)
-{
-    
-    //ALEX DO THIS
-    
-}*/
+ bool Player::trade(Game g)
+ {
+ 
+ //ALEX DO THIS
+ 
+ }*/
 
 //add points to player depending on token achieved
 void Player::addPoint(Token t){
@@ -95,7 +102,7 @@ void Player::addPoint(Token t){
 
 //functions to take specific items
 //NEED clothT   leatherT    spiceT
-bool Player::sellOne(vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, int handInd)
+bool Player::sellOne(vector<Token> *clothT, vector<Token> *leatherT, vector<Token> *spiceT, int handInd)
 {
     // run isValidSaleOfOne to make sure player can sell this card
     if (isValidSaleOfOne(handInd)) {
@@ -104,21 +111,21 @@ bool Player::sellOne(vector<Token> clothT, vector<Token> leatherT, vector<Token>
         
         std::string type = myHand.at(handInd).getType();
         if(type=="Cloth"){
-            myToken = clothT.back();
+            myToken = clothT->back();
             this->addPoint(myToken);
-            clothT.pop_back();
+            clothT->pop_back();
             return true;
         }
         else if(type=="Leather"){
-            myToken= leatherT.back();
+            myToken= leatherT->back();
             this->addPoint(myToken);
-            leatherT.pop_back();
+            leatherT->pop_back();
             return true;
         }
         else if(type=="Spice"){
-            myToken=spiceT.back();
+            myToken=spiceT->back();
             this->addPoint(myToken);
-            spiceT.pop_back();
+            spiceT->pop_back();
             return true;
         }
         else {std::cout<<"Error selling card"<<std::endl; return false;}
@@ -133,12 +140,12 @@ bool Player::sellOne(vector<Token> clothT, vector<Token> leatherT, vector<Token>
 //make sure more than one card of same type in hand
 //make sure more than one card in IndforSelling vector
 //NEED handIndicesForSelling
-bool Player::isValidSaleOfMult( vector<int> handIndicesForSelling, string tp)
+bool Player::isValidSaleOfMult( vector<int> *handIndicesForSelling, string tp)
 {
     int inHand=0;
-    if(handIndicesForSelling.size()<2){return false;}
+    if(handIndicesForSelling->size()<2){return false;}
     
-    for(int i=0; i<this->myHand.size(); i++){
+    for(int i=0; i<(int)this->myHand.size(); i++){
         if(this->myHand.at(i).getType().compare(tp)==0){
             inHand++;
         }
@@ -153,124 +160,132 @@ bool Player::isValidSaleOfMult( vector<int> handIndicesForSelling, string tp)
 //NEED handIndicesForSelling    bonus3 bonus4 bonus5
 //NEED vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, int handInd
 //NEED diamondT goldT silverT
-void Player::sellMult(vector<int> handIndicesForSelling, vector<Token> bonus3, vector<Token> bonus4, vector<Token> bonus5,vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, vector<Token> diamondT, vector<Token> goldT, vector<Token> silverT) //need isValidSaleOfMult();
+void Player::sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3, vector<Token> *bonus4, vector<Token> *bonus5, vector<Token> *clothT, vector<Token> *leatherT, vector<Token> *spiceT, vector<Token> *diamondT, vector<Token> *goldT, vector<Token> *silverT) //need isValidSaleOfMult();
 {
     int numSold=0;
-    int firstInd=handIndicesForSelling.at(1);
+    int firstInd=handIndicesForSelling->at(1);
     string tp=this->myHand.at(firstInd).getType();
     int hdInd=0;
     
     //goes through vector of indices to sell
-    for(int i=0; i<handIndicesForSelling.size(); i++)
+    for(int i=0; i<(int)handIndicesForSelling->size(); i++)
     {
-        hdInd=handIndicesForSelling.at(i);
+        hdInd=handIndicesForSelling->at(i);
         //makes sure all indices correspond to same type of card
         if(tp!=this->myHand.at(hdInd).getType()){
             std::cerr<<"Cannot sell cards of different types"<<std::endl;
         }
     }
-        //make sure more than one card of same type in hand
-        //make sure more than one card in IndforSelling vector
+    //make sure more than one card of same type in hand
+    //make sure more than one card in IndforSelling vector
     if(isValidSaleOfMult(handIndicesForSelling,tp)){
         Token bToken;
         ///award bonus tokens
-        int numSelling=(int)handIndicesForSelling.size();
+        int numSelling=(int)handIndicesForSelling->size();
         if(numSelling==3){	//run out of bonus tokens???
-            bToken=bonus3.back();
-            this->addPoint(bToken);
-            bonus3.pop_back();
-            //RUN OUT OF TOKENS????
+            try {
+                bToken=bonus3->back();
+                this->addPoint(bToken);
+                bonus3->pop_back();
+                //RUN OUT OF TOKENS????
+            } catch (std::exception & e)
+            { std::cout << "Sorry no more bonus 3 tokens for you :-(" << std::endl; }
         }
         else if(numSelling==4){
-            bToken=bonus4.back();
-            this->addPoint(bToken);
-            bonus4.pop_back();
-            //RUN OUT OF TOKENS????
+            try {
+                bToken=bonus4->back();
+                this->addPoint(bToken);
+                bonus4->pop_back();
+                //RUN OUT OF TOKENS????
+            } catch (std::exception & e)
+            { std::cout << "Sorry no more bonus 4 tokens for you :-(" << std::endl; }
         }
         else if(numSelling==5){
-            bToken=bonus5.back();
-            this->addPoint(bToken);
-            bonus5.pop_back();
-            //RUN OUT OF TOKENS????
-			//if (bonus5.size() == 0)
+            try {
+                bToken=bonus5->back();
+                this->addPoint(bToken);
+                bonus5->pop_back();
+                //RUN OUT OF TOKENS????
+            } catch (std::exception & e)
+            { std::cout << "Sorry no more bonus 5 tokens for you :-(" << std::endl; }
         }
-        int howMany=(int)handIndicesForSelling.size();
+        int howMany=(int)handIndicesForSelling->size();
         
         //if tp is not special card
         if(tp.compare("Cloth")==0 || tp.compare("Leather")==0 ||tp.compare("Spice")==0)
         {
             //goes through vector of indices to sell
-            for(int i=0; i<handIndicesForSelling.size(); i++)
+            for(int i=0; i<(int)handIndicesForSelling->size(); i++)
             {
-                int hdInd=handIndicesForSelling.at(i);
+                int hdInd=handIndicesForSelling->at(i);
                 //sells cards at given indices
                 if(numSold<howMany){
                     //vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, int handInd
                     sellOne(clothT, leatherT, spiceT, hdInd);
                     numSold++;
                     //need to change vector of ind bc cards shifted
-                    for(int j=(i+1); j<handIndicesForSelling.size(); j++){
-                        int afterhdInd= handIndicesForSelling.at(j);
-                        handIndicesForSelling.at(j)=(afterhdInd--);
+                    for(int j=(i+1); j<(int)handIndicesForSelling->size(); j++){
+                        int afterhdInd= handIndicesForSelling->at(j);
+                        handIndicesForSelling->at(j)=(afterhdInd--);
                     }
-                
+                    
                 }
                 else{break;}
             }
         }
-    
-    //if tp is special card
-    else{
-        Token sToken;
-        //goes through vector of indices to sell
-        for(int i=0; i<handIndicesForSelling.size(); i++)
-        {
-            int hdInd=handIndicesForSelling.at(i);
-            //sells cards at given indices
-            if(numSold<howMany){
-                //sellOne(hdInd);
-                /*myToken=&g.spiceT.back();
-                 this.addPoint(myToken);
-                 g.spiceT.pop_back();*/
-                if(tp.compare("Diamonds")==0){
-                    //get points from corresponding token
-                    sToken=diamondT.back();
-                    this->addPoint(sToken);
-                    //delete from hand
-                    this->myHand.erase(myHand.begin()+hdInd);
-                    //delete token
-                    diamondT.pop_back();
-                }
-                else if(tp.compare("Gold")==0){
-                    //get points from corresponding token
-                    sToken=goldT.back();
-                    this->addPoint(sToken);
-                    //delete from hand
-                    this->myHand.erase(myHand.begin()+hdInd);
-                    //delete token
-                    goldT.pop_back();
-                }
-                else if(tp.compare("Silver")==0){
-                    //get points from corresponding token
-                    sToken=silverT.back();
-                    this->addPoint(sToken);
-                    //delete from hand
-                    this->myHand.erase(myHand.begin()+hdInd);
-                    //delete token
-                    silverT.pop_back();
-                }
-                
-                numSold++;
-                //need to change vector of ind bc cards shifted
-                for(int j=(i+1); j<handIndicesForSelling.size(); j++){
-                    int afterhdInd= handIndicesForSelling.at(j);
-                    handIndicesForSelling.at(j)=(afterhdInd--);
-                }
-                
-            }
-            else{break;}
-        }
         
+        //if tp is special card
+        else{
+            Token sToken;
+            //goes through vector of indices to sell
+            for(int i=0; i<(int)handIndicesForSelling->size(); i++)
+            {
+                int hdInd=handIndicesForSelling->at(i);
+                //sells cards at given indices
+                if(numSold<howMany){
+                    //sellOne(hdInd);
+                    /*myToken=&g.spiceT.back();
+                     this.addPoint(myToken);
+                     g.spiceT.pop_back();*/
+                    if(tp.compare("Diamonds")==0){
+                        //get points from corresponding token
+                        sToken=diamondT->back();
+                        this->addPoint(sToken);
+                        //delete from hand
+                        this->myHand.erase(myHand.begin()+hdInd);
+                        //delete token
+                        diamondT->pop_back();
+                    }
+                    else if(tp.compare("Gold")==0){
+                        //get points from corresponding token
+                        sToken=goldT->back();
+                        this->addPoint(sToken);
+                        //delete from hand
+                        this->myHand.erase(myHand.begin()+hdInd);
+                        //delete token
+                        goldT->pop_back();
+                    }
+                    else if(tp.compare("Silver")==0){
+                        //get points from corresponding token
+                        sToken=silverT->back();
+                        this->addPoint(sToken);
+                        //delete from hand
+                        this->myHand.erase(myHand.begin()+hdInd);
+                        //delete token
+                        silverT->pop_back();
+                    }
+                    
+                    numSold++;
+                    //need to change vector of ind bc cards shifted
+                    for(int j=(i+1); j<(int)handIndicesForSelling->size(); j++){
+                        int afterhdInd= handIndicesForSelling->at(j);
+                        handIndicesForSelling->at(j)=(afterhdInd--);
+                    }
+                    
+                }
+                else{break;}
+            }
+            
+        }
     }
-}
 }

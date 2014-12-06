@@ -14,6 +14,7 @@
 
 //#include "Marketplace.h"
 #include "Player.h"
+#include "Player.cpp"
 //#include "AIPlayer.h"
 #include "Token.h"
 #include "Card.h"
@@ -21,16 +22,18 @@
 #include <string>
 
 using std::vector;
+//using Player;
+class AIPlayer;
 class Player;
-//class AIPlayer;
+
 
 class Game{
 private:
     bool GameOver;   //1 if a player has 2 SoE
 public: // for now...
-    Player p1;
-    Player p2;
-    //AIPlayer p3;       //cant use p2 and p3 at same time;
+    Player * p1;
+    Player * p2;
+    AIPlayer * p3;       //cant use p2 and p3 at same time;
 private:
     bool isAi;
 	int rounds;
@@ -71,11 +74,13 @@ public:
     // Accessors
     int getCurrentUserInput() const { return this->currentUserInput; };
     
+    
     // Mutators
     bool setCurrentUserInput(int n) { currentUserInput = n; return true; };
     
     void playerTurn(const Player & p);
-    void countSE(const Player & p);  //count Seal of Excellence-->determine game over
+    int countSE(const Player & p);  //count Seal of Excellence-->determine game over
+    int countSE(const AIPlayer & p);  //count Seal of Excellence-->determine game over
     void giveSE(const Player & p);   //give SoE at end of round to given player
     bool initPlayers(std::string name1, std::string name2);     // Desctruct players in Game destructor using Player's destructor
     bool endGame();      //if game over =1
