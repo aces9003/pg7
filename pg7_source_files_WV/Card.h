@@ -41,11 +41,8 @@ public:
     bool setType(std::string s);
     
     // Overload operators
-    /*
-    bool operator< (const Card &) const;
     bool operator== (const Card &) const;
-    // overload print operator if possible, or implement toString()-like method
-     */
+    
     
 private:
     // Helper methods

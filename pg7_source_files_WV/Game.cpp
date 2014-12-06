@@ -23,7 +23,7 @@ Game::Game(std:: string name1, std::string name2) {
 //"Driver" method governing player turns, called every turn
 //prompt for either trade, sell, or take, cin choice
 //call appropriate method (sell, take, trade) depending on choice
-void Game::playerTurn(const Player& p) {
+void Game::playerTurn(Player &p) {
 	cout<< "It is your turn " << p.getName() << ", what would you like to do?" << endl;
 	cout<< "[1] Sell cards from your hand" << endl << "[2] Take a card from the market"
 		<< endl << "[3] Trade cards from your hand and herd with market cards" << endl;
@@ -56,7 +56,7 @@ void Game::playerTurn(const Player& p) {
 			char sellIndex;
 			cin>>sellIndex;
 			cout<<endl;
-			p.sellOne(clothT, leatherT, spiceT, sellIndex);
+			p.sellOne(&clothT, &leatherT, &spiceT, sellIndex);
 		}
 		
 		//MULTIPLE SELL
@@ -88,7 +88,7 @@ void Game::playerTurn(const Player& p) {
 					done=true;
 				else {}
 			}
-			p.sellMult(handIndicesForSelling, bonus3, bonus4, bonus5, clothT, leatherT, spiceT, diamondT, goldT, silverT);
+			p.sellMult(&handIndicesForSelling, &bonus3, &bonus4, &bonus5, &clothT, &leatherT, &spiceT, &diamondT, &goldT, &silverT);
 		}
 		handIndicesForSelling.clear();
 	}
@@ -110,10 +110,10 @@ void Game::playerTurn(const Player& p) {
 		//CAMEL TAKE
 		//if (market.getCard(takeInput).getType() == "Camels")
 		if (market.at(takeInput).getType() == "Camels")
-			p.takeCamels(market, deck); //IS THIS HOW TO PASS IN GAME?
+			p.takeCamels(&market, &deck); //IS THIS HOW TO PASS IN GAME?
 		//SINGLE TAKE
 		else
-			p.take(market, deck,takeInput);
+			p.take(&market, &deck, takeInput);
 	}
 	/////////////////////////////////////////////////
 	//***** TRADE ***** trade cards ***** TRADE *****
@@ -182,7 +182,7 @@ void Game::playerTurn(const Player& p) {
 			else {}
 		}
 		//use aquired trading vectors to make trades
-        p.trade();                          ////////////////////////TRADE
+        //p.trade();                          ////////////////////////TRADE
 		marketIndicesForTrading.clear();
 		handIndicesForTrading.clear();
 	}
@@ -199,14 +199,14 @@ void giveSE( Player& p) {
 
 bool Game::endGame() {
 	if (isAi){
-		if (countSE(*p1)>1 || countSE(*p2)>1){ //////fix confusion of getter methods
+		//if (countSE(*p1)>1 || countSE(*p2)>1){ //////fix confusion of getter methods
 			return true;
-		}
+		//}
 	}
 	else{
-		if (countSE(*p1)>1 || countSE(*p3)>1){
+		//if (countSE(*p1)>1 || countSE(*p3)>1){
 			return true;
-		}
+		//}
 	}
 	return false;
 }
@@ -241,15 +241,15 @@ void Game::dealHand() {
         Card adder=deck.back();
 		deck.pop_back();
 		if (adder.getType() == "Camels"){
-			if (isAi)
-				p3->myHerd.push_back(adder);
-			else
+			//if (isAi)
+				//p3->myHerd.push_back(adder);
+			//else
 				p2->myHerd.push_back(adder);
 		}
 		else{
-			if (isAi)
-				p3->myHand.push_back(adder);
-			else
+			//if (isAi)
+				//p3->myHand.push_back(adder);
+			//else
 				p2->myHand.push_back(adder);
 		}
     }
@@ -259,15 +259,16 @@ void Game::dealHand() {
 void Game::awardCammelToken(){
 	//variables for camel herd sizes
 	long p1size= p1->myHerd.size();
-    long p3size= p3->myHerd.size();
+    //long p3size= p3->myHerd.size();
     long p2size= p2->myHerd.size();
     Token cToken(5, "Camel");
-	if (isAi)
-		p3size=p3->myHerd.size();
-	else
+	//if (isAi)
+		//p3size=p3->myHerd.size();
+	//else
 		p2size=p2->myHerd.size();
 	//if ai in game, use p3
-	if (isAi){
+	/*if (isAi){
+		
 		if (p1size>p3size){
             p1->addPoint(cToken);
 			//p1->hasCamelToken=true;
@@ -277,9 +278,10 @@ void Game::awardCammelToken(){
 			//p3.hasCamelToken=true;
 		}
 		else{}
-	}
+		
+	} */
 	//if two human players, use p2 and p1
-	else{
+	//else{
 		if (p1size>p2size){
 			p1->addPoint(cToken);
 			//p1->hasCamelToken=true;
@@ -289,7 +291,7 @@ void Game::awardCammelToken(){
 			//p2.hasCamelToken=true;
 		}
 		else {}
-	}
+	//}
 }
 
 
@@ -472,12 +474,12 @@ bool Game::initPlayers(std::string name1, std::string name2) {
     if (getCurrentUserInput() == 1) {
         *p1 = Player(name1);
         *p2 = Player(name2);
-		isAi = false;
+		//isAi = false;
         return true;
     } else if (getCurrentUserInput() == 2) {
         *p1 = Player(name1);
-        *p3 = AIPlayer();	// Default constructor for AIPlayer
-		this->isAi = true;
+        //*p3 = AIPlayer();	// Default constructor for AIPlayer
+		//this->isAi = true;
         return false;
     } else return false;
 }

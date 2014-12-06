@@ -1,9 +1,9 @@
 // GameTest.cpp
-// compile with g++ -std=c++11 -pedantic -Wall -Wextra -O GameTest.cpp Game.cpp Card.cpp Token.cpp
+// compile with g++ -std=c++11 -pedantic -Wall -Wextra -O GameTest.cpp Card.cpp Token.cpp
 // Append *.cpp files as you see necessary for testing purposes
 
 #include "Game.h"
-//#include "Game.cpp"
+#include "Game.cpp"
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -20,9 +20,9 @@ int main() {
     
     cout << "Size of initialized deck: ";
     cout << gameTest.deck.size() << endl;
-
+    
     // Print all 55 cards (should be shuffled)
-    for (int i = 0; i < gameTest.deck.size(); i++) {
+    for (int i = 0; i < (int) gameTest.deck.size(); i++) {
         cout << "Card " << i+1 << ": " << gameTest.deck.at(i).getType() << endl;
     }
     
@@ -71,7 +71,23 @@ int main() {
     for (int i = 0; i < 6; i++) {
         cout << "Bonus 5 token " << i+1 << ": " << gameTest.bonus5.at(i).getType() << " " << gameTest.bonus5.at(i).getPoint() << endl;
     }
-     
+    
     return 0;
-	
+    
+    cout<<"Testing Cards"<<endl;
+    Card card("Camels");
+    Card card2("NotCamels");
+    Card card1("Camels");
+    assert(card == card1);
+    assert(!card == card2);
+    cout<<"Done testing Card operator overloaders!"<<endl<<"Testing "
+    Token token1(1,"A");
+    Token token2(2,"B");
+    Token token3(1,"A");
+    assert(token1==token3);
+    assert(!token1==token2);
+    cout<<"Done testing Token operator overloaders!"<<endl;
+    
+    
 }
+

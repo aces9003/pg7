@@ -23,7 +23,7 @@
 
 using std::vector;
 //using Player;
-class AIPlayer;
+//class AIPlayer;
 class Player;
 
 
@@ -33,9 +33,9 @@ private:
 public: // for now...
     Player * p1;
     Player * p2;
-    AIPlayer * p3;       //cant use p2 and p3 at same time;
+    //AIPlayer * p3;       //cant use p2 and p3 at same time;
 private:
-    bool isAi;
+    //bool isAi;
 	int rounds;
     //Marketplace market();
     vector<Card> market;
@@ -78,9 +78,9 @@ public:
     // Mutators
     bool setCurrentUserInput(int n) { currentUserInput = n; return true; };
     
-    void playerTurn(const Player & p);
+    void playerTurn(Player &p);
     int countSE(const Player & p);  //count Seal of Excellence-->determine game over
-    int countSE(const AIPlayer & p);  //count Seal of Excellence-->determine game over
+    //int countSE(const AIPlayer & p);  //count Seal of Excellence-->determine game over
     void giveSE(const Player & p);   //give SoE at end of round to given player
     bool initPlayers(std::string name1, std::string name2);     // Desctruct players in Game destructor using Player's destructor
     bool endGame();      //if game over =1
@@ -95,7 +95,7 @@ public:
     friend class Hand;
     friend class Marketplace;
     friend class Player;
-	friend class AIPlayer;
+	//friend class AIPlayer;
     
 private:
     // Helper methods

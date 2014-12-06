@@ -52,12 +52,8 @@ bool Card::setType(string s)
     }
 }
 
-/*
-bool Card:: operator< (const Card & other) const {
-    return this->getRank() < other.getRank();
+//////////////////////////////////// OPERATOR OVERLOADING /////////////////////////////////
+bool Card:: operator== (const Card & other) const {
+    return this->getType() == other.getType();
 }
 
-bool Card:: operator== (const Card & other) const {
-    return this->getRank() == other.getRank();
-}
-*/

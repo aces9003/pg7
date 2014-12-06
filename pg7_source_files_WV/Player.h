@@ -50,7 +50,7 @@ public:
     // Player has access to Game (they are friends :-) )
     virtual bool take( vector<Card> *market, vector<Card> *deck, int marketInd);
     //functions to take specific items
-    //virtual bool trade();
+    virtual bool trade(vector<int> *marketIndicesForTrading, vector<int> *handIndicesForTrading, vector<Card>* market);
     virtual bool takeCamels(vector<Card> *market, vector<Card> *deck);
     
     virtual bool sellOne(vector<Token> *clothT, vector<Token> *leatherT, vector<Token> *spiceT, int handInd);

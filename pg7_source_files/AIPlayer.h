@@ -7,6 +7,7 @@
 
 #include "Card.h"
 #include "Hand.h"
+#include "Token.h"
 #include <string>
 #include <vector>
 

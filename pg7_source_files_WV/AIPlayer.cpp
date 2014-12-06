@@ -10,6 +10,11 @@
 #include "Card.h"
 #include "Token.h"
 #include <stdio.h>
+//#include <map>
+#include <string>
+
+//using std::map;
+using std::string;
 
 // CONSTRUCTORS
 // Default constructor - if called, creates 'generic' player
@@ -23,12 +28,12 @@ AIPlayer:: AIPlayer(std::string name){
 	this->hasCamelToken=false;
 }
 
-void AIPlayer::makeTurn(Game * g){
+void AIPlayer::makeTurn(){
 	int randPick = rand() % 4;
 	if(randPick==0 && this->myHand.getSize()<7){
 		//take
-		int r= rand() % g->market().getSize();
-		take(g, r);
+		int r= rand() % (int)market().getSize();
+		take(&market, &deck, r);
 	}
 	else if(randPick==1){
 		//trade
@@ -36,15 +41,55 @@ void AIPlayer::makeTurn(Game * g){
 	}
 	else if(randPick==2){
 		//sell one 
+		int randPickHand = srand() % (int)myHand.size;
+		sellOne(&clothT,&leatherT,&spiceT,randPickHand);
 	}
 	else if(randPick==3){ //&& check is valid to sell mult){
 		//sell multiple 
+		std::string sellType;
+		int sellTypeNum=0;
+		if (hand.size>1){
+			for (int i=0;i<(int)myHand.size();i++){
+				std::string typeTemp;
+				typeTemp = myHand.at(i).getType();
+				countTemp =0;
+				//here, have another for loop count how many of each type is in hand,
+				//and have the variable sellTypeNum keep track of the largest count.
+				//at end of double for loops, run isValidSaleOfMult. If good trade, run
+				//another for loop to populate handIndicesForSelling of Types wanted
+				//and then finally you can run sellMult
+				
+				//gets all types in hand and keeps track of largest set
+				for (int j=0; j<myHand.size(); j++){
+					if (myHand.at(j).getType() == typeTemp){
+						countTemp++;
+					}
+				}
+				if (countTemp>sellTypeNum){
+					sellTypeNum = countTemp;
+					sellType = typeTemp;
+				}
+			}
+			for (int x=0;x<(int)myHand.size();x++){
+				if (myHand.at(x).getType == sellType){
+					handIndicesForSelling.push_back(x);
+				}
+				if (isValidSaleOfMult(&handIndicesForSelling, sellType)){
+					sellMult(&handIndicesForSelling, &bonus3, &bonus4, &bonus5, &clothT, &leatherT, &spiceT, &diamondT, &goldT, &silverT);
+				}
+			}
+		}
+		else{
+			//switches to take if randomly lands on multi and cannot sell multi
+			int r= rand() % (int)market().getSize();
+			take(&market, &deck, r);
+		}
 	}
 	else{
 		std::cout<<"Error in picking a move"<<std::endl;
 	}
 }
-			
+
 AIPlayer::~AIPlayer(){
 	std::cout<<"Deleting AIPlayer "<<std::endl;
 }

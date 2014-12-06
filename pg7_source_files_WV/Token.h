@@ -46,11 +46,7 @@ public:
     bool setType(std::string s);
     
     // Overload operators
-    /*
-    bool operator< (const Token &) const;
     bool operator== (const Token &) const;
-    // overload print operator if possible, or implement toString()-like method
-    */
      
 private:
     // Helper methods

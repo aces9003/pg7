@@ -19,34 +19,76 @@ void printMarket();
 vector<Card> deck;
 vector<Card> market;
 
+vector<int> marketIndiciesForTrading;
+vector<int> handIndicesForTrading;
+
 int main() {
     createDeck();
     fakeDealMarket();
     
-    Player first = Player();
-    Player second;
-    
-    Player withName("testplayer");
+    Player p1("Player1");
+    Player p2("Player2");
     
     // Print market
     printMarket();
     
-    assert(first.takeCamels(&market, &deck));
+    p1.takeCamels(&market, &deck);
     // Print first's hand
-    cout << "Herd size: " << first.myHerd.size() << endl;
-    for (int i = 0; i < (int) first.myHerd.size(); i++) {
-        cout << first.myHerd.at(i).getType() << endl;
+    cout << "Herd size: " << p1.myHerd.size() << endl;
+    for (int i = 0; i < (int) p1.myHerd.size(); i++) {
+        cout << p1.myHerd.at(i).getType() << endl;
     }
+    
+    cout<<endl; cout<<endl;
     
     printMarket();
     
-    //assert(second.take(market, deck, 1));
-    // Print second's hand
-    //cout << second.myHand.at(0).getType() << endl;
+    // Take Gold
+    p1.take(&market, &deck, 1);
+    for (int i = 0; i < (int) p1.myHand.size(); i++) {
+        cout << p1.myHand.at(i).getType() << endl;
+    }
     
-    //assert(withName.take(market, deck, 2));
-    // Print withName's hand
-    //cout << withName.myHand.at(0).getType() << endl;
+    cout<<endl; cout<<endl;
+    
+    printMarket();
+    
+    p1.take(&market, &deck, 2);
+    for (int i = 0; i < (int) p1.myHand.size(); i++) {
+        cout << p1.myHand.at(i).getType() << endl;
+    }
+    
+    cout<<endl; cout<<endl;
+    
+    printMarket();
+    
+    p1.take(&market, &deck, 0);
+    for (int i = 0; i < (int) p1.myHand.size(); i++) {
+        cout << p1.myHand.at(i).getType() << endl;
+    }
+    
+    cout<<endl; cout<<endl;
+    
+    printMarket();
+    
+    // Populate trading vectors
+    marketIndiciesForTrading.at(0) = 0;
+    marketIndiciesForTrading.at(1) = 1;
+    marketIndiciesForTrading.at(2) = 2;
+    
+    handIndicesForTrading.at(0) = 0;
+    handIndicesForTrading.at(1) = 1;
+    handIndicesForTrading.at(2) = 2;
+    
+    p1.trade(&marketIndiciesForTrading, &handIndicesForTrading, &market);
+    for (int i = 0; i < (int) p1.myHand.size(); i++) {
+        cout << p1.myHand.at(i).getType() << endl;
+    }
+    
+    cout<<endl; cout<<endl;
+    
+    printMarket();
+    
     
 }
 
@@ -112,19 +154,10 @@ void createDeck(){ //include all 55 cards in deck container
     std::random_shuffle ( deck.begin(), deck.end() );
     
     // Add three camel to back of deck for marketplace setup
-    /*
     for (int i=0;i<3;i++){
         string camel = "Camels";
         Card card(camel);
         deck.push_back(card);
     }
-     */
-    Card camelCard1("Camels1");
-    Card camelCard2("Camels2");
-    Card camelCard3("Camels3");
-    
-    deck.push_back(camelCard1);
-    deck.push_back(camelCard2);
-    deck.push_back(camelCard3);
     
 }
