@@ -59,7 +59,7 @@ public:
     
     // Trading vectors -- to be used respectively by current player
     vector<int> marketIndicesForTrading;
-    vector<int> handIndicesForTrading;
+    vector<int> playerIndicesForTrading;
     
     // Selling vectors -- to be used respectively by current player as well
     vector<int> handIndicesForSelling;

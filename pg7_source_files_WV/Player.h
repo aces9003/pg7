@@ -31,6 +31,7 @@ public:
     //Hand myHerd;
     vector<Card> myHand;
     vector<Card> myHerd;
+	vector<Card> tradingCards;
     
     // Constructor
     Player();
@@ -50,15 +51,16 @@ public:
     // Player has access to Game (they are friends :-) )
     virtual bool take( vector<Card> *market, vector<Card> *deck, int marketInd);
     //functions to take specific items
-    virtual bool trade(vector<int> *marketIndicesForTrading, vector<int> *handIndicesForTrading, vector<Card>* market);
-    virtual bool takeCamels(vector<Card> *market, vector<Card> *deck);
+    //virtual bool trade(vector<int> *marketIndicesForTrading, vector<int> *handIndicesForTrading, vector<Card>* market);
+    virtual bool trade(vector<Card> *market, vector<int> *marketIndicesForTrading, vector<int> *playerIndicesForTrading);
+	virtual bool takeCamels(vector<Card> *market, vector<Card> *deck);
     
     virtual bool sellOne(vector<Token> *clothT, vector<Token> *leatherT, vector<Token> *spiceT, int handInd);
     virtual void sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3, vector<Token> *bonus4, vector<Token> *bonus5, vector<Token> *clothT, vector<Token> *leatherT, vector<Token> *spiceT, vector<Token> *diamondT, vector<Token> *goldT, vector<Token> *silverT);///ask card type when player tries to sell mult
     
-    
+    // Public Helper methods
     virtual void addPoint(Token t); //add points to player depending on token achieved
-    
+    virtual void populateTradingCards(); // merges myHand + myHerd
     
     // Destructor
     virtual ~Player(); //should deallocate hand automatically
