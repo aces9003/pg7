@@ -14,7 +14,7 @@
 
 //#include "Marketplace.h"
 #include "Player.h"
-#include "Player.cpp"
+//#include "Player.cpp"
 //#include "AIPlayer.h"
 #include "Token.h"
 #include "Card.h"
@@ -40,14 +40,14 @@ private:
     //bool isAi;
 	int rounds;
     //Marketplace market();
-    vector<Card> market;
 	
 	 // User input storage variables
     int currentUserInput;
 	
 public:
     vector<Card> deck;    //vector deck
-    
+    vector<Card> market;
+	
     vector<Token> bonus3;   //bonus tokens traded for 3 cards
     vector<Token> bonus4;
     vector<Token> bonus5;

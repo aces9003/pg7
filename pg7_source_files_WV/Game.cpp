@@ -6,6 +6,8 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <ctime>
+
 
 using std::cin;		using std::cout;	using std::endl;	using std::istream;
 using std::ostream;
@@ -296,6 +298,9 @@ void Game::awardCammelToken(){
 
 
 void Game::setupTokens(){
+	// Line below assures randomization of each shuffle per round/game
+    std::srand ( unsigned ( std::time(0) ) );
+	
 	//create and populate vectors
 	//leather 1,1,1,1,1,1,2,3,4
 	string leather = "Leather";

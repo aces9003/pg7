@@ -19,14 +19,15 @@ using std:: vector;
 //using Game;
 
 class Player {
-    
+public:
     std::string name;    //player name
     int points;     //records points in round
     int seals;      //records #of seals of excellence
     bool hasCamelToken;
     //std::vector<int> handIndices; // Make this in game
+    bool isActive;
     
-public:
+//public:
     //Hand myHand;      //creates vector from hand class;
     //Hand myHerd;
     vector<Card> myHand;
