@@ -6,8 +6,6 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-#include <ctime>
-
 
 using std::cin;		using std::cout;	using std::endl;	using std::istream;
 using std::ostream;
@@ -22,6 +20,7 @@ Game::Game(std:: string name1, std::string name2) {
 	this->rounds = 1;
 }
 
+///////// CLEAN THIS, SEE WHAT WAS MOVED TO CONTROLLER //////////////
 //"Driver" method governing player turns, called every turn
 //prompt for either trade, sell, or take, cin choice
 //call appropriate method (sell, take, trade) depending on choice
@@ -190,26 +189,25 @@ void Game::playerTurn(Player &p) {
 	}
 }
 
-//count SoE, access player and count
- int Game::countSE(const Player& p) {
-	return p.getSeals();
-} 
-
+//give player seal of excellence after winning a round
 void giveSE( Player& p) {
-	p.addSeal(); ///////////////////////////might need to make this in player
+	p.addSeal(); 
 }
 
+//end game if seals of either player is 2
 bool Game::endGame() {
 	if (isAi){
-		//if (countSE(*p1)>1 || countSE(*p2)>1){ //////fix confusion of getter methods
+		if (p1->getSeals() >1 || p2->getSeals()>1){
 			return true;
-		//}
+		}
 	}
+	/* UNCOMMENT ONCE AI WORKS
 	else{
-		//if (countSE(*p1)>1 || countSE(*p3)>1){
+		if (p1->getSeals()>1 || p3->getSeals()>1){
 			return true;
-		//}
+		}
 	}
+	*/
 	return false;
 }
 
@@ -298,9 +296,6 @@ void Game::awardCammelToken(){
 
 
 void Game::setupTokens(){
-	// Line below assures randomization of each shuffle per round/game
-    std::srand ( unsigned ( std::time(0) ) );
-	
 	//create and populate vectors
 	//leather 1,1,1,1,1,1,2,3,4
 	string leather = "Leather";
@@ -471,7 +466,7 @@ void Game::createDeck(){ //include all 55 cards in deck container
 	}
 }
 
-// Asks users if they want to play 2-Player of Human vs. AI
+// Asks users if they want to play 2-Player or Human vs. AI
 bool Game::initPlayers(std::string name1, std::string name2) {
     // 1 == Human vs. Human
     // 2 == Human vs. AI

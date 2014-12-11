@@ -13,7 +13,9 @@
 #include "Token.h"
 #include <string>
 #include <vector>
+#include <map>
 
+using std::map;
 using std::string;
 using std:: vector;
 //using Game;
@@ -56,8 +58,8 @@ public:
     virtual bool trade(vector<Card> *market, vector<int> *marketIndicesForTrading, vector<int> *playerIndicesForTrading);
 	virtual bool takeCamels(vector<Card> *market, vector<Card> *deck);
     
-    virtual bool sellOne(vector<Token> *clothT, vector<Token> *leatherT, vector<Token> *spiceT, int handInd);
-    virtual bool sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3, vector<Token> *bonus4, vector<Token> *bonus5, vector<Token> *clothT, vector<Token> *leatherT, vector<Token> *spiceT, vector<Token> *diamondT, vector<Token> *goldT, vector<Token> *silverT);///ask card type when player tries to sell mult
+    virtual bool sellOne(map<string,vector<Token>>* tokenBag, int handInd);
+    virtual bool sellMult(vector<int> *handIndicesForSelling,map<string,vector<Token>>* tokenBag);///ask card type when player tries to sell mult
     
     // Public Helper methods
     virtual void addPoint(Token t); //add points to player depending on token achieved

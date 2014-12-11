@@ -13,11 +13,10 @@
 #include <vector>
 #include <string>
 #include <stdexcept> // ********** EXCEPTION HANDLING **********
-#include <assert.h> // FOR TESTING
-
 
 using std::string;
 using std::vector;
+
 
 // CONSTRUCTORS
 // Default constructor - if called, creates 'generic' player
@@ -29,7 +28,6 @@ Player:: Player(std::string name) {
     this->points = 0;
     this->seals = 0;
     this->hasCamelToken = false;
-	this->isActive = false;
 }
 
 //Destructor
@@ -44,7 +42,7 @@ Player::~Player()
 bool Player::take( vector<Card> *market, vector<Card> *deck, int marketInd)
 {
     // run isValidHand to make sure player's hand.size() <= 7
-    if (isValidHand()) {
+    if (isValidHand() && market->at(marketInd).getType() != "Camels") {
         // adds card to this->myHand from Marketplace (call's hand's addCard() method)
         //myHand.addCard(g.market().getCard(marketInd));
         this->myHand.push_back(market->at(marketInd));
@@ -55,9 +53,6 @@ bool Player::take( vector<Card> *market, vector<Card> *deck, int marketInd)
         // Delete card from deck
         deck->pop_back();
         
-        return true;
-    } else if (market->at(marketInd).getType() != "Camels") {
-        takeCamels(market, deck);
         return true;
     } else return false;
     // UI: Print "Your hand is full. Press any key to return to the previous menu..."
@@ -92,167 +87,177 @@ bool Player::takeCamels(vector<Card> *market, vector<Card> *deck)
     } else return false;
 }
 
-
-// NEW Player::trade()
-bool Player::trade(vector<Card> *market, vector<int> *marketIndicesForTrading, vector<int> *playerIndicesForTrading)
+/* OLD Player::trade()
+bool Player::trade(vector<int> *marketIndicesForTrading, vector<int> *handIndicesForTrading, vector<Card>* market)
 {
-    populateTradingCards();
-    
-    int tempMarketInd;
-    int tempPlayerInd;
-    int camelTradeCount = 0;
-    // Before prompting for hand indices, check to see if player can even trade cards for amount he/she wants
-    
-    // ASSERT
-    assert(marketIndicesForTrading->size() <= tradingCards.size());
-    assert(marketIndicesForTrading->size() > 1);
-    // =====
-    
-    if ((marketIndicesForTrading->size() <= tradingCards.size()) && (marketIndicesForTrading->size() > 1))
-    {
-        // ==== DONE ON FRONT-END before message call to trade(); ====
-        // Prompt for indices from tradingCards the player wants to trade
-        // Store user input in playerIndicesForTrading
-        // Input should be one line with indices spaced out, ENTER to submit indices
-        
-        // TODO
-        // - sort trading vectors greatest to lowest
-        // - reorder for loops (if necessary)
-        
-        // ASSERT
-        assert(marketIndicesForTrading->size() == playerIndicesForTrading->size());
-        
-        if (marketIndicesForTrading->size() == playerIndicesForTrading->size())
-        {
-            // check to see if trade is valid
-            // use Card's overloaded == operator to compare card types
-            for (int i = 0; i < (int) marketIndicesForTrading->size(); i++)
-            {
-                for (int j = 0; j < (int) playerIndicesForTrading->size(); j++)
-                {
-                    // checks to make sure no cards being traded are of the same type
-                    // OR that no camels are trying to be taken out of the market
-                    // Operation below uses overload == operator for Card type
-                    
-                    tempMarketInd = marketIndicesForTrading->at(i);
-                    tempPlayerInd = playerIndicesForTrading->at(j);
-                    
-                    //std::cout << "tempMarketInd: " << tempMarketInd << " tempPlayerInd: " << tempPlayerInd << std::endl;
-                    
-                    // ASSERT
-                    assert(market->at(tempMarketInd).getType() != tradingCards.at(tempPlayerInd).getType());
-                    
-                    assert(market->at(marketIndicesForTrading->at(i)).getType() != tradingCards.at(playerIndicesForTrading->at(j)).getType());
-                    
-                    assert(market->at(marketIndicesForTrading->at(i)).getType() != "Camels");
-                    //=====
-                    
-                    if ((market->at(marketIndicesForTrading->at(i)) == tradingCards.at(playerIndicesForTrading->at(j)))
-                        || (market->at(marketIndicesForTrading->at(i)).getType() == "Camels"))
-                    {
-                        return false;
-                        // -- UI --
-                        // #Error message#
-                        // Press any key to return to previous menu
-                    }
-                }
-                
-                // ASSERT
-                //assert(tradingCards.at(playerIndicesForTrading->at(i)).getType() == "Camels");
-                
-                
-                // check to see if any camels are being traded from tradingCards
-                if ((tradingCards.at(playerIndicesForTrading->at(i)).getType() == "Camels")
-                    || (playerIndicesForTrading->at(i) > (int)(myHand.size()-1)))
-                    camelTradeCount++;
-            }
-            
-            // SORT TRADING VECTORS
-            std::sort(marketIndicesForTrading->begin(), marketIndicesForTrading->end(), std::greater<int>());
-            std::sort(playerIndicesForTrading->begin(), playerIndicesForTrading->end(), std::greater<int>());
-            
-            // Add cards to market from myHand/myHerd
-            //_______________________________________
-            
-            // First go through playerIndicesForTrading and delete indices for camel cards while adding
-            // the appropriate amount of camels to the market from myHerd
-            
-            // TESTING
-            //std::cout << "playerIndicesFT size(): " << (int)playerIndicesForTrading->size() << std::endl;
-            
-            //for (int i = 0; i < (int) marketIndicesForTrading->size(); i++)
-            for (int i = (int) playerIndicesForTrading->size() - 1; i >= 0; i--)
-            {
-                // TESTING
-                //std::cout << "Last hand index: " << myHand.size()-1 << std::endl;
-                //std::cout << "playerIndicesForTrading.at(i): " << playerIndicesForTrading->at(i) << std::endl;
-                
-                if (playerIndicesForTrading->at(i) > (int) (myHand.size()-1))
-                {
-                    // delete the int in playerIndicesForTrading->at(i)
-                    // NEEDS PROPER CODE - might need to fix this
-                    playerIndicesForTrading->erase(playerIndicesForTrading->begin() + i);
-                    //i--;
-                    
-                    // add camel cards to market from myHerd
-                    market->push_back(myHerd.back());
-                    
-                    // delete a camel from myHerd
-                    myHerd.pop_back();
-                }
-            }
-            
-            // Add cards from myHand to market then delete those cards from myHand
-            for (int i = 0; i < (int) playerIndicesForTrading->size(); i++)
-            {
-                market->push_back(myHand.at(playerIndicesForTrading->at(i)));
-                // MIGHT NEED TO FIX THIS:
-                myHand.erase(myHand.begin() + (playerIndicesForTrading->at(i)));
-            }
-            
-            // Add cards from market to myHand then delete cards from market
-            for (int i = 0; i < (int) marketIndicesForTrading->size(); i++)
-            {
-                if (market->at(marketIndicesForTrading->at(i)).getType() != "Camels")
-                {
-                    // add card to myHand and delete from market
-                    myHand.push_back(market->at(marketIndicesForTrading->at(i)));
-                    
-                    // deleting...
-                    // WRITE CODE TO: delete card at market->at(i)
-                    market->erase(market->begin() + (marketIndicesForTrading->at(i)));
-                } /*else	// add card to myHerd and delete from market --> CORRECTION: Camels CANNOT be traded from market-to-player
-                   {
-                   // SHOULD NOT TAKE CAMELS OUT OF MARKET, but since transaction is underway, just continue with it...
-                   myHerd.push_back(market->at(marketIndicesForTrading->at(i)));
-                   
-                   // deleting...
-                   // WRITE CODE TO: delete card at market->at(i)
-                   market->erase(market->begin() + (marketIndicesForTrading->at(i)));
-                   }*/
-            }
-            
-            // Clear all trading related vectors
-            tradingCards.clear();
-            playerIndicesForTrading->clear();
-            marketIndicesForTrading->clear();
-        } else
-        {
-            return false;
-            // -- UI --
-            // #Error message#
-            // Press any key to return to previous/main menu
-        }
-        
-    } else
-    {
+    //make sure size of vectors are the same
+    if(marketIndicesForTrading->size()!=handIndicesForTrading->size()){
         return false;
-        // -- UI --
-        // #Error message#
-        // Press any key to return to previous/main menu
     }
     
-    return false;
+    vector<string> marketTypes;
+	vector<string> handTypes;
+    int ind;
+    //fill marketTypes and handTypes
+    for(int i=0; i<(int)marketIndicesForTrading->size(); i++)
+    {
+        ind=marketIndicesForTrading->at(i);
+        marketTypes.push_back(market->at(ind).getType());
+    }
+    for(int x=0; x<(int)handIndicesForTrading->size(); x++)
+    {
+        ind=handIndicesForTrading->at(x);
+        handTypes.push_back(myHand.at(ind).getType());
+    }
+    
+    //make sure not trading same type of card
+    string type;
+    for (int j=0; j< (int) marketTypes.size(); j++) {
+        type= marketTypes.at(j);
+        //goes through vector of indices to sell
+        for(int k=0; k<(int)handTypes.size(); k++)
+        {
+            if(type==handTypes.at(k)){
+                std::cerr<<"Cannot trade cards of same type"<<std::endl;
+                return false;
+            }
+        }
+    }
+    
+    //swap cards
+    for (int z=0; z < (int) marketIndicesForTrading->size(); z++) {
+        Card * temp;
+        Card moveToHand=market->at(marketIndicesForTrading->at(z));
+        temp=&myHand.at(handIndicesForTrading->at(z));
+        myHand.at(handIndicesForTrading->at(z))=moveToHand;
+        market->at(marketIndicesForTrading->at(z))=*temp;
+    }
+	
+    return true;
+}
+*/
+
+// NEW Player::trade() 
+bool Player::trade(vector<Card> *market, vector<int> *marketIndicesForTrading, vector<int> *playerIndicesForTrading)
+{
+	populateTradingCards();
+	
+	int camelTradeCount = 0;
+	// Before prompting for hand indices, check to see if player can even trade cards for amount he/she wants
+	if ((marketIndicesForTrading->size() <= tradingCards.size()) && (marketIndicesForTrading->size() > 1))
+	{
+		// ==== DONE ON FRONT-END before message call to trade(); ====
+		// Prompt for indices from tradingCards the player wants to trade
+		// Store user input in playerIndicesForTrading
+		// Input should be one line with indices spaced out, ENTER to submit indices
+		
+		// TODO
+		// - sort trading vectors greatest to lowest
+		// - reorder for loops (if necessary)
+		
+		if (marketIndicesForTrading->size() == playerIndicesForTrading->size())
+		{
+			// check to see if trade is valid
+			// use Card's overloaded == operator to compare card types
+			for (int i = 0; i < (int) marketIndicesForTrading->size(); i++)
+			{
+				for (int j = 0; j < (int) playerIndicesForTrading->size(); j++)
+				{
+					// checks to make sure no cards being traded are of the same type
+					// OR that no camels are trying to be taken out of the market
+						// Operation below uses overload == operator for Card type
+					if ((market->at(marketIndicesForTrading->at(i)) == tradingCards.at(playerIndicesForTrading->at(j))) 
+						|| (market->at(marketIndicesForTrading->at(i)).getType() == "Camels"))
+					{
+						return false;
+						// #Error message#
+						// Press any key to return to previous menu
+					}
+				}
+				
+				// check to see if any camels are being traded from tradingCards
+				if ((tradingCards.at(playerIndicesForTrading->at(i)).getType() == "Camels") 
+					|| (playerIndicesForTrading->at(i) > (int)(myHand.size()-1)))
+					camelTradeCount++;	
+			}
+			
+			// SORT TRADING VECTORS
+			std::sort(marketIndicesForTrading->begin(), marketIndicesForTrading->end(), std::greater<int>());
+			std::sort(playerIndicesForTrading->begin(), playerIndicesForTrading->end(), std::greater<int>());
+			
+			// Add cards to market from myHand/myHerd
+			//_______________________________________
+			
+			// First go through playerIndicesForTrading and delete indices for camel cards while adding
+				// the appropriate amount of camels to the market from myHerd
+			//for (int i = 0; i < (int) marketIndicesForTrading->size(); i++)
+			for (int i = (int) playerIndicesForTrading->size(); i >= 0; i--)
+			{
+				if (playerIndicesForTrading->at(i) > (int) (myHand.size()-1))
+				{
+					// delete the int in playerIndicesForTrading->at(i)
+					// NEEDS PROPER CODE - might need to fix this
+					playerIndicesForTrading->erase(playerIndicesForTrading->begin() + i);
+					//i--;
+					
+					// add camel cards to market from myHerd
+					market->push_back(myHerd.back());
+					
+					// delete a camel from myHerd
+					myHerd.pop_back();
+				}
+			}
+			
+			// Add cards from myHand to market then delete those cards from myHand
+			for (int i = 0; i < (int) playerIndicesForTrading->size(); i++)
+			{
+				market->push_back(myHand.at(playerIndicesForTrading->at(i)));
+				// MIGHT NEED TO FIX THIS:
+				myHand.erase(myHand.begin() + (playerIndicesForTrading->at(i)));
+			}
+			
+			// Add cards from market to myHand then delete cards from market
+			for (int i = 0; i < (int) marketIndicesForTrading->size(); i++)
+			{
+				if (market->at(marketIndicesForTrading->at(i)).getType() != "Camels")
+				{
+					// add card to myHand and delete from market
+					myHand.push_back(market->at(marketIndicesForTrading->at(i)));
+					
+					// deleting...
+					// WRITE CODE TO: delete card at market->at(i)
+					market->erase(market->begin() + (marketIndicesForTrading->at(i)));
+				} /*else	// add card to myHerd and delete from market --> CORRECTION: Camels CANNOT be traded from market-to-player
+				{
+					// SHOULD NOT TAKE CAMELS OUT OF MARKET, but since transaction is underway, just continue with it...
+					myHerd.push_back(market->at(marketIndicesForTrading->at(i)));
+					
+					// deleting...
+					// WRITE CODE TO: delete card at market->at(i)
+					market->erase(market->begin() + (marketIndicesForTrading->at(i)));
+				}*/
+			}
+			
+			// Clear all trading related vectors
+			tradingCards.clear();
+			playerIndicesForTrading->clear();
+			marketIndicesForTrading->clear();
+		} else
+		{
+			return false;
+			// -- UI --
+			// #Error message#
+			// Press any key to return to previous/main menu
+		}
+		
+	} else
+	{
+		return false;
+		// -- UI --
+		// #Error message#
+		// Press any key to return to previous/main menu
+	}
+	return true;
 }
 
 //add points to player depending on token achieved
@@ -262,22 +267,22 @@ void Player::addPoint(Token t){
 }
 
 // Creates tradingCards vector which is a concatenation of myHand + myHerd 
-void Player::populateTradingCards()
+virtual void populateTradingCards()
 {
 	// clear tradingCards for good practice
-	this->tradingCards.clear();
+	tradingCards.clear();
 	
 	// concatenate myHand first then myHerd
-	this->tradingCards.insert(tradingCards.end(), myHand.begin(), myHand.end());
-	this->tradingCards.insert(tradingCards.end(), myHerd.begin(), myHerd.end());
+	tradingCards.insert(tradingCards.end(), myHand.begin(), myHand.end());
+	tradingCards.insert(tradingCards.end(), myHerd.begin(), myHerd.end());
 }
 
-////DO THIS
-// Player has access to Game (they are friends :-) )
 
+// Player has access to Game (they are friends :-) )
 //functions to take specific items
-//NEED clothT   leatherT    spiceT
-bool Player::sellOne(vector<Token> *clothT, vector<Token> *leatherT, vector<Token> *spiceT, int handInd)
+// using tokenBag which had following vectors
+// clothT   leatherT    spiceT
+bool Player::sellOne(map<string,vector<Token>> *tokenBag, int handInd)
 {
     // run isValidSaleOfOne to make sure player can sell this card
     if (isValidSaleOfOne(handInd)) {
@@ -286,43 +291,31 @@ bool Player::sellOne(vector<Token> *clothT, vector<Token> *leatherT, vector<Toke
         
         std::string type = myHand.at(handInd).getType();
         if(type=="Cloth"){
-            myToken = clothT->back();
+            myToken = tokenBag->at("Cloth").back(); //might need to change . to ->
             this->addPoint(myToken);
-            clothT->pop_back();
-            
-            //ERASE CARD FROM HAND
-            this->myHand.erase(myHand.begin() + handInd);
+			tokenBag->at("Cloth").pop_back(); //delete here, same as above for . and ->
             return true;
         }
         else if(type=="Leather"){
-            myToken= leatherT->back();
+            myToken= tokenBag->at("Leather").back(); //might need to change . to ->
             this->addPoint(myToken);
-            leatherT->pop_back();
-            
-            //ERASE CARD FROM HAND
-            this->myHand.erase(myHand.begin() + handInd);
+            tokenBag->at("Leather").pop_back(); //delete here, same as above for . and ->
             return true;
         }
         else if(type=="Spice"){
-            myToken=spiceT->back();
+            myToken= tokenBag->at("Spice").back(); //might need to change . to ->
             this->addPoint(myToken);
-            spiceT->pop_back();
-            
-            //ERASE CARD FROM HAND
-            this->myHand.erase(myHand.begin() + handInd);
+            tokenBag->at("Spice").pop_back(); //delete here, same as above for . and ->
             return true;
         }
-        else {
-            // -- UI ---
-            std::cout<<"Error selling card"<<std::endl;
-            return false;
-        }
+        else {std::cout<<"Error selling card"<<std::endl; return false;}
         
     }
     
+    //ERASE CARD FROM HAND
+    this->myHand.pop_back();
     return false;
 }
-
 
 //make sure more than one card of same type in hand
 //make sure more than one card in IndforSelling vector
@@ -344,10 +337,11 @@ bool Player::isValidSaleOfMult( vector<int> *handIndicesForSelling, string tp)
     return true;
 }
 
-//NEED handIndicesForSelling    bonus3 bonus4 bonus5
-//NEED vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, int handInd
-//NEED diamondT goldT silverT
-bool Player::sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3, vector<Token> *bonus4, vector<Token> *bonus5, vector<Token> *clothT, vector<Token> *leatherT, vector<Token> *spiceT, vector<Token> *diamondT, vector<Token> *goldT, vector<Token> *silverT) //need isValidSaleOfMult();
+//using tokenBag which contains the following vectors identified by strings
+// handIndicesForSelling    bonus3 bonus4 bonus5
+// vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, int handInd
+// diamondT goldT silverT
+bool Player::sellMult(vector<int> *handIndicesForSelling, map<string,vector<Token>> *tokenBag ) //need isValidSaleOfMult();
 {
 	std::sort(handIndicesForSelling->begin(), handIndicesForSelling->end(), std::greater<int>());
 	
@@ -379,27 +373,27 @@ bool Player::sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3,
         int numSelling=(int)handIndicesForSelling->size();
         if(numSelling==3){	//run out of bonus tokens???
             try {
-                bToken=bonus3->back();
+                bToken=tokenBag->at("bonus3").back();
                 this->addPoint(bToken);
-                bonus3->pop_back();
+                tokenBag->at("bonus3").pop_back();
                 //RUN OUT OF TOKENS????
             } catch (std::exception & e)
             { std::cout << "Sorry no more bonus 3 tokens for you :-(" << std::endl; }
         }
         else if(numSelling==4){
             try {
-                bToken=bonus4->back();
+                bToken=tokenBag->at("bonus4").back();
                 this->addPoint(bToken);
-                bonus4->pop_back();
+                tokenBag->at("bonus4").pop_back();
                 //RUN OUT OF TOKENS????
             } catch (std::exception & e)
             { std::cout << "Sorry no more bonus 4 tokens for you :-(" << std::endl; }
         }
         else if(numSelling==5){
             try {
-                bToken=bonus5->back();
+                bToken=tokenBag->at("bonus5").back();
                 this->addPoint(bToken);
-                bonus5->pop_back();
+                tokenBag->at("bonus5").pop_back();
                 //RUN OUT OF TOKENS????
             } catch (std::exception & e)
             { std::cout << "Sorry no more bonus 5 tokens for you :-(" << std::endl; }
@@ -416,10 +410,18 @@ bool Player::sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3,
                 //sells cards at given indices
                 if(numSold<numSelling){
                     //vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, int handInd
-                    sellOne(clothT, leatherT, spiceT, hdInd);
+                    sellOne(tokenBag, hdInd); ////////////this might be wrong input param for tokenBag ////////////////////
                     numSold++;                    
                 }
                 else{return true;}
+            }
+			if(numSold==numSelling){
+                
+                return true;
+            }
+            else{
+                std::cout<<"THIS IS BAD changed hand and tokens but didn't sell correct number of cards from player hand"<<std::endl;
+                return false;
             }
         }
         
@@ -434,32 +436,32 @@ bool Player::sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3,
                 if(numSold<numSelling){
                     if(tp.compare("Diamonds")==0){
                         //get points from corresponding token
-                        sToken=diamondT->back();
+                        sToken=tokenBag->at("Diamonds").back();
                         this->addPoint(sToken);
                         //delete from hand
                         this->myHand.erase(myHand.begin()+hdInd);
                         //delete token
-                        diamondT->pop_back();
+                        tokenBag->at("Diamonds").pop_back();
 						numSold++; 
                     }
                     else if(tp.compare("Gold")==0){
                         //get points from corresponding token
-                        sToken=goldT->back();
+                        sToken=tokenBag->at("Gold").back();
                         this->addPoint(sToken);
                         //delete from hand
                         this->myHand.erase(myHand.begin()+hdInd);
                         //delete token
-                        goldT->pop_back();
+                        tokenBag->at("Gold").pop_back();
 						numSold++; 
                     }
                     else if(tp.compare("Silver")==0){
                         //get points from corresponding token
-                        sToken=silverT->back();
+                        sToken=tokenBag->at("Silver").back();
                         this->addPoint(sToken);
                         //delete from hand
                         this->myHand.erase(myHand.begin()+hdInd);
                         //delete token
-                        silverT->pop_back();
+                        tokenBag->at("Silver").pop_back();
 						numSold++; 
                     }                    
                 }

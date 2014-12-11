@@ -40,14 +40,14 @@ private:
     //bool isAi;
 	int rounds;
     //Marketplace market();
+    vector<Card> market;
 	
 	 // User input storage variables
     int currentUserInput;
 	
 public:
     vector<Card> deck;    //vector deck
-    vector<Card> market;
-	
+    
     vector<Token> bonus3;   //bonus tokens traded for 3 cards
     vector<Token> bonus4;
     vector<Token> bonus5;
@@ -61,7 +61,7 @@ public:
 	
 	map<string, vector<Token>> tokenBag = {{"bonus3", bonus3},{"bonus4", bonus4},{"bonus5", bonus5},
     {"Cloth", clothT},{"Leather", leatherT},{"Spice", spiceT},{"Sliver", silverT},
-    {"Gold", goldT},{"Diamond", diamondT}};
+    {"Gold", goldT},{"Diamonds", diamondT}};
     
     // Trading vectors -- to be used respectively by current player
     vector<int> marketIndicesForTrading;
@@ -85,7 +85,6 @@ public:
     bool setCurrentUserInput(int n) { currentUserInput = n; return true; };
     
     void playerTurn(Player &p);
-    int countSE(const Player & p);  //count Seal of Excellence-->determine game over
     //int countSE(const AIPlayer & p);  //count Seal of Excellence-->determine game over
     void giveSE(const Player & p);   //give SoE at end of round to given player
     bool initPlayers(std::string name1, std::string name2);     // Desctruct players in Game destructor using Player's destructor
