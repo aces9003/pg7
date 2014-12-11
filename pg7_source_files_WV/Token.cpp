@@ -67,7 +67,7 @@ bool Token::setType(string s)
 }
 
 bool Token:: operator== (const Token & other) const {
-	if (this->getType() == other.getType() && this->getPoint() == other.getPoint)
+	if (this->getType() == other.getType() && this->getPoint() == other.getPoint())
 		return true;
 	return false;
 }

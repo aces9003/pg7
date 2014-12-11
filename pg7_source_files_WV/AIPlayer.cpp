@@ -41,7 +41,7 @@ void AIPlayer::makeTurn(){
 	}
 	else if(randPick==2){
 		//sell one 
-		int randPickHand = srand() % (int)myHand.size;
+		int randPickHand = srand() % (int)myHand.size; // need to seed random?
 		sellOne(&clothT,&leatherT,&spiceT,randPickHand);
 	}
 	else if(randPick==3){ //&& check is valid to sell mult){

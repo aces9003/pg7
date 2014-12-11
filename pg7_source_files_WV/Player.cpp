@@ -137,8 +137,10 @@ bool Player::trade(vector<int> *marketIndicesForTrading, vector<int> *handIndice
 */
 
 // NEW Player::trade()
-bool PLayer::trade(vector<Card> *market, vector<Card> *marketIndicesForTrading, vector<Card> *playerIndicesForTrading)
+bool Player::trade(vector<Card> *market, vector<int> *marketIndicesForTrading, vector<int> *playerIndicesForTrading)
 {
+	populateTradingCards();
+	
 	int camelTradeCount = 0;
 	// Before prompting for hand indices, check to see if player can even trade cards for amount he/she wants
 	if ((marketIndicesForTrading->size() <= tradingCards.size()) && (marketIndicesForTrading->size() > 1))
@@ -147,6 +149,10 @@ bool PLayer::trade(vector<Card> *market, vector<Card> *marketIndicesForTrading, 
 		// Prompt for indices from tradingCards the player wants to trade
 		// Store user input in playerIndicesForTrading
 		// Input should be one line with indices spaced out, ENTER to submit indices
+		
+		// TODO
+		// - sort trading vectors greatest to lowest
+		// - reorder for loops (if necessary)
 		
 		if (marketIndicesForTrading->size() == playerIndicesForTrading->size())
 		{
@@ -158,8 +164,9 @@ bool PLayer::trade(vector<Card> *market, vector<Card> *marketIndicesForTrading, 
 				{
 					// checks to make sure no cards being traded are of the same type
 					// OR that no camels are trying to be taken out of the market
+						// Operation below uses overload == operator for Card type
 					if ((market->at(marketIndicesForTrading->at(i)) == tradingCards.at(playerIndicesForTrading->at(j))) 
-						|| (market->at(marketIndicesForTrading->at(i)) != "Camels"))
+						|| (market->at(marketIndicesForTrading->at(i)).getType() == "Camels"))
 					{
 						return false;
 						// #Error message#
@@ -169,23 +176,28 @@ bool PLayer::trade(vector<Card> *market, vector<Card> *marketIndicesForTrading, 
 				
 				// check to see if any camels are being traded from tradingCards
 				if ((tradingCards.at(playerIndicesForTrading->at(i)).getType() == "Camels") 
-					|| (playerIndicesForTrading->at(i) > (myHand.size()-1)))
+					|| (playerIndicesForTrading->at(i) > (int)(myHand.size()-1)))
 					camelTradeCount++;	
 			}
+			
+			// SORT TRADING VECTORS
+			std::sort(marketIndicesForTrading->begin(), marketIndicesForTrading->end(), std::greater<int>());
+			std::sort(playerIndicesForTrading->begin(), playerIndicesForTrading->end(), std::greater<int>());
 			
 			// Add cards to market from myHand/myHerd
 			//_______________________________________
 			
 			// First go through playerIndicesForTrading and delete indices for camel cards while adding
 				// the appropriate amount of camels to the market from myHerd
-			for (int i = 0; i < (int) marketIndicesForTrading->size(); i++)
+			//for (int i = 0; i < (int) marketIndicesForTrading->size(); i++)
+			for (int i = (int) playerIndicesForTrading->size(); i >= 0; i--)
 			{
 				if (playerIndicesForTrading->at(i) > (int) (myHand.size()-1))
 				{
 					// delete the int in playerIndicesForTrading->at(i)
 					// NEEDS PROPER CODE - might need to fix this
-					playerIndicesForTrading.erase(playerIndicesForTrading.begin() + i);
-					i--;
+					playerIndicesForTrading->erase(playerIndicesForTrading->begin() + i);
+					//i--;
 					
 					// add camel cards to market from myHerd
 					market->push_back(myHerd.back());
@@ -203,7 +215,7 @@ bool PLayer::trade(vector<Card> *market, vector<Card> *marketIndicesForTrading, 
 				myHand.erase(myHand.begin() + (playerIndicesForTrading->at(i)));
 			}
 			
-			// Add cards from market to myHand/myHerd then delete cards from market
+			// Add cards from market to myHand then delete cards from market
 			for (int i = 0; i < (int) marketIndicesForTrading->size(); i++)
 			{
 				if (market->at(marketIndicesForTrading->at(i)).getType() != "Camels")
@@ -213,16 +225,16 @@ bool PLayer::trade(vector<Card> *market, vector<Card> *marketIndicesForTrading, 
 					
 					// deleting...
 					// WRITE CODE TO: delete card at market->at(i)
-					market->erase(begin() + (marketIndicesForTrading->at(i)));
-				} else	// add card to myHerd and delete from market
+					market->erase(market->begin() + (marketIndicesForTrading->at(i)));
+				} /*else	// add card to myHerd and delete from market --> CORRECTION: Camels CANNOT be traded from market-to-player
 				{
 					// SHOULD NOT TAKE CAMELS OUT OF MARKET, but since transaction is underway, just continue with it...
 					myHerd.push_back(market->at(marketIndicesForTrading->at(i)));
 					
 					// deleting...
 					// WRITE CODE TO: delete card at market->at(i)
-					market->erase(begin() + (marketIndicesForTrading->at(i)));
-				}
+					market->erase(market->begin() + (marketIndicesForTrading->at(i)));
+				}*/
 			}
 			
 			// Clear all trading related vectors
@@ -317,7 +329,7 @@ bool Player::isValidSaleOfMult( vector<int> *handIndicesForSelling, string tp)
         }
     }
     if(inHand<2){
-        std::cout<<"Error: No multimple cards of type "<<tp<<std::endl;
+        std::cout<<"Error: No multiple cards of type "<<tp<<std::endl;
         return false;
     }
     return true;
@@ -326,22 +338,30 @@ bool Player::isValidSaleOfMult( vector<int> *handIndicesForSelling, string tp)
 //NEED handIndicesForSelling    bonus3 bonus4 bonus5
 //NEED vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, int handInd
 //NEED diamondT goldT silverT
-void Player::sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3, vector<Token> *bonus4, vector<Token> *bonus5, vector<Token> *clothT, vector<Token> *leatherT, vector<Token> *spiceT, vector<Token> *diamondT, vector<Token> *goldT, vector<Token> *silverT) //need isValidSaleOfMult();
+bool Player::sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3, vector<Token> *bonus4, vector<Token> *bonus5, vector<Token> *clothT, vector<Token> *leatherT, vector<Token> *spiceT, vector<Token> *diamondT, vector<Token> *goldT, vector<Token> *silverT) //need isValidSaleOfMult();
 {
+	std::sort(handIndicesForSelling->begin(), handIndicesForSelling->end(), std::greater<int>());
+	
     int numSold=0;
-    int firstInd=handIndicesForSelling->at(1);
-    string tp=this->myHand.at(firstInd).getType();
+    int lastInd=handIndicesForSelling->at(0);
+    string tp=this->myHand.at(lastInd).getType();
     int hdInd=0;
     
+	
     //goes through vector of indices to sell
     for(int i=0; i<(int)handIndicesForSelling->size(); i++)
     {
         hdInd=handIndicesForSelling->at(i);
         //makes sure all indices correspond to same type of card
-        if(tp!=this->myHand.at(hdInd).getType()){
-            std::cerr<<"Cannot sell cards of different types"<<std::endl;
+        if(tp.compare(this->myHand.at(hdInd).getType())!=0){
+            std::cout<<"Cannot sell cards of different types"<<std::endl;
+			// -- UI --
+			// #Error message#
+			// Press any key to return to previous/main menu
+			return false;
         }
     }
+	
     //make sure more than one card of same type in hand
     //make sure more than one card in IndforSelling vector
     if(isValidSaleOfMult(handIndicesForSelling,tp)){
@@ -375,7 +395,7 @@ void Player::sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3,
             } catch (std::exception & e)
             { std::cout << "Sorry no more bonus 5 tokens for you :-(" << std::endl; }
         }
-        int howMany=(int)handIndicesForSelling->size();
+        //int howMany=(int)handIndicesForSelling->size();
         
         //if tp is not special card
         if(tp.compare("Cloth")==0 || tp.compare("Leather")==0 ||tp.compare("Spice")==0)
@@ -383,36 +403,26 @@ void Player::sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3,
             //goes through vector of indices to sell
             for(int i=0; i<(int)handIndicesForSelling->size(); i++)
             {
-                int hdInd=handIndicesForSelling->at(i);
+                hdInd=handIndicesForSelling->at(i);
                 //sells cards at given indices
-                if(numSold<howMany){
+                if(numSold<numSelling){
                     //vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, int handInd
                     sellOne(clothT, leatherT, spiceT, hdInd);
-                    numSold++;
-                    //need to change vector of ind bc cards shifted
-                    for(int j=(i+1); j<(int)handIndicesForSelling->size(); j++){
-                        int afterhdInd= handIndicesForSelling->at(j);
-                        handIndicesForSelling->at(j)=(afterhdInd--);
-                    }
-                    
+                    numSold++;                    
                 }
-                else{break;}
+                else{return true;}
             }
         }
         
         //if tp is special card
-        else{
+        else if (tp.compare("Gold")==0 || tp.compare("Silver")==0 || tp.compare("Diamonds")==0 ){
             Token sToken;
             //goes through vector of indices to sell
             for(int i=0; i<(int)handIndicesForSelling->size(); i++)
             {
-                int hdInd=handIndicesForSelling->at(i);
+                hdInd=handIndicesForSelling->at(i);
                 //sells cards at given indices
-                if(numSold<howMany){
-                    //sellOne(hdInd);
-                    /*myToken=&g.spiceT.back();
-                     this.addPoint(myToken);
-                     g.spiceT.pop_back();*/
+                if(numSold<numSelling){
                     if(tp.compare("Diamonds")==0){
                         //get points from corresponding token
                         sToken=diamondT->back();
@@ -421,6 +431,7 @@ void Player::sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3,
                         this->myHand.erase(myHand.begin()+hdInd);
                         //delete token
                         diamondT->pop_back();
+						numSold++; 
                     }
                     else if(tp.compare("Gold")==0){
                         //get points from corresponding token
@@ -430,6 +441,7 @@ void Player::sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3,
                         this->myHand.erase(myHand.begin()+hdInd);
                         //delete token
                         goldT->pop_back();
+						numSold++; 
                     }
                     else if(tp.compare("Silver")==0){
                         //get points from corresponding token
@@ -439,19 +451,28 @@ void Player::sellMult(vector<int> *handIndicesForSelling, vector<Token> *bonus3,
                         this->myHand.erase(myHand.begin()+hdInd);
                         //delete token
                         silverT->pop_back();
-                    }
-                    
-                    numSold++;
-                    //need to change vector of ind bc cards shifted
-                    for(int j=(i+1); j<(int)handIndicesForSelling->size(); j++){
-                        int afterhdInd= handIndicesForSelling->at(j);
-                        handIndicesForSelling->at(j)=(afterhdInd--);
-                    }
-                    
+						numSold++; 
+                    }                    
                 }
-                else{break;}
+                else{return true;}
             }
-            
+			if(numSold==numSelling){
+				
+				return true;
+			}
+			else{
+				std::cout<<"THIS IS BAD changed hand and tokens but didn't sell correct number of cards from player hand"<<std::endl;
+			   return false;
+			}
         }
+		else{
+			// -- UI --
+			std::cout<<"Card type invalid"<<std::endl;
+			// Press any key to return to previous/main menu
+		}
     }
+	// -- UI --
+	std::cout<<"Do not have multiple cards to sell"<<std::endl;
+	// Press any key to return to previous/main menu
+	return false;
 }

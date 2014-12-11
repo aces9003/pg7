@@ -19,8 +19,10 @@
 #include "Token.h"
 #include "Card.h"
 #include <vector>
+#include <map>
 #include <string>
 
+using std::map;
 using std::vector;
 //using Player;
 //class AIPlayer;
@@ -56,6 +58,10 @@ public:
     vector<Token> silverT;
     vector<Token> goldT;
     vector<Token> diamondT;
+	
+	map<string, vector<Token>> tokenBag = {{"bonus3", bonus3},{"bonus4", bonus4},{"bonus5", bonus5},
+    {"Cloth", clothT},{"Leather", leatherT},{"Spice", spiceT},{"Sliver", silverT},
+    {"Gold", goldT},{"Diamond", diamondT}};
     
     // Trading vectors -- to be used respectively by current player
     vector<int> marketIndicesForTrading;
