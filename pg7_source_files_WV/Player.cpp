@@ -92,55 +92,6 @@ bool Player::takeCamels(vector<Card> *market, vector<Card> *deck)
     } else return false;
 }
 
-/* OLD Player::trade()
-bool Player::trade(vector<int> *marketIndicesForTrading, vector<int> *handIndicesForTrading, vector<Card>* market)
-{
-    //make sure size of vectors are the same
-    if(marketIndicesForTrading->size()!=handIndicesForTrading->size()){
-        return false;
-    }
-    
-    vector<string> marketTypes;
-	vector<string> handTypes;
-    int ind;
-    //fill marketTypes and handTypes
-    for(int i=0; i<(int)marketIndicesForTrading->size(); i++)
-    {
-        ind=marketIndicesForTrading->at(i);
-        marketTypes.push_back(market->at(ind).getType());
-    }
-    for(int x=0; x<(int)handIndicesForTrading->size(); x++)
-    {
-        ind=handIndicesForTrading->at(x);
-        handTypes.push_back(myHand.at(ind).getType());
-    }
-    
-    //make sure not trading same type of card
-    string type;
-    for (int j=0; j< (int) marketTypes.size(); j++) {
-        type= marketTypes.at(j);
-        //goes through vector of indices to sell
-        for(int k=0; k<(int)handTypes.size(); k++)
-        {
-            if(type==handTypes.at(k)){
-                std::cerr<<"Cannot trade cards of same type"<<std::endl;
-                return false;
-            }
-        }
-    }
-    
-    //swap cards
-    for (int z=0; z < (int) marketIndicesForTrading->size(); z++) {
-        Card * temp;
-        Card moveToHand=market->at(marketIndicesForTrading->at(z));
-        temp=&myHand.at(handIndicesForTrading->at(z));
-        myHand.at(handIndicesForTrading->at(z))=moveToHand;
-        market->at(marketIndicesForTrading->at(z))=*temp;
-    }
-	
-    return true;
-}
-*/
 
 // NEW Player::trade()
 bool Player::trade(vector<Card> *market, vector<int> *marketIndicesForTrading, vector<int> *playerIndicesForTrading)
@@ -372,63 +323,6 @@ bool Player::sellOne(vector<Token> *clothT, vector<Token> *leatherT, vector<Toke
     return false;
 }
 
-
-//add points to player depending on token achieved
-void Player::addPoint(Token t){
-    int addPt=t.getPoint();
-    this->points+=addPt;
-}
-
-// Creates tradingCards vector which is a concatenation of myHand + myHerd 
-virtual void populateTradingCards()
-{
-	// clear tradingCards for good practice
-	tradingCards.clear();
-	
-	// concatenate myHand first then myHerd
-	tradingCards.insert(tradingCards.end(), myHand.begin(), myHand.end());
-	tradingCards.insert(tradingCards.end(), myHerd.begin(), myHerd.end());
-}
-
-////DO THIS
-// Player has access to Game (they are friends :-) )
-
-//functions to take specific items
-//NEED clothT   leatherT    spiceT
-bool Player::sellOne(vector<Token> *clothT, vector<Token> *leatherT, vector<Token> *spiceT, int handInd)
-{
-    // run isValidSaleOfOne to make sure player can sell this card
-    if (isValidSaleOfOne(handInd)) {
-        
-        Token myToken;
-        
-        std::string type = myHand.at(handInd).getType();
-        if(type=="Cloth"){
-            myToken = clothT->back();
-            this->addPoint(myToken);
-            clothT->pop_back();
-            return true;
-        }
-        else if(type=="Leather"){
-            myToken= leatherT->back();
-            this->addPoint(myToken);
-            leatherT->pop_back();
-            return true;
-        }
-        else if(type=="Spice"){
-            myToken=spiceT->back();
-            this->addPoint(myToken);
-            spiceT->pop_back();
-            return true;
-        }
-        else {std::cout<<"Error selling card"<<std::endl; return false;}
-        
-    }
-    
-    //ERASE CARD FROM HAND
-    this->myHand.pop_back();
-    return false;
-}
 
 //make sure more than one card of same type in hand
 //make sure more than one card in IndforSelling vector
