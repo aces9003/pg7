@@ -32,11 +32,13 @@ Player:: Player(std::string name) {
 	this->isActive = false;
 }
 
+/*
 //Destructor
 Player::~Player()
 {
     //std::cout<<"Deleting Player "<<this->getName()<<std::endl;
 }
+ */
 
 // MUTATORS
 // Takes 1 card from Deck
@@ -44,7 +46,7 @@ Player::~Player()
 bool Player::take( vector<Card> *market, vector<Card> *deck, int marketInd)
 {
     // run isValidHand to make sure player's hand.size() <= 7
-    if (isValidHand()) {
+    if (isValidHand() && market->at(marketInd).getType() != "Camels") {
         // adds card to this->myHand from Marketplace (call's hand's addCard() method)
         //myHand.addCard(g.market().getCard(marketInd));
         this->myHand.push_back(market->at(marketInd));
@@ -56,7 +58,7 @@ bool Player::take( vector<Card> *market, vector<Card> *deck, int marketInd)
         deck->pop_back();
         
         return true;
-    } else if (market->at(marketInd).getType() != "Camels") {
+    } else if (market->at(marketInd).getType() == "Camels") {
         takeCamels(market, deck);
         return true;
     } else return false;
@@ -276,7 +278,7 @@ void Player::populateTradingCards()
 //functions to take specific items
 // using tokenBag which had following vectors
 // clothT   leatherT    spiceT
-bool Player::sellOne(map<string,vector<Token>> *tokenBag, int handInd)
+bool Player::sellOne(map<string,vector<Token>*> *tokenBag, int handInd)
 {
     // run isValidSaleOfOne to make sure player can sell this card
     if (isValidSaleOfOne(handInd)) {
@@ -285,29 +287,35 @@ bool Player::sellOne(map<string,vector<Token>> *tokenBag, int handInd)
         
         std::string type = myHand.at(handInd).getType();
         if(type=="Cloth"){
-            myToken = tokenBag->at("Cloth").back(); //might need to change . to ->
-            this->addPoint(myToken);
-			tokenBag->at("Cloth").pop_back(); //delete here, same as above for . and ->
+            myToken = tokenBag->at("Cloth")->back();
+            //myToken.printToken();
+            addPoint(myToken);
+            tokenBag->at("Cloth")->pop_back();
+            myHand.erase(myHand.begin()+handInd);
             return true;
         }
         else if(type=="Leather"){
-            myToken= tokenBag->at("Leather").back(); //might need to change . to ->
-            this->addPoint(myToken);
-            tokenBag->at("Leather").pop_back(); //delete here, same as above for . and ->
+            myToken= tokenBag->at("Leather")->back();
+            //myToken.printToken();
+            addPoint(myToken);
+            tokenBag->at("Leather")->pop_back();
+            myHand.erase(myHand.begin()+handInd);
             return true;
         }
         else if(type=="Spice"){
-            myToken= tokenBag->at("Spice").back(); //might need to change . to ->
-            this->addPoint(myToken);
-            tokenBag->at("Spice").pop_back(); //delete here, same as above for . and ->
+            myToken= tokenBag->at("Spice")->back();
+            //myToken.printToken();
+            addPoint(myToken);
+            tokenBag->at("Spice")->pop_back();
+            myHand.erase(myHand.begin()+handInd);
             return true;
         }
-        else {std::cout<<"Error selling card"<<std::endl; return false;}
+        else {
+            //std::cout<<"Error selling card"<<std::endl;
+            return false;
+        }
         
     }
-    
-    //ERASE CARD FROM HAND
-    this->myHand.pop_back();
     return false;
 }
 
@@ -335,30 +343,30 @@ bool Player::isValidSaleOfMult( vector<int> *handIndicesForSelling, string tp)
 // handIndicesForSelling    bonus3 bonus4 bonus5
 // vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, int handInd
 // diamondT goldT silverT
-bool Player::sellMult(vector<int> *handIndicesForSelling, map<string,vector<Token>> *tokenBag ) //need isValidSaleOfMult();
+bool Player::sellMult(vector<int> *handIndicesForSelling, map<string,vector<Token>*> *tokenBag ) //need isValidSaleOfMult();
 {
-	std::sort(handIndicesForSelling->begin(), handIndicesForSelling->end(), std::greater<int>());
-	
+    std::sort(handIndicesForSelling->begin(), handIndicesForSelling->end(), std::greater<int>());
+    
     int numSold=0;
     int lastInd=handIndicesForSelling->at(0);
-    string tp=this->myHand.at(lastInd).getType();
+    string tp=myHand.at(lastInd).getType();
     int hdInd=0;
     
-	
+    
     //goes through vector of indices to sell
     for(int i=0; i<(int)handIndicesForSelling->size(); i++)
     {
         hdInd=handIndicesForSelling->at(i);
         //makes sure all indices correspond to same type of card
-        if(tp.compare(this->myHand.at(hdInd).getType())!=0){
+        if(tp.compare(myHand.at(hdInd).getType())!=0){
             std::cout<<"Cannot sell cards of different types"<<std::endl;
-			// -- UI --
-			// #Error message#
-			// Press any key to return to previous/main menu
-			return false;
+            // -- UI --
+            // #Error message#
+            // Press any key to return to previous/main menu
+            return false;
         }
     }
-	
+    
     //make sure more than one card of same type in hand
     //make sure more than one card in IndforSelling vector
     if(isValidSaleOfMult(handIndicesForSelling,tp)){
@@ -367,27 +375,27 @@ bool Player::sellMult(vector<int> *handIndicesForSelling, map<string,vector<Toke
         int numSelling=(int)handIndicesForSelling->size();
         if(numSelling==3){	//run out of bonus tokens???
             try {
-                bToken=tokenBag->at("bonus3").back();
-                this->addPoint(bToken);
-                tokenBag->at("bonus3").pop_back();
+                bToken=tokenBag->at("bonus3")->back();
+                addPoint(bToken);
+                tokenBag->at("bonus3")->pop_back();
                 //RUN OUT OF TOKENS????
             } catch (std::exception & e)
             { std::cout << "Sorry no more bonus 3 tokens for you :-(" << std::endl; }
         }
         else if(numSelling==4){
             try {
-                bToken=tokenBag->at("bonus4").back();
-                this->addPoint(bToken);
-                tokenBag->at("bonus4").pop_back();
+                bToken=tokenBag->at("bonus4")->back();
+                addPoint(bToken);
+                tokenBag->at("bonus4")->pop_back();
                 //RUN OUT OF TOKENS????
             } catch (std::exception & e)
             { std::cout << "Sorry no more bonus 4 tokens for you :-(" << std::endl; }
         }
         else if(numSelling==5){
             try {
-                bToken=tokenBag->at("bonus5").back();
-                this->addPoint(bToken);
-                tokenBag->at("bonus5").pop_back();
+                bToken=tokenBag->at("bonus5")->back();
+                addPoint(bToken);
+                tokenBag->at("bonus5")->pop_back();
                 //RUN OUT OF TOKENS????
             } catch (std::exception & e)
             { std::cout << "Sorry no more bonus 5 tokens for you :-(" << std::endl; }
@@ -405,11 +413,11 @@ bool Player::sellMult(vector<int> *handIndicesForSelling, map<string,vector<Toke
                 if(numSold<numSelling){
                     //vector<Token> clothT, vector<Token> leatherT, vector<Token> spiceT, int handInd
                     sellOne(tokenBag, hdInd); ////////////this might be wrong input param for tokenBag ////////////////////
-                    numSold++;                    
+                    numSold++;
                 }
                 else{return true;}
             }
-			if(numSold==numSelling){
+            if(numSold==numSelling){
                 
                 return true;
             }
@@ -430,54 +438,60 @@ bool Player::sellMult(vector<int> *handIndicesForSelling, map<string,vector<Toke
                 if(numSold<numSelling){
                     if(tp.compare("Diamonds")==0){
                         //get points from corresponding token
-                        sToken=tokenBag->at("Diamonds").back();
-                        this->addPoint(sToken);
+                        sToken=tokenBag->at("Diamonds")->back();
+                        //std::cout<<"PRINTING TOKEN TO GET POINTS FROM";
+                        //sToken.printToken();
+                        addPoint(sToken);
                         //delete from hand
-                        this->myHand.erase(myHand.begin()+hdInd);
+                        myHand.erase(myHand.begin()+hdInd);
                         //delete token
-                        tokenBag->at("Diamonds").pop_back();
-						numSold++; 
+                        tokenBag->at("Diamonds")->pop_back();
+                        numSold++;
                     }
                     else if(tp.compare("Gold")==0){
                         //get points from corresponding token
-                        sToken=tokenBag->at("Gold").back();
-                        this->addPoint(sToken);
+                        sToken=tokenBag->at("Gold")->back();
+                        //std::cout<<"PRINTING TOKEN TO GET POINTS FROM";
+                        //sToken.printToken();
+                        addPoint(sToken);
                         //delete from hand
-                        this->myHand.erase(myHand.begin()+hdInd);
+                        myHand.erase(myHand.begin()+hdInd);
                         //delete token
-                        tokenBag->at("Gold").pop_back();
-						numSold++; 
+                        tokenBag->at("Gold")->pop_back();
+                        numSold++;
                     }
                     else if(tp.compare("Silver")==0){
                         //get points from corresponding token
-                        sToken=tokenBag->at("Silver").back();
-                        this->addPoint(sToken);
+                        sToken=tokenBag->at("Silver")->back();
+                        //std::cout<<"PRINTING TOKEN TO GET POINTS FROM";
+                        //sToken.printToken();
+                        addPoint(sToken);
                         //delete from hand
-                        this->myHand.erase(myHand.begin()+hdInd);
+                        myHand.erase(myHand.begin()+hdInd);
                         //delete token
-                        tokenBag->at("Silver").pop_back();
-						numSold++; 
-                    }                    
+                        tokenBag->at("Silver")->pop_back();
+                        numSold++;
+                    }
                 }
                 else{return true;}
             }
-			if(numSold==numSelling){
-				
-				return true;
-			}
-			else{
-				std::cout<<"THIS IS BAD changed hand and tokens but didn't sell correct number of cards from player hand"<<std::endl;
-			   return false;
-			}
+            if(numSold==numSelling){
+                
+                return true;
+            }
+            else{
+                std::cout<<"THIS IS BAD changed hand and tokens but didn't sell correct number of cards from player hand"<<std::endl;
+                return false;
+            }
         }
-		else{
-			// -- UI --
-			std::cout<<"Card type invalid"<<std::endl;
-			// Press any key to return to previous/main menu
-		}
+        else{
+            // -- UI --
+            std::cout<<"Card type invalid"<<std::endl;
+            // Press any key to return to previous/main menu
+        }
     }
-	// -- UI --
-	std::cout<<"Do not have multiple cards to sell"<<std::endl;
-	// Press any key to return to previous/main menu
-	return false;
+    // -- UI --
+    std::cout<<"Do not have multiple cards to sell"<<std::endl;
+    // Press any key to return to previous/main menu
+    return false;
 }

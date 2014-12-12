@@ -15,9 +15,9 @@
 #include <vector>
 #include <map>
 
-using std::map;
 using std::string;
-using std:: vector;
+using std::vector;
+using std::map;
 //using Game;
 
 class Player {
@@ -58,15 +58,15 @@ public:
     virtual bool trade(vector<Card> *market, vector<int> *marketIndicesForTrading, vector<int> *playerIndicesForTrading);
 	virtual bool takeCamels(vector<Card> *market, vector<Card> *deck);
     
-    virtual bool sellOne(map<string,vector<Token>>* tokenBag, int handInd);
-    virtual bool sellMult(vector<int> *handIndicesForSelling,map<string,vector<Token>>* tokenBag);///ask card type when player tries to sell mult
+    virtual bool sellOne(map<string,vector<Token>*> * tokenBag, int handInd);
+    virtual bool sellMult(vector<int> *handIndicesForSelling,map<string,vector<Token>*> * tokenBag);///ask card type when player tries to sell mult
     
     // Public Helper methods
     virtual void addPoint(Token t); //add points to player depending on token achieved
     virtual void populateTradingCards(); // merges myHand + myHerd
     
     // Destructor
-    virtual ~Player(); //should deallocate hand automatically
+    //virtual ~Player(); //should deallocate hand automatically
     
 protected:
     // isValid methods with inline definitions

@@ -2,8 +2,10 @@
 // compile with g++ -std=c++11 -pedantic -Wall -Wextra -O GameTest.cpp Card.cpp Token.cpp
 // Append *.cpp files as you see necessary for testing purposes
 
+#include "DynamicViewController.cpp"
 #include "Game.h"
 #include "Game.cpp"
+//#include "Player.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -18,9 +20,25 @@ int main() {
     //assert(gameTest.createDeck());
     //assert(gameTest.setupTokens());
     
+    //if (option 1) {
+        Player p1("p1");
+        Player p2("p2");
+    //} else if (option 2) {
+        //Player p1("p1");
+        //AIPlayer p2("AI");
+    //}
+    
     cout << "Size of initialized deck: ";
     cout << gameTest.deck.size() << endl;
     
+    gameTest.p1 = &p1;
+    gameTest.p2 = &p2;
+    
+    gameTest.dealHand();
+
+    beginGame(&gameTest);
+    
+    /*
     // Print all 55 cards (should be shuffled)
     for (int i = 0; i < (int) gameTest.deck.size(); i++) {
         cout << "Card " << i+1 << ": " << gameTest.deck.at(i).getType() << endl;
@@ -71,9 +89,65 @@ int main() {
     for (int i = 0; i < 6; i++) {
         cout << "Bonus 5 token " << i+1 << ": " << gameTest.bonus5.at(i).getType() << " " << gameTest.bonus5.at(i).getPoint() << endl;
     }
+     */
+    
+    /*
+    // Print market
+    for (int i = 0; i < (int)gameTest.market.size(); i++) {
+        cout << "Market[" << i << "]: " << gameTest.market.at(i).getType() << endl;
+    }
+    
+    cout << "p1's hand size: " << (int)gameTest.p1->myHand.size() << endl;
+    cout << "p2's hand size: " << (int)gameTest.p2->myHand.size() << endl;
+    
+    //Card testCard("Leather");
+    
+    //gameTest.p1->myHand.push_back(testCard);
+    
+    cout << "Size of initialized deck: ";
+    cout << gameTest.deck.size() << endl;
+    
+    cout << endl;
+    
+    cout << "p1's hand size: " << (int)gameTest.p1->myHand.size() << endl;
+    cout << "p2's hand size: " << (int)gameTest.p2->myHand.size() << endl;
+
+    
+    // Print p1's hand
+    for (int i = 0; i < (int)gameTest.p1->myHand.size(); i++) {
+        cout << "p1.myHand[" << i << "]: " << gameTest.p1->myHand.at(i).getType() << endl;
+    }
+    // Print p1's herd
+    for (int i = 0; i < (int)gameTest.p1->myHerd.size(); i++) {
+        cout << "p1.myHerd[" << i << "]: " << gameTest.p1->myHerd.at(i).getType() << endl;
+    }
+    
+    cout << endl;
+    
+    // Print p2's hand
+    for (int i = 0; i < (int)gameTest.p2->myHand.size(); i++) {
+        cout << "p2.myHand[" << i << "]: " << gameTest.p2->myHand.at(i).getType() << endl;
+    }
+    // Print p2's herd
+    for (int i = 0; i < (int)gameTest.p2->myHerd.size(); i++) {
+        cout << "p2.myHerd[" << i << "]: " << gameTest.p2->myHerd.at(i).getType() << endl;
+    }
+    
+    cout << endl;
+    
+    for (int i = 0; i < (int)gameTest.leatherT.size(); i++) {
+        cout << gameTest.tokenBag.at("Leather")->at(i).getPoint() << " ";
+    }
+    gameTest.leatherT.pop_back();
+    cout << endl;
+    for (int i = 0; i < (int)gameTest.leatherT.size(); i++) {
+        cout << gameTest.tokenBag.at("Leather")->at(i).getPoint() << " ";
+    }
+    */
     
     return 0;
     
+    /*
     cout<<"Testing Cards"<<endl;
     Card card("Camels");
     Card card2("NotCamels");
@@ -87,7 +161,7 @@ int main() {
     assert(token1==token3);
     assert(!token1==token2);
     cout<<"Done testing Token operator overloaders!"<<endl;
-    
+     */
     
 }
 
