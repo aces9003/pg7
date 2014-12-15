@@ -12,7 +12,7 @@
 using std::cin;		using std::cout;	using std::endl;	using std::istream;
 using std::ostream;
 
-int Game::myrandom (int i) { return std::rand()%(this->rounds)+1;}
+//int Game::myrandom (int i) { return std::rand()%(this->rounds)+1;}
 
 
 // Constructor
@@ -23,6 +23,7 @@ Game::Game() {
 	dealMarket();
 	//dealHand();
 	this->rounds = 1;
+    std::srand ( unsigned ( std::time(0) ) );
 }
 
 /*
@@ -318,7 +319,7 @@ void Game::awardCammelToken(){
 /* OLD */
 void Game::setupTokens(){
 	// Line below assures randomization of each shuffle per round/game
-    std::srand ( unsigned ( std::time(0) ) );
+    //std::srand ( unsigned ( std::time(0) ) );
 	
 	//create and populate vectors
 	//leather 1,1,1,1,1,1,2,3,4
@@ -416,7 +417,7 @@ void Game::setupTokens(){
 	bonus3.push_back(btoken1);
 	bonus3.push_back(btoken1);
 	// Shuffle bonus3 tokens
-	std::random_shuffle ( bonus3.begin(), bonus3.end(), myrandom );
+	std::random_shuffle ( bonus3.begin(), bonus3.end() );
     // Add to tokenBag
     tokenBag["bonus3"] = &bonus3;
 	
@@ -432,7 +433,7 @@ void Game::setupTokens(){
 	bonus4.push_back(btoken6);
 	bonus4.push_back(btoken6);
 	// Shuffle bonus4 tokens
-	std::random_shuffle ( bonus4.begin(), bonus4.end(), myrandom );
+	std::random_shuffle ( bonus4.begin(), bonus4.end() );
     // Add to tokenBag
     tokenBag["bonus4"] = &bonus4;
 	
@@ -448,7 +449,7 @@ void Game::setupTokens(){
 	bonus5.push_back(btoken10);
 	bonus5.push_back(btoken10);
 	// Shuffle bonus5 tokens
-	std::random_shuffle ( bonus5.begin(), bonus5.end(), myrandom );
+	std::random_shuffle ( bonus5.begin(), bonus5.end() );
     // Add to tokenBag
     tokenBag["bonus5"] = &bonus5;
 }
@@ -576,7 +577,7 @@ void Game::setupTokens(){
  
 void Game::createDeck(){ //include all 55 cards in deck container
     // Line below assures randomization of each shuffle per round/game
-    std::srand ( unsigned ( std::time(0) ) );
+    //std::srand ( unsigned ( std::time(0) ) );
 
 	//create 9 leather cards
 	for (int i=0;i<9;i++){
@@ -622,7 +623,7 @@ void Game::createDeck(){ //include all 55 cards in deck container
 	}
 	
 	// Shuffle deck
-	std::random_shuffle ( deck.begin(), deck.end(), myrandom );
+	std::random_shuffle ( deck.begin(), deck.end() );
 	
 	// Add three camel to back of deck for marketplace setup
 	for (int i=0;i<3;i++){

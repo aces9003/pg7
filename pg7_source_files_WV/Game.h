@@ -26,7 +26,7 @@ using std::map;
 using std::vector;
 //using Player;
 //class AIPlayer;
-class Player;
+//class Player;
 
 
 class Game{
@@ -40,14 +40,14 @@ private:
     //bool isAi;
 	int rounds;
     //Marketplace market();
-    vector<Card> market;
 	
 	 // User input storage variables
     int currentUserInput;
 	
 public:
     vector<Card> deck;    //vector deck
-    
+    vector<Card> market;
+	
     vector<Token> bonus3;   //bonus tokens traded for 3 cards
     vector<Token> bonus4;
     vector<Token> bonus5;
@@ -59,9 +59,11 @@ public:
     vector<Token> goldT;
     vector<Token> diamondT;
 	
-	map<string, vector<Token>> tokenBag = {{"bonus3", bonus3},{"bonus4", bonus4},{"bonus5", bonus5},
-    {"Cloth", clothT},{"Leather", leatherT},{"Spice", spiceT},{"Sliver", silverT},
-    {"Gold", goldT},{"Diamonds", diamondT}};
+	/*map<string, *vector<Token>> tokenBag = {{"bonus3", *bonus3},{"bonus4", *bonus4},{"bonus5", *bonus5},
+    {"Cloth", *clothT},{"Leather", *leatherT},{"Spice", *spiceT},{"Silver", *silverT},
+    {"Gold", *goldT},{"Diamonds", *diamondsT}}; */
+    
+    map<string, vector<Token> *> tokenBag;
     
     // Trading vectors -- to be used respectively by current player
     vector<int> marketIndicesForTrading;
@@ -75,8 +77,11 @@ public:
 	//Game();
     
 	// Alternate Constructor
-	Game(std::string name1, std::string name2);
-	
+	//Game(std::string name1, std::string name2);
+    Game();
+    
+    //int myrandom (int i);
+    
     // Accessors
     int getCurrentUserInput() const { return this->currentUserInput; };
     
@@ -85,6 +90,7 @@ public:
     bool setCurrentUserInput(int n) { currentUserInput = n; return true; };
     
     void playerTurn(Player &p);
+    int countSE(const Player & p);  //count Seal of Excellence-->determine game over
     //int countSE(const AIPlayer & p);  //count Seal of Excellence-->determine game over
     void giveSE(const Player & p);   //give SoE at end of round to given player
     bool initPlayers(std::string name1, std::string name2);     // Desctruct players in Game destructor using Player's destructor
@@ -95,10 +101,10 @@ public:
     void createDeck();   //initialize deck
 	void awardCammelToken(); //make has camel token bool true and check each player's herd size
     
-    ~Game();
+    //~Game();
     
-    friend class Hand;
-    friend class Marketplace;
+    //friend class Hand;
+    //friend class Marketplace;
     friend class Player;
 	//friend class AIPlayer;
     

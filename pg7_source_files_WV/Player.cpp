@@ -14,7 +14,7 @@
 #include <string>
 #include <stdexcept> // ********** EXCEPTION HANDLING **********
 #include <assert.h> // FOR TESTING
-
+#include <algorithm>
 
 using std::string;
 using std::vector;

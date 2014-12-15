@@ -53,11 +53,6 @@ void AIPlayer::makeTurn(){
 				std::string typeTemp;
 				typeTemp = myHand.at(i).getType();
 				countTemp =0;
-				//here, have another for loop count how many of each type is in hand,
-				//and have the variable sellTypeNum keep track of the largest count.
-				//at end of double for loops, run isValidSaleOfMult. If good trade, run
-				//another for loop to populate handIndicesForSelling of Types wanted
-				//and then finally you can run sellMult
 				
 				//gets all types in hand and keeps track of largest set
 				for (int j=0; j<myHand.size(); j++){
@@ -86,7 +81,10 @@ void AIPlayer::makeTurn(){
 		}
 	}
 	else{
-		std::cout<<"Error in picking a move"<<std::endl;
+		for (int i=0;i<(int)myHand.size();i++){
+			if (isValidSaleOfOne(i))
+				sellOne(&tokenBag,i)
+		}
 	}
 }
 
