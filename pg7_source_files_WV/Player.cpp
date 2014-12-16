@@ -16,6 +16,7 @@
 #include <assert.h> // FOR TESTING
 #include <algorithm>
 
+
 using std::string;
 using std::vector;
 
@@ -99,15 +100,13 @@ bool Player::takeCamels(vector<Card> *market, vector<Card> *deck)
 bool Player::trade(vector<Card> *market, vector<int> *marketIndicesForTrading, vector<int> *playerIndicesForTrading)
 {
     populateTradingCards();
-    
-    int tempMarketInd;
-    int tempPlayerInd;
+
     int camelTradeCount = 0;
     // Before prompting for hand indices, check to see if player can even trade cards for amount he/she wants
     
     // ASSERT
-    assert(marketIndicesForTrading->size() <= tradingCards.size());
-    assert(marketIndicesForTrading->size() > 1);
+    //assert(marketIndicesForTrading->size() <= tradingCards.size());
+    //assert(marketIndicesForTrading->size() > 1);
     // =====
     
     if ((marketIndicesForTrading->size() <= tradingCards.size()) && (marketIndicesForTrading->size() > 1))
@@ -122,9 +121,9 @@ bool Player::trade(vector<Card> *market, vector<int> *marketIndicesForTrading, v
         // - reorder for loops (if necessary)
         
         // ASSERT
-        assert(marketIndicesForTrading->size() == playerIndicesForTrading->size());
+        //assert(marketIndicesForTrading->size() == playerIndicesForTrading->size());
         
-        if (marketIndicesForTrading->size() == playerIndicesForTrading->size())
+        if ((marketIndicesForTrading->size() == playerIndicesForTrading->size()))
         {
             // check to see if trade is valid
             // use Card's overloaded == operator to compare card types
@@ -136,17 +135,17 @@ bool Player::trade(vector<Card> *market, vector<int> *marketIndicesForTrading, v
                     // OR that no camels are trying to be taken out of the market
                     // Operation below uses overload == operator for Card type
                     
-                    tempMarketInd = marketIndicesForTrading->at(i);
-                    tempPlayerInd = playerIndicesForTrading->at(j);
+                    //tempMarketInd = marketIndicesForTrading->at(i);
+                    //tempPlayerInd = playerIndicesForTrading->at(j);
                     
                     //std::cout << "tempMarketInd: " << tempMarketInd << " tempPlayerInd: " << tempPlayerInd << std::endl;
                     
                     // ASSERT
-                    assert(market->at(tempMarketInd).getType() != tradingCards.at(tempPlayerInd).getType());
+                    //assert(market->at(tempMarketInd).getType() != tradingCards.at(tempPlayerInd).getType());
                     
-                    assert(market->at(marketIndicesForTrading->at(i)).getType() != tradingCards.at(playerIndicesForTrading->at(j)).getType());
+                    //assert(market->at(marketIndicesForTrading->at(i)).getType() != tradingCards.at(playerIndicesForTrading->at(j)).getType());
                     
-                    assert(market->at(marketIndicesForTrading->at(i)).getType() != "Camels");
+                    //assert(market->at(marketIndicesForTrading->at(i)).getType() != "Camels");
                     //=====
                     
                     if ((market->at(marketIndicesForTrading->at(i)) == tradingCards.at(playerIndicesForTrading->at(j)))
@@ -238,6 +237,8 @@ bool Player::trade(vector<Card> *market, vector<int> *marketIndicesForTrading, v
             tradingCards.clear();
             playerIndicesForTrading->clear();
             marketIndicesForTrading->clear();
+            
+            return true;
         } else
         {
             return false;

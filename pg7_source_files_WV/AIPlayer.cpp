@@ -12,13 +12,14 @@
 #include <stdio.h>
 //#include <map>
 #include <string>
+#include <ctime>
 
 //using std::map;
 using std::string;
 
 // CONSTRUCTORS
 // Default constructor - if called, creates 'generic' player
-AIPlayer:: AIPlayer() : name("AIPlayer"), points(0), seals(0), hasCamelToken(false) {}
+AIPlayer:: AIPlayer() : name("AI"), points(0), seals(0), hasCamelToken(false) {}
 
 
 AIPlayer:: AIPlayer(std::string name){
@@ -28,12 +29,12 @@ AIPlayer:: AIPlayer(std::string name){
 	this->hasCamelToken=false;
 }
 
-void AIPlayer::makeTurn(Game * g){
+void AIPlayer::makeTurn(vector<Card>* market, vector<Card>* deck, vector<int>* handIndicesForSelling,map<string,vector<Token>*>* tokenBag){
 	int randPick = rand() % 4;
-	if(randPick==0 && this->myHand.getSize()<7){
+	if(randPick==0 && this->myHand.size()<7){
 		//take
-		int r= rand() % (int)market().getSize();
-		take(&(g->market), &(g->deck), r);
+		int r= rand() % (int)market->size();
+		take(market, deck, r);
 	}
 	else if(randPick==1){
 		//trade
@@ -42,21 +43,21 @@ void AIPlayer::makeTurn(Game * g){
 	}
 	else if(randPick==2){
 		//sell one 
-		int randPickHand = srand() % (int)myHand.size; // need to seed random?
-		sellOne(&(g->tokenBag),randPickHand);
+		int randPickHand = rand() % (int)myHand.size(); // need to seed random?
+		sellOne(tokenBag,randPickHand);
 	}
 	else if(randPick==3){ //&& check is valid to sell mult){
 		//sell multiple 
 		std::string sellType;
 		int sellTypeNum=0;
-		if (hand.size>1){
+		if (myHand.size()>1){
 			for (int i=0;i<(int)myHand.size();i++){
 				std::string typeTemp;
 				typeTemp = myHand.at(i).getType();
-				countTemp =0;
+				int countTemp =0;
 				
 				//gets all types in hand and keeps track of largest set
-				for (int j=0; j<myHand.size(); j++){
+				for (int j=0; j<(int)myHand.size(); j++){
 					if (myHand.at(j).getType() == typeTemp){
 						countTemp++;
 					}
@@ -67,24 +68,24 @@ void AIPlayer::makeTurn(Game * g){
 				}
 			}
 			for (int x=0;x<(int)myHand.size();x++){
-				if (myHand.at(x).getType == sellType){
-					handIndicesForSelling.push_back(x);
+				if (myHand.at(x).getType() == sellType){
+					handIndicesForSelling->push_back(x);
 				}
-				if (isValidSaleOfMult(&handIndicesForSelling, sellType)){
-					sellMult(&handIndicesForSelling,&(g->tokenBag));
+				if (isValidSaleOfMult(handIndicesForSelling, sellType)){
+					sellMult(handIndicesForSelling,&tokenBag);
 				}
 			}
 		}
 		else{
 			//switches to take if randomly lands on multi and cannot sell muli
-			int r= rand() % (int)market().getSize();
-			take(&(g->market), &(g->deck), r);
+			int r= rand() % (int)market->size();
+			take(market, deck, r);
 		}
 	}
 	else{
 		for (int i=0;i<(int)myHand.size();i++){
 			if (isValidSaleOfOne(i)){
-				sellOne(&(g->tokenBag),i);
+				sellOne(tokenBag,i);
 				break;
 			}
 		}

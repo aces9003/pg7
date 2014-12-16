@@ -22,8 +22,8 @@ private:
     string name;    //player name
     int points;     //records points in round
     int seals;      //records #of seals of excellence
-    Hand myHand;      //creates vector from hand class;
-    Hand myHerd;
+    vector<Card> myHand;
+    vector<Card> myHerd;
 	bool hasCamelToken;
     
 public:
@@ -34,7 +34,7 @@ public:
     AIPlayer(std::string name);
 	
 	//calls valid methods from player class
-	void makeTurn(Game * g);
+	void makeTurn(vector<Card>* market, vector<Card>* deck, vector<int>* handIndicesForSelling,map<string,vector<Token>*>* tokenBag);
     
 	/*
     void getName(){return this->name;}const;

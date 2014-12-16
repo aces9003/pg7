@@ -97,24 +97,50 @@ int beginGame(Game *g) {
          */
         
         
-        if ((int)(g->diamondT).size() == 0) {
+        if ((int)(g->diamondT).size() == 0)
             (g->emptyTokenVectors)++;
-        } else if ((int)(g->goldT).size() == 0) {
+         if ((int)(g->goldT).size() == 0)
             (g->emptyTokenVectors)++;
-        } else if ((int)(g->silverT).size() == 0) {
+        if ((int)(g->silverT).size() == 0)
             (g->emptyTokenVectors)++;
-        } else if ((int)(g->spiceT).size() == 0) {
+        if ((int)(g->spiceT).size() == 0)
             (g->emptyTokenVectors)++;
-        } else if ((int)(g->leatherT).size() == 0) {
+        if ((int)(g->leatherT).size() == 0)
             (g->emptyTokenVectors)++;
-        } else if ((int)(g->clothT).size() == 0) {
+        if ((int)(g->clothT).size() == 0)
             (g->emptyTokenVectors)++;
-        }
+        
         
         
         // CHECK emptyTokenVectors
         if ((g->emptyTokenVectors) >= 3) {
-            if (g->p1->getPoints() > g->p2->getPoints()) {
+        if (g->p1->getPoints() > g->p2->getPoints()) {
+            g->p1->addSeal();
+            // PRINT WINNER
+            system("clear");
+            cout << endl;
+            cout << "=======================================================" << endl;
+            cout << "//-- " << g->p1->getName() << " has won this round! " << " --//" << endl;
+            cout << "=======================================================" << endl;
+            system( "read -n 1 -s -p \"Press any key to start the next round...\"" );
+            system("clear");
+            goto endRound2;
+        } else if (g->p2->getPoints() > g->p1->getPoints()) {
+            g->p2->addSeal();
+            // PRINT WINNER
+            system("clear");
+            cout << endl;
+            cout << "=======================================================" << endl;
+            cout << "//-- " << g->p2->getName() << " has won this round! " << " --//" << endl;
+            cout << "=======================================================" << endl;
+            system( "read -n 1 -s -p \"Press any key to start the next round...\"" );
+            system("clear");
+            goto endRound1;
+        }
+        else{
+            int p1cam=g->p1->myHerd.size();
+            int p2cam=g->p2->myHerd.size();
+            if (p1cam>p2cam) {
                 g->p1->addSeal();
                 // PRINT WINNER
                 system("clear");
@@ -124,8 +150,9 @@ int beginGame(Game *g) {
                 cout << "=======================================================" << endl;
                 system( "read -n 1 -s -p \"Press any key to start the next round...\"" );
                 system("clear");
-                goto endRound2;
-            } else if (g->p2->getPoints() > g->p1->getPoints()) {
+                goto endRound1;
+            }
+            else{
                 g->p2->addSeal();
                 // PRINT WINNER
                 system("clear");
@@ -137,9 +164,11 @@ int beginGame(Game *g) {
                 system("clear");
                 goto endRound1;
             }
-            // INCREMENT ROUND COUNT (in main)
-            // NEW GAME INSTANCE (in main)
-        endRound2:
+            
+        }
+        // INCREMENT ROUND COUNT (in main)
+        // NEW GAME INSTANCE (in main)
+    endRound2:
             return 1;
         }
         

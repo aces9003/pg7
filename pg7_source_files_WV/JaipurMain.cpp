@@ -1,5 +1,5 @@
 // GameTest.cpp
-// compile with g++ -std=c++11 -pedantic -Wall -Wextra -O pg7.cpp Card.cpp Token.cpp Player.cpp
+// compile with g++ -std=c++11 -pedantic -Wall -Wextra -O JaipurMain.cpp Card.cpp Token.cpp Player.cpp AIPlayer.cpp
 // Append *.cpp files as you see necessary for testing purposes
 
 #include "DynamicViewController.cpp"
