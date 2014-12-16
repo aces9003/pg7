@@ -111,14 +111,70 @@ startNewGame:
         }
         
     } else if (selectGameType == '2') {
+      system("clear");
         
-        //Game g;
-        //Player p1("p1");
-        //p1.isActive = true;
-        //AIPlayer p2("AI");
-        //p3.isActive = true;
+        cout << "What is Player 1's name?: ";
+        //getline(cin, p1Name);
+        cin >> p1Name;
+        cout << endl;  
+		
+    startNewRound:
+        if (rounds == 1) {
+            Game g1;
+            Player p1(p1Name);
+            p1.isActive = true;
+            AIPlayer p2("AI");
+            p2.isActive = false;
+            
+            g1.p1 = &p1;
+            g1.p2 = &p2;
+            
+            g1.dealHand();
+            
+            if (beginGame(&g1) == 1) {
+                rounds++;
+                goto startNewRound;
+            } else {
+                return 0;
+            }
+        } else if (rounds == 2) {
+            Game g2;
+            Player p3(p1Name);
+            p3.isActive = true;
+            AIPlayer p4("AI");
+            p4.isActive = false;
+            
+            g2.p1 = &p3;
+            g2.p2 = &p4;
+            
+            g2.dealHand();
+            
+            if (beginGame(&g2) == 1) {
+                rounds++;
+                goto startNewRound;
+            } else {
+                return 0;
+            }
+        } else if (rounds == 3) {
+            Game g3;
+            Player p5(p1Name);
+            p5.isActive = true;
+            AIPlayer p6("AI");
+            p6.isActive = false;
+            
+            g3.p1 = &p5;
+            g3.p2 = &p6;
+            
+            g3.dealHand();
+            
+            if (beginGame(&g3) == 1) {
+                rounds++;
+                goto startNewRound;
+            } else {
+                return 0;
+            }
+        }
         
-       // g.dealHand();
     } else if (selectGameType =='3') {
         return 0;
     } else {

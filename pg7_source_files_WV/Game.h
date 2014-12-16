@@ -38,13 +38,14 @@ public: // for now...
     //AIPlayer * p3;       //cant use p2 and p3 at same time;
 private:
     //bool isAi;
-	int rounds;
     //Marketplace market();
 	
 	 // User input storage variables
     int currentUserInput;
 	
 public:
+    int emptyTokenVectors;
+
     vector<Card> deck;    //vector deck
     vector<Card> market;
 	
@@ -90,9 +91,7 @@ public:
     bool setCurrentUserInput(int n) { currentUserInput = n; return true; };
     
     void playerTurn(Player &p);
-    int countSE(const Player & p);  //count Seal of Excellence-->determine game over
     //int countSE(const AIPlayer & p);  //count Seal of Excellence-->determine game over
-    void giveSE(const Player & p);   //give SoE at end of round to given player
     bool initPlayers(std::string name1, std::string name2);     // Desctruct players in Game destructor using Player's destructor
     bool endGame();      //if game over =1
     void dealMarket();   //set up tokens and cards
