@@ -51,6 +51,24 @@ int beginGame(Game *g) {
             activePlayer = (g->p2);
         }
         
+        // IF ACTIVE PLAYER IS AI
+        if (activePlayer->isAI) {
+            activePlayer->makeTurn(&(g->market), &(g->deck), &(g->handIndicesForSelling), &(g->tokenBag));
+            
+            // CHANGES ACTIVE PLAYER
+            if (g->p1->isActive) {
+                g->p1->isActive = false;
+                g->p2->isActive = true;
+                goto startNewTurn;
+            } else if (g->p2->isActive) {
+                g->p2->isActive = false;
+                g->p1->isActive = true;
+                goto startNewTurn;
+            }
+            g->handIndicesForSelling.clear();
+            goto startNewTurn;
+        }
+        
         //===============
         // CHECK IF ROUND OR GAME IS OVER UP HERE... IF IT IS, PRINT WINNER/AWARD SOEs
         // Use g->isRoundOver() and g->isGameOver()
@@ -262,6 +280,24 @@ int beginGame(Game *g) {
                     string marketIndexChar;
                     int marketIndexInt;
                     
+                    // IF ACTIVE PLAYER IS AI
+                    if (activePlayer->isAI) {
+                        activePlayer->makeTurn(&(g->market), &(g->deck), &(g->handIndicesForSelling), &(g->tokenBag));
+                        
+                        // CHANGES ACTIVE PLAYER
+                        if (g->p1->isActive) {
+                            g->p1->isActive = false;
+                            g->p2->isActive = true;
+                            goto startNewTurn;
+                        } else if (g->p2->isActive) {
+                            g->p2->isActive = false;
+                            g->p1->isActive = true;
+                            goto startNewTurn;
+                        }
+                        g->handIndicesForSelling.clear();
+                        goto startNewTurn;
+                    }
+                    
                     if (activePlayer->myHand.size() < 7) {
                         cout << "What card do you want from the market?: ";
                         cin >> marketIndexChar;
@@ -311,6 +347,24 @@ int beginGame(Game *g) {
                     for (int i = 0; i < (int)g->market.size(); i++) {
                         if (g->market.at(i).getType() == "Camels")
                             camelsInMarketCount++;
+                    }
+                    
+                    // IF ACTIVE PLAYER IS AI
+                    if (activePlayer->isAI) {
+                        activePlayer->makeTurn(&(g->market), &(g->deck), &(g->handIndicesForSelling), &(g->tokenBag));
+                        
+                        // CHANGES ACTIVE PLAYER
+                        if (g->p1->isActive) {
+                            g->p1->isActive = false;
+                            g->p2->isActive = true;
+                            goto startNewTurn;
+                        } else if (g->p2->isActive) {
+                            g->p2->isActive = false;
+                            g->p1->isActive = true;
+                            goto startNewTurn;
+                        }
+                        g->handIndicesForSelling.clear();
+                        goto startNewTurn;
                     }
                     
                     if (camelsInMarketCount > 0) {
@@ -391,6 +445,24 @@ int beginGame(Game *g) {
                     string tradingIndices;
                     char tradeIndFSChar;
                     int tradeIndFSInt;
+                    
+                    // IF ACTIVE PLAYER IS AI
+                    if (activePlayer->isAI) {
+                        activePlayer->makeTurn(&(g->market), &(g->deck), &(g->handIndicesForSelling), &(g->tokenBag));
+                        
+                        // CHANGES ACTIVE PLAYER
+                        if (g->p1->isActive) {
+                            g->p1->isActive = false;
+                            g->p2->isActive = true;
+                            goto startNewTurn;
+                        } else if (g->p2->isActive) {
+                            g->p2->isActive = false;
+                            g->p1->isActive = true;
+                            goto startNewTurn;
+                        }
+                        g->handIndicesForSelling.clear();
+                        goto startNewTurn;
+                    }
                     
                     if (activePlayer->tradingCards.size() > 0) {
                         
@@ -566,6 +638,24 @@ int beginGame(Game *g) {
                     string handIndexChar;
                     int handIndexInt;
                     
+                    // IF ACTIVE PLAYER IS AI
+                    if (activePlayer->isAI) {
+                        activePlayer->makeTurn(&(g->market), &(g->deck), &(g->handIndicesForSelling), &(g->tokenBag));
+                        
+                        // CHANGES ACTIVE PLAYER
+                        if (g->p1->isActive) {
+                            g->p1->isActive = false;
+                            g->p2->isActive = true;
+                            goto startNewTurn;
+                        } else if (g->p2->isActive) {
+                            g->p2->isActive = false;
+                            g->p1->isActive = true;
+                            goto startNewTurn;
+                        }
+                        g->handIndicesForSelling.clear();
+                        goto startNewTurn;
+                    }
+                    
                     if (activePlayer->myHand.size() > 0) {
                         cout << "What card do you want to sell from your hand?: ";
                         cin >> handIndexChar;
@@ -617,6 +707,24 @@ int beginGame(Game *g) {
                 } else if (sellOptions == '2') {
                     // SELL MULT args = (vector<int> *handIndicesForSelling, *tokenBag)
                     // first check handsize of activePlayer > 0, then allow to sell card
+                    
+                    // IF ACTIVE PLAYER IS AI
+                    if (activePlayer->isAI) {
+                        activePlayer->makeTurn(&(g->market), &(g->deck), &(g->handIndicesForSelling), &(g->tokenBag));
+                        
+                        // CHANGES ACTIVE PLAYER
+                        if (g->p1->isActive) {
+                            g->p1->isActive = false;
+                            g->p2->isActive = true;
+                            goto startNewTurn;
+                        } else if (g->p2->isActive) {
+                            g->p2->isActive = false;
+                            g->p1->isActive = true;
+                            goto startNewTurn;
+                        }
+                        g->handIndicesForSelling.clear();
+                        goto startNewTurn;
+                    }
                     
                     string handIndicesFS;
                     char handIndFSChar;
