@@ -15,7 +15,7 @@
 //#include "Marketplace.h"
 #include "Player.h"
 //#include "Player.cpp"
-#include "AIPlayer.h"
+//#include "AIPlayer.h"
 #include "Token.h"
 #include "Card.h"
 #include <vector>
@@ -105,7 +105,7 @@ public:
     //friend class Hand;
     //friend class Marketplace;
     friend class Player;
-	friend class AIPlayer;
+	//friend class AIPlayer;
     
 private:
     // Helper methods

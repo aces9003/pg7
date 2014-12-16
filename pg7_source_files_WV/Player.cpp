@@ -31,6 +31,7 @@ Player:: Player(std::string name) {
     this->seals = 0;
     this->hasCamelToken = false;
 	this->isActive = false;
+    this->isAI = false;
 }
 
 /*
@@ -496,3 +497,68 @@ bool Player::sellMult(vector<int> *handIndicesForSelling, map<string,vector<Toke
     // Press any key to return to previous/main menu
     return false;
 }
+
+void Player::makeTurn(vector<Card>* market, vector<Card>* deck, vector<int>* handIndicesForSelling,map<string,vector<Token>*>* tokenBag){
+    int randPick = rand() % 4;
+    if(randPick==0 && this->myHand.size()<7){
+        //take
+        int r= rand() % (int)market->size();
+        take(market, deck, r);
+    }
+    else if(randPick==1){
+        //trade
+        randPick = 2; //just makes it sell one if lands on trade
+        //trade(g);		//CHECK ONCE ALEX IS DONE
+    }
+    else if(randPick==2){
+        //sell one
+        int randPickHand = rand() % (int)myHand.size(); // need to seed random?
+        sellOne(tokenBag,randPickHand);
+    }
+    else if(randPick==3){ //&& check is valid to sell mult){
+        //sell multiple
+        std::string sellType;
+        int sellTypeNum=0;
+        if (myHand.size()>1){
+            for (int i=0;i<(int)myHand.size();i++){
+                std::string typeTemp;
+                typeTemp = myHand.at(i).getType();
+                int countTemp =0;
+                
+                //gets all types in hand and keeps track of largest set
+                for (int j=0; j<(int)myHand.size(); j++){
+                    if (myHand.at(j).getType() == typeTemp){
+                        countTemp++;
+                    }
+                }
+                if (countTemp>sellTypeNum){
+                    sellTypeNum = countTemp;
+                    sellType = typeTemp;
+                }
+            }
+            for (int x=0;x<(int)myHand.size();x++){
+                if (myHand.at(x).getType() == sellType){
+                    handIndicesForSelling->push_back(x);
+                }
+                if (isValidSaleOfMult(handIndicesForSelling, sellType)){
+                    sellMult(handIndicesForSelling,tokenBag);
+                    handIndicesForSelling->clear();
+                }
+            }
+        }
+        else{
+            //switches to take if randomly lands on multi and cannot sell muli
+            int r= rand() % (int)market->size();
+            take(market, deck, r);
+        }
+    }
+    else{
+        for (int i=0;i<(int)myHand.size();i++){
+            if (isValidSaleOfOne(i)){
+                sellOne(tokenBag,i);
+                break;
+            }
+        }
+    }
+}
+

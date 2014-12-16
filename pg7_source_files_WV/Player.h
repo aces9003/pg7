@@ -28,6 +28,7 @@ public:
     bool hasCamelToken;
     //std::vector<int> handIndices; // Make this in game
     bool isActive;
+    bool isAI;
     
 //public:
     //Hand myHand;      //creates vector from hand class;
@@ -64,6 +65,10 @@ public:
     // Public Helper methods
     virtual void addPoint(Token t); //add points to player depending on token achieved
     virtual void populateTradingCards(); // merges myHand + myHerd
+    
+    virtual void makeTurn(vector<Card>* market, vector<Card>* deck, vector<int>* handIndicesForSelling,map<string,vector<Token>*>* tokenBag);
+    
+
     
     // Destructor
     //virtual ~Player(); //should deallocate hand automatically

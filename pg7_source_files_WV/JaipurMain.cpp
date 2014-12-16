@@ -1,5 +1,5 @@
 // GameTest.cpp
-// compile with g++ -std=c++11 -pedantic -Wall -Wextra -O JaipurMain.cpp Card.cpp Token.cpp Player.cpp AIPlayer.cpp
+// compile with g++ -std=c++11 -pedantic -Wall -Wextra -O JaipurMain.cpp Card.cpp Token.cpp Player.cpp
 // Append *.cpp files as you see necessary for testing purposes
 
 #include "DynamicViewController.cpp"
@@ -53,7 +53,7 @@ startNewGame:
         cout << "What is Player 2's name?: ";
         cin >> p2Name;
         
-    startNewRound:
+    startNewRoundH:
         if (rounds == 1) {
             Game g1;
             Player p1(p1Name);
@@ -68,7 +68,7 @@ startNewGame:
             
             if (beginGame(&g1) == 1) {
                 rounds++;
-                goto startNewRound;
+                goto startNewRoundH;
             } else {
                 return 0;
             }
@@ -86,7 +86,7 @@ startNewGame:
             
             if (beginGame(&g2) == 1) {
                 rounds++;
-                goto startNewRound;
+                goto startNewRoundH;
             } else {
                 return 0;
             }
@@ -104,7 +104,7 @@ startNewGame:
             
             if (beginGame(&g3) == 1) {
                 rounds++;
-                goto startNewRound;
+                goto startNewRoundH;
             } else {
                 return 0;
             }
@@ -118,13 +118,14 @@ startNewGame:
         cin >> p1Name;
         cout << endl;  
 		
-    startNewRound:
+    startNewRoundAI:
         if (rounds == 1) {
             Game g1;
             Player p1(p1Name);
             p1.isActive = true;
-            AIPlayer p2("AI");
+            Player p2("AI");
             p2.isActive = false;
+            p2.isAI = true;
             
             g1.p1 = &p1;
             g1.p2 = &p2;
@@ -133,7 +134,7 @@ startNewGame:
             
             if (beginGame(&g1) == 1) {
                 rounds++;
-                goto startNewRound;
+                goto startNewRoundAI;
             } else {
                 return 0;
             }
@@ -141,8 +142,9 @@ startNewGame:
             Game g2;
             Player p3(p1Name);
             p3.isActive = true;
-            AIPlayer p4("AI");
+            Player p4("AI");
             p4.isActive = false;
+            p4.isAI = true;
             
             g2.p1 = &p3;
             g2.p2 = &p4;
@@ -151,7 +153,7 @@ startNewGame:
             
             if (beginGame(&g2) == 1) {
                 rounds++;
-                goto startNewRound;
+                goto startNewRoundAI;
             } else {
                 return 0;
             }
@@ -159,8 +161,9 @@ startNewGame:
             Game g3;
             Player p5(p1Name);
             p5.isActive = true;
-            AIPlayer p6("AI");
+            Player p6("AI");
             p6.isActive = false;
+            p6.isAI = true;
             
             g3.p1 = &p5;
             g3.p2 = &p6;
@@ -169,7 +172,7 @@ startNewGame:
             
             if (beginGame(&g3) == 1) {
                 rounds++;
-                goto startNewRound;
+                goto startNewRoundAI;
             } else {
                 return 0;
             }
