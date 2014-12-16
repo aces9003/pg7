@@ -168,7 +168,7 @@ int main() {
         cout << p1.myHand.at(i).getType() << endl;
     }
     
-    p1.trade(&market, &marketIndicesForTrading, &playerIndicesForTrading);
+    assert(p1.trade(&market, &marketIndicesForTrading, &playerIndicesForTrading));
     
     cout << "_______" << endl;
     
@@ -198,7 +198,7 @@ int main() {
         cout << p1.myHand.at(i).getType() << endl;
     }
     
-    p1.trade(&market, &marketIndicesForTrading, &playerIndicesForTrading);
+    assert(p1.trade(&market, &marketIndicesForTrading, &playerIndicesForTrading));
     
     cout << "_______" << endl;
     

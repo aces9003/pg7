@@ -187,7 +187,11 @@ void printSeparationBar() {
 
 void printTradingCards(Player *activePlayer) {
     // Print active player's tradingCards:
-    cout << "All of " << activePlayer->getName() << "'s Cards: " << endl;
+    
+    // Populate tradingCards here
+    activePlayer->populateTradingCards();
+    
+    cout << "All of " << activePlayer->getName() << "'s Cards For Trading: " << endl;
     for (int i = 0; i < (int)activePlayer->tradingCards.size(); i++) {
         cout << " [" << i << "] " << activePlayer->tradingCards.at(i).getType() << endl;
     }

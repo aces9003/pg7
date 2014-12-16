@@ -19,6 +19,8 @@ startNewGame:
     // Get names for players
     system("clear");
     
+    int rounds = 1;
+    
     char selectGameType;
     string p1Name;
     string p2Name;
@@ -38,6 +40,7 @@ startNewGame:
     //system("clear");
     cout << endl; cout << endl;
     
+    // HUMAN vs. HUMAN
     if (selectGameType == '1') {
         system("clear");
         
@@ -50,18 +53,63 @@ startNewGame:
         cout << "What is Player 2's name?: ";
         cin >> p2Name;
         
-        Game g;
-        Player p1(p1Name);
-        p1.isActive = true;
-        Player p2(p2Name);
-        p2.isActive = false;
+    startNewRound:
+        if (rounds == 1) {
+            Game g1;
+            Player p1(p1Name);
+            p1.isActive = true;
+            Player p2(p2Name);
+            p2.isActive = false;
+            
+            g1.p1 = &p1;
+            g1.p2 = &p2;
+            
+            g1.dealHand();
+            
+            if (beginGame(&g1) == 1) {
+                rounds++;
+                goto startNewRound;
+            } else {
+                return 0;
+            }
+        } else if (rounds == 2) {
+            Game g2;
+            Player p3(p1Name);
+            p3.isActive = true;
+            Player p4(p2Name);
+            p4.isActive = false;
+            
+            g2.p1 = &p3;
+            g2.p2 = &p4;
+            
+            g2.dealHand();
+            
+            if (beginGame(&g2) == 1) {
+                rounds++;
+                goto startNewRound;
+            } else {
+                return 0;
+            }
+        } else if (rounds == 3) {
+            Game g3;
+            Player p5(p1Name);
+            p5.isActive = true;
+            Player p6(p2Name);
+            p6.isActive = false;
+            
+            g3.p1 = &p5;
+            g3.p2 = &p6;
+            
+            g3.dealHand();
+            
+            if (beginGame(&g3) == 1) {
+                rounds++;
+                goto startNewRound;
+            } else {
+                return 0;
+            }
+        }
         
-        g.p1 = &p1;
-        g.p2 = &p2;
-        
-        g.dealHand();
-        
-        beginGame(&g);
     } else if (selectGameType == '2') {
         
         //Game g;

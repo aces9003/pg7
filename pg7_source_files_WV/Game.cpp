@@ -22,7 +22,8 @@ Game::Game() {
 	//initPlayers(name1, name2);
 	dealMarket();
 	//dealHand();
-	this->rounds = 1;
+	//this->rounds = 1; // SET MANUALLY IN main() based on if on Game 1, Game 2, Game 3
+    this->emptyTokenVectors = 0;
     std::srand ( unsigned ( std::time(0) ) );
 }
 
@@ -203,16 +204,6 @@ void Game::playerTurn(Player &p) {
 	}
 }
 */
- 
- 
-//count SoE, access player and count
- int Game::countSE(const Player& p) {
-	return p.getSeals();
-} 
-
-void giveSE( Player& p) {
-	p.addSeal(); ///////////////////////////might need to make this in player
-}
 
 /*
 bool Game::endGame() {

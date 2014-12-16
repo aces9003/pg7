@@ -28,21 +28,22 @@ AIPlayer:: AIPlayer(std::string name){
 	this->hasCamelToken=false;
 }
 
-void AIPlayer::makeTurn(){
+void AIPlayer::makeTurn(Game * g){
 	int randPick = rand() % 4;
 	if(randPick==0 && this->myHand.getSize()<7){
 		//take
 		int r= rand() % (int)market().getSize();
-		take(&market, &deck, r);
+		take(&(g->market), &(g->deck), r);
 	}
 	else if(randPick==1){
 		//trade
-		trade(g);		//CHECK ONCE ALEX IS DONE
+		randPick = 2; //just makes it sell one if lands on trade
+		//trade(g);		//CHECK ONCE ALEX IS DONE
 	}
 	else if(randPick==2){
 		//sell one 
 		int randPickHand = srand() % (int)myHand.size; // need to seed random?
-		sellOne(&clothT,&leatherT,&spiceT,randPickHand);
+		sellOne(&(g->tokenBag),randPickHand);
 	}
 	else if(randPick==3){ //&& check is valid to sell mult){
 		//sell multiple 
@@ -70,20 +71,22 @@ void AIPlayer::makeTurn(){
 					handIndicesForSelling.push_back(x);
 				}
 				if (isValidSaleOfMult(&handIndicesForSelling, sellType)){
-					sellMult(&handIndicesForSelling, &bonus3, &bonus4, &bonus5, &clothT, &leatherT, &spiceT, &diamondT, &goldT, &silverT);
+					sellMult(&handIndicesForSelling,&(g->tokenBag));
 				}
 			}
 		}
 		else{
-			//switches to take if randomly lands on multi and cannot sell multi
+			//switches to take if randomly lands on multi and cannot sell muli
 			int r= rand() % (int)market().getSize();
-			take(&market, &deck, r);
+			take(&(g->market), &(g->deck), r);
 		}
 	}
 	else{
 		for (int i=0;i<(int)myHand.size();i++){
-			if (isValidSaleOfOne(i))
-				sellOne(&tokenBag,i)
+			if (isValidSaleOfOne(i)){
+				sellOne(&(g->tokenBag),i);
+				break;
+			}
 		}
 	}
 }
